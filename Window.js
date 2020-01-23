@@ -4,8 +4,8 @@ const { BrowserWindow } = require('electron')
 const path = require('path')
 
 const defaultProps = {
-    width:500,
-    height:900,
+    width:800,
+    height:500,
     show:false,
     webPreferences: {
         preload: path.join(__dirname, 'preload.js'),

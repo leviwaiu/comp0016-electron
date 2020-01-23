@@ -1,7 +1,6 @@
 'use strict'
 
 const {app, dialog, ipcMain} = require('electron');
-const {exec} = require('child_process');
 const path = require('path');
 const fs = require('fs')
 
@@ -52,11 +51,12 @@ function createWindow(){
     })
 
     ipcMain.on('return-to-login', (event) => {
-        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
 
     ipcMain.on('save-file', (event, filename) => {
         fs.createReadStream('sample.csv').pipe(fs.createWriteStream(filename));
+        mainWindow.webContents.send('successful-save');
     })
 }
 

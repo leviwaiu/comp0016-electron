@@ -7,6 +7,8 @@
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../render_css/default.css">
+    <link rel="stylesheet" type="text/css" href="../render_css/mainmenu.css">
     <title>Transcription Service</title>
 </head>
 <body>
@@ -24,10 +26,13 @@
         <br>
         <button class="btn btn-primary" id="analyse-button">Start Analysis</button>
     </form>
+    <div class="bottom-button">
+    <button class="btn btn-outline-secondary" id="credentials-button">Edit Credentials</button>
     <button class="btn btn-outline-warning" id="logout-button">Log Out</button>
+    </div>
 </div>
 <!-- You can also require other files to run in this process -->
 <script src="../renderer.js"></script>
-<script src="loginform.js"></script>
+<script src="mainmenu.js"></script>
 </body>
 </html>
