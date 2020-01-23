@@ -1,0 +1,8 @@
+.progress {
+    margin: 10px;
+}
+
+#log-iframe {
+    width: 100%;
+    height: 100px;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Transcription Service</title>
+    <link rel="stylesheet" type="text/css" href="../render_css/index.css">
+    <link rel="stylesheet" type="text/css" href="../render_css/analysing.css">
+</head>
+<body>
+<div class="container">
+    <h1 id="title">Analysing</h1>
+    <h5>Currently Using: <span id="current-service">IBM Cloud</span></h5>
+    <h5>Progress:</h5>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="10"
+             aria-valuemin="0" aria-valuemax="100" id="progress-bar">
+            <span class="sr-only">10% complete</span>
+        </div>
+    </div>
+    <button class="btn btn-primary">Cancel</button>
+    <button class="btn btn-secondary" id="log-button">Show Logs</button>
+    <button class="btn btn-primary invisible" id="continue-button">Continue</button>
+    <iframe id="log-iframe" src="log.html"></iframe>
+</div>
+<!-- You can also require other files to run in this process -->
+<script src="../renderer.js"></script>
+<script src="analysing.js"></script>
+</body>
+</html>
+

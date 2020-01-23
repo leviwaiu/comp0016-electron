@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Transcription Service</title>
+</head>
+<body>
+<div class="container">
+    <h1 id="title">Transcription Service</h1>
+    <form id="analyse-form">
+        <label>Choose a Service:</label>
+        <select id="service-select">
+            <option value="IBM">IBM Cloud</option>
+            <option value="Microsoft">Microsoft Azure</option>
+        </select>
+        <br><br>
+        <label>Select a file: <button class="btn btn-secondary" id="file-select">Choose File...</button>
+            <span id="filename">No File Selected</span></label>
+        <br>
+        <button class="btn btn-primary" id="analyse-button">Start Analysis</button>
+    </form>
+    <button class="btn btn-outline-warning" id="logout-button">Log Out</button>
+</div>
+<!-- You can also require other files to run in this process -->
+<script src="../renderer.js"></script>
+<script src="loginform.js"></script>
+</body>
+</html>

@@ -1,53 +1,65 @@
-// Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
-const path = require('path')
+'use strict'
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+const {app, dialog, ipcMain} = require('electron');
+const {exec} = require('child_process');
+const path = require('path');
+const fs = require('fs')
 
-function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js')
-    }
-  })
+const Window = require('./Window');
+const Processor = require('./Processor');
 
-  // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+require('electron-reload')(__dirname)
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
-  })
+const error_options = {
+    type:"error",
+    title:"Missing file",
+    message:"Missing File",
+    detail:"A file has not been selected for analysis",
+    buttons:['OK']
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+let outputFiles;
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') app.quit()
-})
+function createWindow(){
+    let mainWindow = new Window({
+        file: path.join('renderer', 'index.html')
+    })
 
-app.on('activate', function () {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) createWindow()
-})
+    ipcMain.on('login-form-submission', (event, username) => {
+        console.log("this is the username from the form:", username)
+        mainWindow.loadFile(path.join('renderer','mainmenu.html'));
+    });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+    ipcMain.on('analyse-form-submission', (event, service, file) =>{
+        console.log("Analyse button pressed");
+        console.log(file);
+        if(file === null){
+            dialog.showMessageBox(null, error_options);
+            return;
+        }
+        Processor.processFile(event, "1", file);
+        mainWindow.loadFile(path.join('renderer', 'analysing.html'));
+
+    })
+
+    ipcMain.on('logout', (event) => {
+        mainWindow.loadFile(path.join('renderer', 'index.html'));
+    })
+
+    ipcMain.on('analyse-continue', async () => {
+        mainWindow.loadFile(path.join('renderer', 'results.html'));
+        Processor.displayFile('sample.csv', mainWindow);
+    })
+
+    ipcMain.on('return-to-login', (event) => {
+        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+    })
+
+    ipcMain.on('save-file', (event, filename) => {
+        fs.createReadStream('sample.csv').pipe(fs.createWriteStream(filename));
+    })
+}
+
+app.on('ready', function(){
+    createWindow();
+});
