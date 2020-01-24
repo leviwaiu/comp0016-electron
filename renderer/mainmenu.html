@@ -16,13 +16,17 @@
     <h1 id="title">Transcription Service</h1>
     <form id="analyse-form">
         <label>Choose a Service:</label>
-        <select id="service-select">
+        <select class="form-control" id="service-select">
             <option value="IBM">IBM Cloud</option>
             <option value="Microsoft">Microsoft Azure</option>
         </select>
         <br><br>
-        <label>Select a file: <button class="btn btn-secondary" id="file-select">Choose File...</button>
-            <span id="filename">No File Selected</span></label>
+        <label>Select a file: <button class="btn btn-secondary" id="file-select">Choose File...</button></label>
+        <div class="card">
+            <div class="card-body">
+                <p id="filename">No File Selected</p>
+            </div>
+        </div>
         <br>
         <button class="btn btn-primary" id="analyse-button">Start Analysis</button>
     </form>

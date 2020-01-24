@@ -16,9 +16,15 @@
     <h1 id="title">Welcome</h1>
     <form id="login-form">
       <label>Username: <input type="text" id="username" placeholder="Username"></label>
-      <label>Password: <input type="text" id="password" placeholder="Password"></label>
+      <label>Password: <input type="password" id="password" placeholder="Password"></label>
       <button class="btn btn-primary">Login</button>
     </form>
+    <div class="card text-white bg-danger mb-3 invisible" id="login-fail">
+      <div class="card-body">
+        <h5 class="card-title">Bad Login</h5>
+        <p class="card-text">The username/password combination is invalid.</p>
+      </div>
+    </div>
     <div class="version">
     We are using Node.js <span id="node-version"></span>,
     Chromium <span id="chrome-version"></span>,

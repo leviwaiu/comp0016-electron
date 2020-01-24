@@ -3,10 +3,19 @@ const {ipcRenderer} = require('electron');
 
 
 document.getElementById('login-form').addEventListener('submit', (evt) => {
-    evt.preventDefault()
-    const input = evt.target[0]
+    evt.preventDefault();
+    const username = evt.target[0];
+    const password = evt.target[1];
 
-    ipcRenderer.send('login-form-submission', input.value)
+    console.log(username.value);
+    console.log(password.value)
+
+    ipcRenderer.send('login-form-submission', username.value, password.value);
 });
 
 
+ipcRenderer.on('login-error', function(){
+    document.getElementById('login-fail').classList.remove('invisible');
+    document.getElementById('username').value = "";
+    document.getElementById('password').value = "";
+})

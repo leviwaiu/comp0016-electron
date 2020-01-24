@@ -24,9 +24,13 @@ function createWindow(){
         file: path.join('renderer', 'index.html')
     })
 
-    ipcMain.on('login-form-submission', (event, username) => {
-        console.log("this is the username from the form:", username)
-        mainWindow.loadFile(path.join('renderer','mainmenu.html'));
+    ipcMain.on('login-form-submission', (event, username, password) => {
+        //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
+        if(username === "admin" && password === "1234") {
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        } else {
+            mainWindow.webContents.send('login-error');
+        }
     });
 
     ipcMain.on('analyse-form-submission', (event, service, file) =>{

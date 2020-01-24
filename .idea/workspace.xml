@@ -2,18 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf45931f-e1e8-438b-824d-6446d7578b08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/render_css/mainmenu.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/renderer/credentials.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/renderer/mainmenu.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/render_css/credentials.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Window.js" beforeDir="false" afterPath="$PROJECT_DIR$/Window.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/render_css/default.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/default.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render_css/result-table.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/mainmenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/mainmenu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/credentials.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/credentials.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/renderer/loginform.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/loginform.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/renderer/mainmenu.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/mainmenu.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renderer/result-table.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/renderer/results.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/results.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,13 +21,18 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="CSS File" />
         <option value="HTML File" />
+        <option value="CSS File" />
         <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1WnO064ClmuRKq8CzJA7phcN8YY" />
@@ -84,7 +87,7 @@
       <workItem from="1579514979154" duration="7796000" />
       <workItem from="1579627175734" duration="9139000" />
       <workItem from="1579693457807" duration="22345000" />
-      <workItem from="1579781680796" duration="10087000" />
+      <workItem from="1579781680796" duration="20487000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1579747342954</created>
@@ -93,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579747342954</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Improving Modularity of Program">
+      <created>1579798077031</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1579798077031</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -123,33 +133,42 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit" />
+    <MESSAGE value="Improving Modularity of Program" />
+    <option name="LAST_COMMIT_MESSAGE" value="Improving Modularity of Program" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1579794580631">
+    <state x="705" y="364" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1579826759035">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1579794580631" />
-    <state x="708" y="159" key="CommitChangelistDialog2" timestamp="1579798052244">
+    <state x="705" y="364" key="#com.intellij.fileTypes.FileTypeChooser/0.36.1920.1044@0.36.1920.1044" timestamp="1579826759035" />
+    <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1579824245537">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="708" y="159" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1579798052244" />
-    <state width="1897" height="135" key="GridCell.Tab.0.bottom" timestamp="1579796594706">
+    <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1579824245537" />
+    <state x="708" y="159" key="CommitChangelistDialog2" timestamp="1579798076690">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="135" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1579796594706" />
-    <state width="1897" height="135" key="GridCell.Tab.0.center" timestamp="1579796594705">
+    <state x="708" y="159" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1579798076690" />
+    <state width="1897" height="286" key="GridCell.Tab.0.bottom" timestamp="1579826831151">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="135" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1579796594705" />
-    <state width="1897" height="135" key="GridCell.Tab.0.left" timestamp="1579796594705">
+    <state width="1897" height="286" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831151" />
+    <state width="1897" height="286" key="GridCell.Tab.0.center" timestamp="1579826831150">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="135" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1579796594705" />
-    <state width="1897" height="135" key="GridCell.Tab.0.right" timestamp="1579796594706">
+    <state width="1897" height="286" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831150" />
+    <state width="1897" height="286" key="GridCell.Tab.0.left" timestamp="1579826831150">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="135" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1579796594706" />
+    <state width="1897" height="286" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831150" />
+    <state width="1897" height="286" key="GridCell.Tab.0.right" timestamp="1579826831151">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="286" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831151" />
+    <state x="745" y="298" key="Vcs.Push.Dialog.v2" timestamp="1579798175995">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="745" y="298" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1579798175995" />
     <state x="623" y="277" width="672" height="678" key="search.everywhere.popup" timestamp="1579781860538">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
