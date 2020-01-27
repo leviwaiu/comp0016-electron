@@ -66,7 +66,7 @@ function createWindow(){
     })
 
     ipcMain.on('save-file', (event, filename) => {
-        fs.createReadStream('sample.csv').pipe(fs.createWriteStream(filename));
+        fs.createReadStream("sample.csv").pipe(fs.createWriteStream(filename.filePath));
         mainWindow.webContents.send('successful-save');
     })
 
@@ -74,6 +74,22 @@ function createWindow(){
         Processor.changeCredentials(username, password);
         console.log("there");
         mainWindow.webContents.send('close-credentials');
+    })
+
+    ipcMain.on('delete-temp-file', () => {
+        const tempFile = 'sample.csv'
+        if(fs.existsSync(tempFile)){
+            fs.unlink(tempFile, (err) => {
+                if(err){
+                    mainWindow.webContents.send('file-delete-error');
+                    alert("An error occurred updating the file: " + err.message);
+                    console.log(err);
+                }
+            })
+            mainWindow.webContents.send('file-delete-successful');
+
+            console.log('tempFile does not exist');
+        }
     })
 }
 

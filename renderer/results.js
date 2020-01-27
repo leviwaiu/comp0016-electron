@@ -31,9 +31,42 @@ document.getElementById("return-button").addEventListener("click", async(evt) =>
 document.getElementById('save-button').addEventListener("click", async (evt) => {
   evt.preventDefault();
   const saveLocation = await dialog.showSaveDialog(BrowserWindow.getFocusedWindow());
-  ipcRenderer.send('save-file', saveLocation);
+  if(!saveLocation.canceled) {
+    ipcRenderer.send('save-file', saveLocation);
+  }
 })
 
-ipcRenderer.on('successful-save', function(event){
+document.getElementById('delete-button').addEventListener('click', () => {
+  ipcRenderer.send('delete-temp-file');
+})
+
+
+ipcRenderer.on('successful-save', async function(event){
+  const successful = await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+      type: "info",
+      title: "Save Successful",
+      message: "The save has been successful",
+      buttons:["OK"]
+  });
   fileSaved = true;
+  console.log(fileSaved);
+})
+
+ipcRenderer.on('file-delete-successful', async function(){
+  await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+    type: "info",
+    title: "Delete Successful",
+    message: "The temporary file has been deleted",
+    buttons:["OK"]
+  })
+})
+
+ipcRenderer.on('file-delete-error', async function(){
+  await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
+    type: "info",
+    title: "Delete Failed",
+    message: "Delete Failed",
+    detail: "Something went wrong when deleting the temporary form",
+    buttons:["OK"]
+  })
 })
