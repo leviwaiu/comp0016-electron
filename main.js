@@ -17,7 +17,6 @@ const error_options = {
     buttons:['OK']
 }
 
-let outputFiles;
 
 function createWindow(){
     let mainWindow = new Window({
@@ -40,12 +39,20 @@ function createWindow(){
             dialog.showMessageBox(null, error_options);
             return;
         }
-        Processor.processFile(event, "1", file);
+        if(service !== "IBM"){
+            dialog.showMessageBox(null,{type:"warning",
+            title:"Unsupported Feature",
+            message:"Feature not Implemented",
+            detail:"Unfortunately, we have yet to implement this Service. We apologise for the misunderstandings.",
+            buttons:['OK']})
+            return;
+        }
+        Processor.processFile(event, "1", file, mainWindow);
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
     })
 
-    ipcMain.on('logout', (event) => {
+    ipcMain.on('logout', () => {
         mainWindow.loadFile(path.join('renderer', 'index.html'));
     })
 
@@ -54,13 +61,19 @@ function createWindow(){
         Processor.displayFile('sample.csv', mainWindow);
     })
 
-    ipcMain.on('return-to-login', (event) => {
+    ipcMain.on('return-to-login', () => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
 
     ipcMain.on('save-file', (event, filename) => {
         fs.createReadStream('sample.csv').pipe(fs.createWriteStream(filename));
         mainWindow.webContents.send('successful-save');
+    })
+
+    ipcMain.on('credentials-change', (event, username, password) => {
+        Processor.changeCredentials(username, password);
+        console.log("there");
+        mainWindow.webContents.send('close-credentials');
     })
 }
 

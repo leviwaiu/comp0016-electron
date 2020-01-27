@@ -2,21 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf45931f-e1e8-438b-824d-6446d7578b08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/render_css/credentials.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/renderer/credentials.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Window.js" beforeDir="false" afterPath="$PROJECT_DIR$/Window.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/analysing.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/analysing.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/credentials.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/credentials.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/render_css/default.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/default.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/render_css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render_css/mainmenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/mainmenu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/results.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/results.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/analysing.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/analysing.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/analysing.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/analysing.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/renderer/credentials.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/credentials.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/renderer/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renderer/loginform.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/loginform.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/renderer/mainmenu.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/mainmenu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/mainmenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/mainmenu.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="electron-quick-start" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -87,7 +96,7 @@
       <workItem from="1579514979154" duration="7796000" />
       <workItem from="1579627175734" duration="9139000" />
       <workItem from="1579693457807" duration="22345000" />
-      <workItem from="1579781680796" duration="20487000" />
+      <workItem from="1579781680796" duration="30829000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <created>1579747342954</created>
@@ -103,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1579798077031</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Basic Login Feature">
+      <created>1579829638102</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1579829638102</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -134,7 +150,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Improving Modularity of Program" />
-    <option name="LAST_COMMIT_MESSAGE" value="Improving Modularity of Program" />
+    <MESSAGE value="Basic Login Feature" />
+    <option name="LAST_COMMIT_MESSAGE" value="Basic Login Feature" />
   </component>
   <component name="WindowStateProjectService">
     <state x="705" y="364" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1579826759035">
@@ -145,51 +162,99 @@
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1579824245537" />
-    <state x="708" y="159" key="CommitChangelistDialog2" timestamp="1579798076690">
+    <state x="708" y="159" key="CommitChangelistDialog2" timestamp="1580095077470">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="708" y="159" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1579798076690" />
-    <state width="1897" height="286" key="GridCell.Tab.0.bottom" timestamp="1579826831151">
+    <state x="708" y="159" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1580095077470" />
+    <state width="1897" height="321" key="GridCell.Tab.0.bottom" timestamp="1580095077558">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="286" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831151" />
-    <state width="1897" height="286" key="GridCell.Tab.0.center" timestamp="1579826831150">
+    <state width="1897" height="321" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1580095077558" />
+    <state width="1897" height="321" key="GridCell.Tab.0.center" timestamp="1580095077557">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="286" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831150" />
-    <state width="1897" height="286" key="GridCell.Tab.0.left" timestamp="1579826831150">
+    <state width="1897" height="321" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1580095077557" />
+    <state width="1897" height="321" key="GridCell.Tab.0.left" timestamp="1580095077557">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="286" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831150" />
-    <state width="1897" height="286" key="GridCell.Tab.0.right" timestamp="1579826831151">
+    <state width="1897" height="321" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1580095077557" />
+    <state width="1897" height="321" key="GridCell.Tab.0.right" timestamp="1580095077557">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="286" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1579826831151" />
-    <state x="745" y="298" key="Vcs.Push.Dialog.v2" timestamp="1579798175995">
+    <state width="1897" height="321" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1580095077557" />
+    <state width="1897" height="339" key="GridCell.Tab.1.bottom" timestamp="1579830949347">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="745" y="298" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1579798175995" />
-    <state x="623" y="277" width="672" height="678" key="search.everywhere.popup" timestamp="1579781860538">
+    <state width="1897" height="339" key="GridCell.Tab.1.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949347" />
+    <state width="1897" height="339" key="GridCell.Tab.1.center" timestamp="1579830949346">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="623" y="277" width="672" height="678" key="search.everywhere.popup/0.36.1920.1044@0.36.1920.1044" timestamp="1579781860538" />
+    <state width="1897" height="339" key="GridCell.Tab.1.center/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949346" />
+    <state width="1897" height="339" key="GridCell.Tab.1.left" timestamp="1579830949346">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.1.left/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949345" />
+    <state width="1897" height="339" key="GridCell.Tab.1.right" timestamp="1579830949346">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.1.right/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949346" />
+    <state width="1897" height="339" key="GridCell.Tab.2.bottom" timestamp="1579830949348">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.2.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949348" />
+    <state width="1897" height="339" key="GridCell.Tab.2.center" timestamp="1579830949347">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.2.center/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949347" />
+    <state width="1897" height="339" key="GridCell.Tab.2.left" timestamp="1579830949347">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.2.left/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949347" />
+    <state width="1897" height="339" key="GridCell.Tab.2.right" timestamp="1579830949348">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.2.right/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949348" />
+    <state width="1897" height="339" key="GridCell.Tab.3.bottom" timestamp="1579830949349">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.3.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949349" />
+    <state width="1897" height="339" key="GridCell.Tab.3.center" timestamp="1579830949348">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.3.center/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949348" />
+    <state width="1897" height="339" key="GridCell.Tab.3.left" timestamp="1579830949348">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.3.left/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949348" />
+    <state width="1897" height="339" key="GridCell.Tab.3.right" timestamp="1579830949349">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="1897" height="339" key="GridCell.Tab.3.right/0.36.1920.1044@0.36.1920.1044" timestamp="1579830949349" />
+    <state x="745" y="298" key="Vcs.Push.Dialog.v2" timestamp="1579829645889">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="745" y="298" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1579829645889" />
+    <state x="623" y="277" width="672" height="678" key="search.everywhere.popup" timestamp="1579834912577">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="623" y="277" width="672" height="678" key="search.everywhere.popup/0.36.1920.1044@0.36.1920.1044" timestamp="1579834912577" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/Processor.js</url>
-          <line>39</line>
+          <line>43</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/renderer/analysing.js</url>
-          <line>27</line>
+          <line>26</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/renderer/analysing.js</url>
-          <line>28</line>
+          <line>27</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

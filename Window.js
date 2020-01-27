@@ -10,7 +10,9 @@ const defaultProps = {
     webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
         nodeIntegration: true
-    }
+    },
+    minWidth:500,
+    minHeight:500
 
 };
 

@@ -1,7 +1,10 @@
 const {spawn} = require('child_process');
 const fs = require('fs')
 
-function processFile(event, service, filePath){
+let ser_username = "";
+let ser_password = "";
+
+function processFile(event, service, filePath, mainWindow){
 
   console.log("At ProcessFile" + filePath);
   const execString = "-jar IBM_STT.jar . . 0 " + filePath;
@@ -9,11 +12,12 @@ function processFile(event, service, filePath){
   const ls = spawn("java",spawnString);
 
   ls.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
+    mainWindow.webContents.send('log-data', data)
   });
 
   ls.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
+    mainWindow.webContents.send('log-data', data)
     if(data.includes("HTTP FAILED")){
       ls.kill();
     }
@@ -50,9 +54,11 @@ function displayFile(filePath, mainWindow){
   })
 }
 
-function convertFiletoHTML(data){
-
+function changeCredentials(username, password){
+  ser_username = username;
+  ser_password = password;
 }
 
 module.exports.processFile = processFile
 module.exports.displayFile = displayFile
+module.exports.changeCredentials = changeCredentials

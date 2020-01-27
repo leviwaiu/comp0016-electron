@@ -1,6 +1,6 @@
 #table-result{
     width:100%;
-    min-height:300px;
-    max-height:500px;
+    min-height:200px;
+    max-height:350px;
     overflow-y:scroll;
 }

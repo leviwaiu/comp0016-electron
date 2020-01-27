@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
@@ -15,12 +15,12 @@
 <div class="container">
     <h1 id="title">Transcription Service</h1>
     <form id="analyse-form">
-        <label>Choose a Service:</label>
+        <label for="service-select">Choose a Service:</label>
         <select class="form-control" id="service-select">
             <option value="IBM">IBM Cloud</option>
             <option value="Microsoft">Microsoft Azure</option>
         </select>
-        <br><br>
+        <br>
         <label>Select a file: <button class="btn btn-secondary" id="file-select">Choose File...</button></label>
         <div class="card">
             <div class="card-body">

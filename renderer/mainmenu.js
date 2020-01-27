@@ -5,6 +5,7 @@ const path = require('path');
 const {dialog, BrowserWindow} = require('electron').remote;
 
 let file;
+let newWindow;
 
 document.getElementById('file-select').addEventListener('click', async (evt) => {
   evt.preventDefault();
@@ -22,10 +23,14 @@ document.getElementById("logout-button").addEventListener('click', (evt) => {
   evt.preventDefault();
   ipcRenderer.send('logout');
 })
-document.getElementById('credentials-button').addEventListener('click', (evt) =>{
-  const newWindow = new BrowserWindow({
-    height:200,
-    width:400
+document.getElementById('credentials-button').addEventListener('click', () =>{
+  newWindow = new BrowserWindow( {
+    height:300,
+    width:500
   });
   newWindow.loadFile(path.join('renderer', 'credentials.html'))
+})
+ipcRenderer.on('close-credentials', function(){
+  console.log("here");
+  newWindow.close();
 })
