@@ -64,7 +64,7 @@ function createWindow(){
     ipcMain.on('close-signup', (event, username, password) => {
         firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(){
             if(error != null){
-                console.log(error);
+                console.log(error.message);
                 return;
             }
         })
