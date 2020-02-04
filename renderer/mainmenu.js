@@ -26,9 +26,16 @@ document.getElementById("logout-button").addEventListener('click', (evt) => {
 document.getElementById('credentials-button').addEventListener('click', () =>{
   newWindow = new BrowserWindow( {
     height:300,
-    width:500
+    width:500,
+    show:false,
+    webPreferences: {
+      nodeIntegration: true
+    }
   });
   newWindow.loadFile(path.join('renderer', 'credentials.html'))
+  newWindow.once('ready-to-show', ()=> {
+    newWindow.show();
+  })
 })
 ipcRenderer.on('close-credentials', function(){
   console.log("here");

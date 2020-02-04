@@ -22,6 +22,7 @@
     "bootstrap": "^4.4.1",
     "electron": "^7.1.9",
     "electron-reload": "^1.5.0",
-    "file-url": "^3.0.0"
+    "file-url": "^3.0.0",
+    "ibm-watson": "^5.3.1"
   }
 }
