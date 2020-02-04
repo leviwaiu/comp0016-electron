@@ -17,8 +17,6 @@
     grid-row:3;
     grid-column:2;
 }
-<<<<<<< Updated upstream
-=======
 
 #signup-form{
     display:flex;
@@ -30,7 +28,6 @@
     top: 252px;
     left: 340px;
 }
->>>>>>> Stashed changes
 
 .version{
     grid-row:4;

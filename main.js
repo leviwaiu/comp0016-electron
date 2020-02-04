@@ -34,18 +34,31 @@ const error_options = {
 }
 
 
+
+
 function createWindow(){
     let mainWindow = new Window({
         file: path.join('renderer', 'index.html')
     })
 
     ipcMain.on('login-form-submission', (event, username, password) => {
-        //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
-        if(username === "admin" && password === "1234") {
+
+        firebase.auth().signInWithEmailAndPassword(username,password).then(function(){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        } else {
-            mainWindow.webContents.send('login-error');
-        }
+        }).catch(function(error){
+            if(error != null){
+                mainWindow.webContents.send('login-error');
+                console.log(error.message);
+                return;
+            }
+        })
+   
+        //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
+        // if(username === "admin" && password === "1234") {
+        //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        // } else {
+        //     mainWindow.webContents.send('login-error');
+        // }
     });
 
     ipcMain.on('close-signup', (event, username, password) => {
@@ -101,6 +114,11 @@ function createWindow(){
         console.log("there");
         mainWindow.webContents.send('close-credentials');
     })
+
+    ipcMain.on('close-signup',(event, username, password) =>{
+        mainWindow.webContents.send('close-signup-window');
+    })
+
 
     ipcMain.on('delete-temp-file', () => {
         const tempFile = 'sample.csv'

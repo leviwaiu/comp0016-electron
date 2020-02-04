@@ -31,24 +31,23 @@ function processFile(event, service, filePath, mainWindow){
 }
 
 function displayFile(filePath, mainWindow){
-  fs.readFile(filePath, {encoding:"utf-8"}, function(err, data){
+  fs.readFile(filePath, {encoding:'utf-8'}, function(err, data){
     let data_list;
     let final_html = "";
-    let data_separated;
     if (!err) {
-      data_list = data.toString().split('\n')
-      for (var i = 1; i < data_list.length; i++) {
-        final_html += '<tr>\n'
+      data_list = data.toString().split('\n');
+      for(var i = 1; i < data_list.length; i++){
+        final_html += "<tr>\n"
         data_separated = data_list[i].split(', ')
-        for (var j = 0; j < data_separated.length; j++) {
-          final_html += '<td>' + data_separated[j] + '</td>\n'
+        for(var j = 0; j < data_separated.length; j++){
+          final_html += "<td>" + data_separated[j] + "</td>\n";
         }
-        final_html += '</tr>\n'
+        final_html += "</tr>\n";
       }
-      mainWindow.webContents.on('did-finish-load', () => {
-        mainWindow.webContents.send('display-data', final_html)
-        console.log('sent')
-      })
+      mainWindow.webContents.on('did-finish-load', ()=> {
+        mainWindow.webContents.send('display-data', final_html);
+        console.log("sent");
+      });
     } else {
       console.log(err)
     }
