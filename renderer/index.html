@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js"></script>
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+             https://firebase.google.com/docs/web/setup#available-libraries -->
+             <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-analytics.js"></script>
+        
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
@@ -17,8 +23,14 @@
     <form id="login-form" class="form-group">
       <label for="username">Username: <input type="text" id="username" class="form-control" placeholder="Username"></label>
       <label for="password">Password: <input type="password" id="password" class="form-control" placeholder="Password"></label>
+<<<<<<< Updated upstream
       <button class="btn btn-primary">Login</button>
     </form>
+=======
+      <button class="btn btn-primary">Login</button><br>
+    </form>
+      <button class="btn btn-secondary" id="signup-form">Sign Up</button>
+>>>>>>> Stashed changes
     <div class="card text-white bg-danger mb-3 invisible" id="login-fail">
       <div class="card-body">
         <h5 class="card-title">Bad Login</h5>

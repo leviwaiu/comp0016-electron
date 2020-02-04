@@ -17,6 +17,20 @@
     grid-row:3;
     grid-column:2;
 }
+<<<<<<< Updated upstream
+=======
+
+#signup-form{
+    display:flex;
+    flex-direction: column;
+    grid-column:2;
+    grid-row:2;
+    position:absolute;
+    transition: .5s ease;
+    top: 252px;
+    left: 340px;
+}
+>>>>>>> Stashed changes
 
 .version{
     grid-row:4;

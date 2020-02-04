@@ -1,13 +1,29 @@
 'use strict'
 
+
+
 const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
-const fs = require('fs')
+const fs = require('fs');
 
 const Window = require('./Window');
 const Processor = require('./Processor');
 
 require('electron-reload')(__dirname)
+
+var firebaseConfig = {
+    apiKey: "AIzaSyCIvk3vGu7H6Fa0Jlm66ffoLCi_pbyLVfs",
+    authDomain: "electron-project-10d2a.firebaseapp.com",
+    databaseURL: "https://electron-project-10d2a.firebaseio.com",
+    projectId: "electron-project-10d2a",
+    storageBucket: "electron-project-10d2a.appspot.com",
+    messagingSenderId: "66238223387",
+    appId: "1:66238223387:web:1f8e121fb0c64a895014be",
+    measurementId: "G-H7CFXVQN6E"
+  };
+  // Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
 const error_options = {
     type:"error",
@@ -17,6 +33,11 @@ const error_options = {
     buttons:['OK']
 }
 
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
 
 function createWindow(){
     let mainWindow = new Window({
@@ -24,13 +45,43 @@ function createWindow(){
     })
 
     ipcMain.on('login-form-submission', (event, username, password) => {
+<<<<<<< Updated upstream
         //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
         if(username === "admin" && password === "1234") {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
         } else {
             mainWindow.webContents.send('login-error');
         }
+=======
+
+        firebase.auth().signInWithEmailAndPassword(username,password).then(function(){
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        }).catch(function(error){
+            if(error != null){
+                mainWindow.webContents.send('login-error');
+                console.log(error.message);
+                return;
+            }
+        })
+   
+        //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
+        // if(username === "admin" && password === "1234") {
+        //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        // } else {
+        //     mainWindow.webContents.send('login-error');
+        // }
+>>>>>>> Stashed changes
     });
+
+    ipcMain.on('close-signup', (event, username, password) => {
+        firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(){
+            if(error != null){
+                console.log(error);
+                return;
+            }
+        })
+        mainWindow.webContents.send('close-signup-window');
+    })
 
     ipcMain.on('analyse-form-submission', (event, service, file) =>{
         console.log("Analyse button pressed");
@@ -76,6 +127,14 @@ function createWindow(){
         mainWindow.webContents.send('close-credentials');
     })
 
+<<<<<<< Updated upstream
+=======
+    ipcMain.on('close-signup',(event, username, password) =>{
+        mainWindow.webContents.send('close-signup-window');
+    })
+
+
+>>>>>>> Stashed changes
     ipcMain.on('delete-temp-file', () => {
         const tempFile = 'sample.csv'
         if(fs.existsSync(tempFile)){
