@@ -19,3 +19,8 @@ ipcRenderer.on('login-error', function(){
     document.getElementById('username').value = "";
     document.getElementById('password').value = "";
 })
+
+document.getElementById('test-button').addEventListener('click', (evt)=> {
+    evt.preventDefault();
+    ipcRenderer.send('debug-test-watson-npm');
+})

@@ -6,6 +6,8 @@ const fs = require('fs')
 
 const Window = require('./Window');
 const Processor = require('./Processor');
+const Watson_Test = require('./Watson_Test');
+const Watson = require('./Watson');
 
 require('electron-reload')(__dirname)
 
@@ -90,6 +92,11 @@ function createWindow(){
 
             console.log('tempFile does not exist');
         }
+    })
+
+    //DEBUG ONLY
+    ipcMain.on('debug-test-watson-npm', (event) => {
+        Watson_Test.watson_Test();
     })
 }
 
