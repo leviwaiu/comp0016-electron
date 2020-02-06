@@ -183,10 +183,10 @@
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1579824245537" />
-    <state x="708" y="159" width="874" height="805" key="CommitChangelistDialog2" timestamp="1580838613162">
+    <state x="708" y="159" width="874" height="805" key="CommitChangelistDialog2" timestamp="1580950453973">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="708" y="159" width="874" height="805" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1580838613162" />
+    <state x="708" y="159" width="874" height="805" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1580950453973" />
     <state x="377" y="129" key="DiffContextDialog" timestamp="1580816425168">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
@@ -259,14 +259,18 @@
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1897" height="339" key="GridCell.Tab.3.right/0.36.1920.1044@0.36.1920.1044" timestamp="1580134116231" />
-    <state x="745" y="298" key="Vcs.Push.Dialog.v2" timestamp="1580816475422">
+    <state x="745" y="298" key="Vcs.Push.Dialog.v2" timestamp="1580950461872">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="745" y="298" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1580816475422" />
+    <state x="745" y="298" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1580950461872" />
     <state x="757" y="479" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1580836418371">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="757" y="479" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.36.1920.1044@0.36.1920.1044" timestamp="1580836418371" />
+    <state x="205" y="272" key="git4idea.branch.GitSmartOperationDialog" timestamp="1580950485770">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="205" y="272" key="git4idea.branch.GitSmartOperationDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1580950485770" />
     <state x="623" y="277" width="672" height="678" key="search.everywhere.popup" timestamp="1580116263547">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
