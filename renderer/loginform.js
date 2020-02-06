@@ -5,26 +5,16 @@ const path = require('path');
 let newWindow;
 
 
-document.getElementById('login-form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const username = evt.target[0];
-    const password = evt.target[1];
-
-    console.log(username.value);
-    console.log(password.value)
-
-    ipcRenderer.send('login-form-submission', username.value, password.value);
+document.getElementById('login').addEventListener('click', function(){
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    ipcRenderer.send('login-form-submission', username, password);
 });
-document.getElementById('signup-form').addEventListener('click', () =>{
-    newWindow = new BrowserWindow( {
-        height:300,
-        width:500
-      });
-      newWindow.loadFile(path.join('renderer', 'signup.html'));
-})
 
-ipcRenderer.on('close-signup-window',function(){
-    newWindow.close();
+document.getElementById('signup').addEventListener('click', function(){
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+    ipcRenderer.send('signup-submission', username, password);
 })
 
 ipcRenderer.on('login-error', function(){

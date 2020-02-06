@@ -1,7 +1,5 @@
 'use strict'
 
-
-
 const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -11,19 +9,27 @@ const Processor = require('./Processor');
 
 require('electron-reload')(__dirname)
 
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+var firebase = require("firebase/app");
+
+// Add the Firebase products that you want to use
+require("firebase/auth");
+
+// Your web app's Firebase configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyCIvk3vGu7H6Fa0Jlm66ffoLCi_pbyLVfs",
-    authDomain: "electron-project-10d2a.firebaseapp.com",
-    databaseURL: "https://electron-project-10d2a.firebaseio.com",
-    projectId: "electron-project-10d2a",
-    storageBucket: "electron-project-10d2a.appspot.com",
-    messagingSenderId: "66238223387",
-    appId: "1:66238223387:web:1f8e121fb0c64a895014be",
-    measurementId: "G-H7CFXVQN6E"
+    apiKey: "AIzaSyDVYD73yW6tSEx5fTot0jPmqAGPa8BupK8",
+    authDomain: "electron-26478.firebaseapp.com",
+    databaseURL: "https://electron-26478.firebaseio.com",
+    projectId: "electron-26478",
+    storageBucket: "electron-26478.appspot.com",
+    messagingSenderId: "745584394714",
+    appId: "1:745584394714:web:d8ad3134ebc3cfd919c0e3",
+    measurementId: "G-Z81RE8P952"
   };
   // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-firebase.analytics();
+  firebase.initializeApp(firebaseConfig);
+
 
 const error_options = {
     type:"error",
@@ -32,9 +38,6 @@ const error_options = {
     detail:"A file has not been selected for analysis",
     buttons:['OK']
 }
-
-
-
 
 function createWindow(){
     let mainWindow = new Window({
@@ -52,7 +55,17 @@ function createWindow(){
                 return;
             }
         })
-   
+    })
+
+    ipcMain.on('signup-submission', (event, username, password) => {
+        firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(error){
+            if(error != null){
+                console.log(error.code);
+                console.log(error.message);
+                return;
+            }
+    })
+
         //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
         // if(username === "admin" && password === "1234") {
         //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
@@ -60,16 +73,6 @@ function createWindow(){
         //     mainWindow.webContents.send('login-error');
         // }
     });
-
-    ipcMain.on('close-signup', (event, username, password) => {
-        firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(){
-            if(error != null){
-                console.log(error.message);
-                return;
-            }
-        })
-        mainWindow.webContents.send('close-signup-window');
-    })
 
     ipcMain.on('analyse-form-submission', (event, service, file) =>{
         console.log("Analyse button pressed");
