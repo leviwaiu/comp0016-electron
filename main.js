@@ -1,14 +1,16 @@
 'use strict'
 
 const {app, dialog, ipcMain} = require('electron');
-const {exec} = require('child_process');
 const path = require('path');
 const fs = require('fs')
 
+const firebase = require('firebase-admin');
 const Window = require('./Window');
 const Processor = require('./Processor');
+const Watson_Test = require('./Watson_Test');
 
-require('electron-reload')(__dirname)
+//Frontend Development Use Only
+//require('electron-reload')(__dirname)
 
 const error_options = {
     type:"error",
@@ -18,16 +20,19 @@ const error_options = {
     buttons:['OK']
 }
 
-let outputFiles;
 
 function createWindow(){
     let mainWindow = new Window({
         file: path.join('renderer', 'index.html')
     })
 
-    ipcMain.on('login-form-submission', (event, username) => {
-        console.log("this is the username from the form:", username)
-        mainWindow.loadFile(path.join('renderer','mainmenu.html'));
+    ipcMain.on('login-form-submission', (event, username, password) => {
+        //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
+        if(username === "admin" && password === "1234") {
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        } else {
+            mainWindow.webContents.send('login-error');
+        }
     });
 
     ipcMain.on('analyse-form-submission', (event, service, file) =>{
@@ -37,12 +42,20 @@ function createWindow(){
             dialog.showMessageBox(null, error_options);
             return;
         }
-        Processor.processFile(event, "1", file);
+        if(service !== "IBM"){
+            dialog.showMessageBox(null,{type:"warning",
+            title:"Unsupported Feature",
+            message:"Feature not Implemented",
+            detail:"Unfortunately, we have yet to implement this Service. We apologise for the misunderstandings.",
+            buttons:['OK']})
+            return;
+        }
+        Processor.processFile(event, "1", file, mainWindow);
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
     })
 
-    ipcMain.on('logout', (event) => {
+    ipcMain.on('logout', () => {
         mainWindow.loadFile(path.join('renderer', 'index.html'));
     })
 
@@ -51,12 +64,40 @@ function createWindow(){
         Processor.displayFile('sample.csv', mainWindow);
     })
 
-    ipcMain.on('return-to-login', (event) => {
-        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+    ipcMain.on('return-to-login', () => {
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
 
     ipcMain.on('save-file', (event, filename) => {
-        fs.createReadStream('sample.csv').pipe(fs.createWriteStream(filename));
+        fs.createReadStream("sample.csv").pipe(fs.createWriteStream(filename.filePath));
+        mainWindow.webContents.send('successful-save');
+    })
+
+    ipcMain.on('credentials-change', (event, username, password) => {
+        Processor.changeCredentials(username, password);
+        console.log("there");
+        mainWindow.webContents.send('close-credentials');
+    })
+
+    ipcMain.on('delete-temp-file', () => {
+        const tempFile = 'sample.csv'
+        if(fs.existsSync(tempFile)){
+            fs.unlink(tempFile, (err) => {
+                if(err){
+                    mainWindow.webContents.send('file-delete-error');
+                    alert("An error occurred updating the file: " + err.message);
+                    console.log(err);
+                }
+            })
+            mainWindow.webContents.send('file-delete-successful');
+
+            console.log('tempFile does not exist');
+        }
+    })
+
+    //DEBUG ONLY
+    ipcMain.on('debug-test-watson-npm', () => {
+        Watson_Test.watson_Test();
     })
 }
 

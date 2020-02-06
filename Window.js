@@ -4,13 +4,15 @@ const { BrowserWindow } = require('electron')
 const path = require('path')
 
 const defaultProps = {
-    width:500,
-    height:900,
+    width:800,
+    height:500,
     show:false,
     webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
         nodeIntegration: true
-    }
+    },
+    minWidth:500,
+    minHeight:500
 
 };
 
@@ -20,7 +22,9 @@ class Window extends BrowserWindow {
         super ({ ...defaultProps, ...windowSettings})
 
         this.loadFile(file)
-        this.webContents.openDevTools()
+
+        //Developer Tools
+        //this.webContents.openDevTools()
 
         this.once('ready-to-show', () => {
             this.show()
