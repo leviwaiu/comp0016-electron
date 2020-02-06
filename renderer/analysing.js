@@ -6,6 +6,7 @@ const progress_bar = document.getElementById("progress-bar");
 progress_bar.style.width = "10%";
 
 let log_opened = false;
+
 document.getElementById("log-button").addEventListener('click', ()=>{
   if(!log_opened){
     log_field.classList.remove("invisible");

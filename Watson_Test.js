@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const speechToText = new SpeechToTextV1 ({
   authenticator: new IamAuthenticator({
-    apikey:'[INSERT API KEY HERE]',
+    apikey:'[INSERT API KEY]',
   }),
   url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
   headers: {
@@ -32,7 +32,7 @@ function watson_Test() {
 }
 
 function onEvent(name, event){
-  console.log(name, JSON.stringify(event, null, 2));
+  console.log(name, JSON.stringify(event["speaker_labels"], null, 2));
 }
 
 module.exports.watson_Test = watson_Test;

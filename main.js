@@ -4,12 +4,13 @@ const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs')
 
+const firebase = require('firebase-admin');
 const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./Watson_Test');
-const Watson = require('./Watson');
 
-require('electron-reload')(__dirname)
+//Frontend Development Use Only
+//require('electron-reload')(__dirname)
 
 const error_options = {
     type:"error",
@@ -95,7 +96,7 @@ function createWindow(){
     })
 
     //DEBUG ONLY
-    ipcMain.on('debug-test-watson-npm', (event) => {
+    ipcMain.on('debug-test-watson-npm', () => {
         Watson_Test.watson_Test();
     })
 }
