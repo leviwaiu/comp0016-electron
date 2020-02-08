@@ -4,10 +4,13 @@ const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs');
 
+const firebase = require('firebase-admin');
 const Window = require('./Window');
 const Processor = require('./Processor');
+const Watson_Test = require('./Watson_Test');
 
-require('electron-reload')(__dirname)
+//Frontend Development Use Only
+//require('electron-reload')(__dirname)
 
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
@@ -137,6 +140,11 @@ function createWindow(){
 
             console.log('tempFile does not exist');
         }
+    })
+
+    //DEBUG ONLY
+    ipcMain.on('debug-test-watson-npm', () => {
+        Watson_Test.watson_Test();
     })
 }
 

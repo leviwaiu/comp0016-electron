@@ -1,5 +1,5 @@
-const {spawn} = require('child_process');
-const fs = require('fs')
+const fs = require('fs');
+const Watson = require('./Watson');
 
 let ser_username = "";
 let ser_password = "";
@@ -7,9 +7,11 @@ let ser_password = "";
 function processFile(event, service, filePath, mainWindow){
 
   console.log("At ProcessFile" + filePath);
-  const execString = "-jar IBM_STT.jar . . 0 " + filePath;
-  const spawnString = ["-jar", "IBM_STT.jar", ".", ".", "0", filePath];
-  const ls = spawn("java",spawnString);
+
+  //TODO: Implement handling of multiple files at this level
+
+
+  /**const ls = spawn("java",spawnString);
 
   ls.stdout.on('data', (data) => {
     mainWindow.webContents.send('log-data', data)
@@ -27,6 +29,9 @@ function processFile(event, service, filePath, mainWindow){
     console.log(`child process exited with code ${code}`);
     event.reply('analyse-finish');
   });
+  **/
+
+  Watson.callWatsonApi(true, [filePath], mainWindow, event);
 
 }
 
