@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const speechToText = new SpeechToTextV1 ({
   authenticator: new IamAuthenticator({
-    apikey:'[INSERT API KEY]',
+    apikey:'',
   }),
   url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
   headers: {

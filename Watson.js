@@ -5,7 +5,7 @@ const path = require('path')
 
 let chosenUsername = ''
 let chosenPassword = ''
-let chosenApiKey = '';
+let chosenApiKey = '[ENTER API KEY]';
 
 let speechToText = null;
 let fileExtension = ".wav";

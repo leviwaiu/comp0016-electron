@@ -4,9 +4,9 @@ const Watson = require('./Watson');
 let ser_username = "";
 let ser_password = "";
 
-function processFile(event, service, filePath, mainWindow){
+function processFile(event, service, filePaths, mainWindow){
 
-  console.log("At ProcessFile" + filePath);
+  console.log("At ProcessFile" + filePaths);
 
   //TODO: Implement handling of multiple files at this level
 
@@ -30,8 +30,10 @@ function processFile(event, service, filePath, mainWindow){
     event.reply('analyse-finish');
   });
   **/
-
-  Watson.callWatsonApi(true, [filePath], mainWindow, event);
+ 
+  for(var i = 0; i<filePaths.length;i++){
+    Watson.callWatsonApi(true, [filePaths[i]], mainWindow, event);
+  }
 
 }
 

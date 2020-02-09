@@ -3,21 +3,27 @@
 const {ipcRenderer} = require('electron');
 const path = require('path');
 const {dialog, BrowserWindow} = require('electron').remote;
-
 let file;
 let newWindow;
+var file_promise = [];
 
 document.getElementById('file-select').addEventListener('click', async (evt) => {
   evt.preventDefault();
-  const file_promise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(), { properties: ['openFile'] });
+  file_promise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(), { properties: ['openFile', 'multiSelections']});
   file = file_promise.filePaths[0];
-  document.getElementById('filename').innerText = file;
+  if(file_promise.filePaths.length > 1){
+    document.getElementById('filename').innerText = "Multiple files selected.";
+  }
+  else{
+    document.getElementById('filename').innerText = file;
+  }
+
 })
 document.getElementById('analyse-button').addEventListener('click', (evt) => {
   evt.preventDefault();
   const service = document.getElementById('service-select').value
-
-  ipcRenderer.send('analyse-form-submission', service, file);
+  console.log(file_promise.filePaths);
+  ipcRenderer.send('analyse-form-submission', service, file_promise.filePaths);
 })
 document.getElementById("logout-button").addEventListener('click', (evt) => {
   evt.preventDefault();
