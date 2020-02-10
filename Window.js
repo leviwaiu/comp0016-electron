@@ -22,9 +22,7 @@ class Window extends BrowserWindow {
         super ({ ...defaultProps, ...windowSettings})
 
         this.loadFile(file)
-
-        //Developer Tools
-        //this.webContents.openDevTools()
+        this.webContents.openDevTools()
 
         this.once('ready-to-show', () => {
             this.show()

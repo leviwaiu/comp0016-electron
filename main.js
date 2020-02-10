@@ -2,15 +2,34 @@
 
 const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
-const fs = require('fs')
+const fs = require('fs');
 
-const firebase = require('firebase-admin');
 const Window = require('./Window');
 const Processor = require('./Processor');
-const Watson_Test = require('./Watson_Test');
 
-//Frontend Development Use Only
-//require('electron-reload')(__dirname)
+require('electron-reload')(__dirname)
+
+// Firebase App (the core Firebase SDK) is always required and
+// must be listed before other Firebase SDKs
+var firebase = require("firebase/app");
+
+// Add the Firebase products that you want to use
+require("firebase/auth");
+
+// Your web app's Firebase configuration
+var firebaseConfig = {
+    apiKey: "AIzaSyDVYD73yW6tSEx5fTot0jPmqAGPa8BupK8",
+    authDomain: "electron-26478.firebaseapp.com",
+    databaseURL: "https://electron-26478.firebaseio.com",
+    projectId: "electron-26478",
+    storageBucket: "electron-26478.appspot.com",
+    messagingSenderId: "745584394714",
+    appId: "1:745584394714:web:d8ad3134ebc3cfd919c0e3",
+    measurementId: "G-Z81RE8P952"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
 
 const error_options = {
     type:"error",
@@ -20,19 +39,39 @@ const error_options = {
     buttons:['OK']
 }
 
-
 function createWindow(){
     let mainWindow = new Window({
         file: path.join('renderer', 'index.html')
     })
 
     ipcMain.on('login-form-submission', (event, username, password) => {
-        //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
-        if(username === "admin" && password === "1234") {
+
+        firebase.auth().signInWithEmailAndPassword(username,password).then(function(){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        } else {
-            mainWindow.webContents.send('login-error');
-        }
+        }).catch(function(error){
+            if(error != null){
+                mainWindow.webContents.send('login-error');
+                console.log(error.message);
+                return;
+            }
+        })
+    })
+
+    ipcMain.on('signup-submission', (event, username, password) => {
+        firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(error){
+            if(error != null){
+                console.log(error.code);
+                console.log(error.message);
+                return;
+            }
+    })
+
+        //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
+        // if(username === "admin" && password === "1234") {
+        //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        // } else {
+        //     mainWindow.webContents.send('login-error');
+        // }
     });
 
     ipcMain.on('analyse-form-submission', (event, service, file) =>{
@@ -79,6 +118,11 @@ function createWindow(){
         mainWindow.webContents.send('close-credentials');
     })
 
+    ipcMain.on('close-signup',(event, username, password) =>{
+        mainWindow.webContents.send('close-signup-window');
+    })
+
+
     ipcMain.on('delete-temp-file', () => {
         const tempFile = 'sample.csv'
         if(fs.existsSync(tempFile)){
@@ -93,11 +137,6 @@ function createWindow(){
 
             console.log('tempFile does not exist');
         }
-    })
-
-    //DEBUG ONLY
-    ipcMain.on('debug-test-watson-npm', () => {
-        Watson_Test.watson_Test();
     })
 }
 
