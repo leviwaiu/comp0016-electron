@@ -4,10 +4,9 @@ const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs')
 
-const firebase = require('firebase-admin');
 const Window = require('./Window');
 const Processor = require('./Processor');
-const Watson_Test = require('./Watson_Test');
+const Watson_Test = require('./WatsonTest');
 
 //Frontend Development Use Only
 //require('electron-reload')(__dirname)
@@ -100,6 +99,10 @@ function createWindow(){
     //DEBUG ONLY
     ipcMain.on('debug-test-watson-npm', () => {
         Watson_Test.watson_Test();
+    })
+
+    ipcMain.on('debug-test-azure-npm', () => {
+        AzureTest();
     })
 }
 
