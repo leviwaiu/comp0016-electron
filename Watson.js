@@ -1,14 +1,16 @@
 const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1')
 const { IamAuthenticator } = require('ibm-watson/auth')
+
 const fs = require('fs')
 const path = require('path')
+const FileType = require('file-type');
 
 let chosenUsername = ''
 let chosenPassword = ''
-let chosenApiKey = '';
+let chosenApiKey = 'oVudEgpq8HKdd25_BEpHvzfXLDmzadLx-yHrQ0pkSjgQ';
 
 let speechToText = null;
-let fileExtension = ".wav";
+let fileExtension = [];
 
 let params = {
   objectMode: true,
@@ -33,7 +35,7 @@ function setApiKey (api_input) {
   chosenApiKey = api_input
 }
 
-function callWatsonAPI (usesApi, process_files, mainWindow) {
+async function callWatsonAPI (usesApi, process_files, mainWindow) {
 
   if (!usesApi) {
     speechToText = new SpeechToTextV1({
@@ -61,7 +63,13 @@ function callWatsonAPI (usesApi, process_files, mainWindow) {
   let recogniseStream = speechToText.recognizeUsingWebSocket(params)
 
   for (let i = 0; i < process_files.length; i++) {
+
+    fileExtension[i] = (await FileType.fromFile(process_files[i]))["ext"];
+
+    params["contentType"] = "audio/" + fileExtension[i];
+
     fs.createReadStream(process_files[i]).pipe(recogniseStream)
+
     recogniseStream.on('data', function (event) {
       onEvent('Data:', event)
       processResult(event, process_files[i])
@@ -77,9 +85,11 @@ function callWatsonAPI (usesApi, process_files, mainWindow) {
   }
 }
 
+
+
 function processResult (event, documentPath) {
   const speakerLabels = event['speaker_labels'];
-  const documentPathBase = path.basename(documentPath, fileExtension);
+  const documentPathBase = path.basename(documentPath, "." + fileExtension[0]);
 
   let stream = fs.createWriteStream(documentPathBase + '.csv')
   let timeBetween = 0.00

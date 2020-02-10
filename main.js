@@ -12,6 +12,8 @@ const Watson_Test = require('./Watson_Test');
 //Frontend Development Use Only
 //require('electron-reload')(__dirname)
 
+let file_list = null;
+
 const error_options = {
     type:"error",
     title:"Missing file",
