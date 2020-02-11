@@ -2,8 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf45931f-e1e8-438b-824d-6446d7578b08" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/apiKeys.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AzureTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/AzureTest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Watson.js" beforeDir="false" afterPath="$PROJECT_DIR$/Watson.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Window.js" beforeDir="false" afterPath="$PROJECT_DIR$/Window.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/apiKeys.js" beforeDir="false" afterPath="$PROJECT_DIR$/apiKeys.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/analysing.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/analysing.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/default.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/default.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/render_css/mainmenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/mainmenu.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/analysing.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/analysing.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/analysing.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/analysing.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/log.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/mainmenu.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/mainmenu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/results.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/results.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +39,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="multiple-files" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -41,7 +55,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="12.11.0" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/renderer" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -49,12 +63,13 @@
     <property name="standardjs.codestyle.accepted" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/renderer" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/render_css" />
       <recent name="$PROJECT_DIR$/renderer" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$" />
     </key>
   </component>
   <component name="RunManager">
@@ -107,7 +122,21 @@
       <option name="project" value="LOCAL" />
       <updated>1581345426228</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Configured to decrease chance of leak">
+      <created>1581388360215</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1581388360215</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Removed Unnecessary Items from Intermediate.html">
+      <created>1581399655379</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1581399655379</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TodoView">
@@ -139,49 +168,63 @@
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Clean Commit" />
     <MESSAGE value="Testing Microsoft Azure Service" />
-    <option name="LAST_COMMIT_MESSAGE" value="Testing Microsoft Azure Service" />
+    <MESSAGE value="Configured to decrease chance of leak" />
+    <MESSAGE value="Removed Unnecessary Items from Intermediate.html" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removed Unnecessary Items from Intermediate.html" />
   </component>
   <component name="WindowStateProjectService">
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1579794580631">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1579794580631" />
-    <state x="708" y="159" key="CommitChangelistDialog2" timestamp="1581388247763">
+    <state x="862" y="198" key="CommitChangelistDialog2" timestamp="1581401407655">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="708" y="159" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1581388247763" />
-    <state width="1897" height="139" key="GridCell.Tab.0.bottom" timestamp="1581345436267">
+    <state x="862" y="198" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407655" />
+    <state x="100" y="136" width="1720" height="846" key="DiffContextDialog" timestamp="1581389074917">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="139" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436267" />
-    <state width="1897" height="139" key="GridCell.Tab.0.center" timestamp="1581345436267">
+    <state x="100" y="136" width="1720" height="846" key="DiffContextDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581389074917" />
+    <state width="1897" height="158" key="GridCell.Tab.0.bottom" timestamp="1581401407740">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="139" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436267" />
-    <state width="1897" height="139" key="GridCell.Tab.0.left" timestamp="1581345436266">
+    <state width="1897" height="158" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407740" />
+    <state width="1897" height="158" key="GridCell.Tab.0.center" timestamp="1581401407739">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="139" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436266" />
-    <state width="1897" height="139" key="GridCell.Tab.0.right" timestamp="1581345436267">
+    <state width="1897" height="158" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407739" />
+    <state width="1897" height="158" key="GridCell.Tab.0.left" timestamp="1581401407739">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="139" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436267" />
-    <state x="861" y="312" key="MultipleFileMergeDialog" timestamp="1581305732907">
+    <state width="1897" height="158" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407739" />
+    <state width="1897" height="158" key="GridCell.Tab.0.right" timestamp="1581401407739">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="861" y="312" key="MultipleFileMergeDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581305732907" />
-    <state x="541" y="341" key="Vcs.Push.Dialog.v2" timestamp="1581345434983">
+    <state width="1897" height="158" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407739" />
+    <state x="268" y="119" key="MergeDialog" timestamp="1581389057134">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="541" y="341" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581345434983" />
-    <state x="1227" y="478" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581281445362">
+    <state x="268" y="119" key="MergeDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581389057134" />
+    <state x="861" y="312" key="MultipleFileMergeDialog" timestamp="1581389057152">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="1227" y="478" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581281445362" />
-    <state x="884" y="308" key="git4idea.branch.GitSmartOperationDialog" timestamp="1581305729429">
+    <state x="861" y="312" key="MultipleFileMergeDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581389057152" />
+    <state x="541" y="341" key="Vcs.Push.Dialog.v2" timestamp="1581388375581">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="884" y="308" key="git4idea.branch.GitSmartOperationDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581305729429" />
+    <state x="541" y="341" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581388375581" />
+    <state x="100" y="136" width="1720" height="846" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1581389074917">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="100" y="136" width="1720" height="846" key="com.intellij.dvcs.ui.CompareBranchesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581389074917" />
+    <state x="1227" y="478" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581401340490">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="1227" y="478" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581401340490" />
+    <state x="884" y="308" key="git4idea.branch.GitSmartOperationDialog" timestamp="1581388908651">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="884" y="308" key="git4idea.branch.GitSmartOperationDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581388908651" />
     <state x="623" y="277" width="672" height="678" key="search.everywhere.popup" timestamp="1579781860538">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>

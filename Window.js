@@ -12,7 +12,7 @@ const defaultProps = {
         nodeIntegration: true
     },
     minWidth:500,
-    minHeight:500
+    minHeight:600
 
 };
 

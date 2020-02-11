@@ -3,8 +3,8 @@ function AzureTest(){
   "use strict";
 
   // pull in the required packages.
-  var sdk = require("microsoft-cognitiveservices-speech-sdk");
-  var fs = require("fs");
+  const sdk = require("microsoft-cognitiveservices-speech-sdk");
+  const fs = require("fs");
 
   const apiKey = require('./apiKeys');
 
@@ -93,11 +93,11 @@ function AzureTest(){
 
       // start the recognizer and wait for a result.
       reco.recognizeOnceAsync(
-        function (result) {
+        function () {
           reco.close();
           reco = undefined;
         },
-        function (err) {
+        function () {
           reco.close();
           reco = undefined;
         });

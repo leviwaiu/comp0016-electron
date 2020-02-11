@@ -4,10 +4,13 @@ const { IamAuthenticator } = require('ibm-watson/auth')
 const fs = require('fs')
 const path = require('path')
 const FileType = require('file-type');
+const apiKey = require('./apiKeys');
 
 let chosenUsername = ''
 let chosenPassword = ''
 let chosenApiKey = '';
+//DEBUG ONLY
+chosenApiKey = apiKey.IBMKey;
 
 let speechToText = null;
 let fileExtension = [];

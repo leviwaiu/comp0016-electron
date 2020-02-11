@@ -1,3 +1,7 @@
+.container{
+    grid-template-rows: 10% 1fr 10%; !important;
+}
+
 #title {
     grid-column:2;
 }
