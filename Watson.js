@@ -7,7 +7,7 @@ const FileType = require('file-type');
 
 let chosenUsername = ''
 let chosenPassword = ''
-let chosenApiKey = '[INSERT API KEY]';
+let chosenApiKey = '';
 
 let speechToText = null;
 let fileExtension = [];
