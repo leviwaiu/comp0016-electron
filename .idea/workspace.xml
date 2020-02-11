@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf45931f-e1e8-438b-824d-6446d7578b08" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/apiKeys.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -99,7 +100,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581344784921</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Testing Microsoft Azure Service">
+      <created>1581345426228</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1581345426228</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -130,41 +138,42 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="Clean Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Clean Commit" />
+    <MESSAGE value="Testing Microsoft Azure Service" />
+    <option name="LAST_COMMIT_MESSAGE" value="Testing Microsoft Azure Service" />
   </component>
   <component name="WindowStateProjectService">
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1579794580631">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1579794580631" />
-    <state x="708" y="159" key="CommitChangelistDialog2" timestamp="1581344784464">
+    <state x="708" y="159" key="CommitChangelistDialog2" timestamp="1581388247763">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="708" y="159" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1581344784464" />
-    <state width="1897" height="299" key="GridCell.Tab.0.bottom" timestamp="1581310641291">
+    <state x="708" y="159" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1581388247763" />
+    <state width="1897" height="139" key="GridCell.Tab.0.bottom" timestamp="1581345436267">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="299" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1581310641291" />
-    <state width="1897" height="299" key="GridCell.Tab.0.center" timestamp="1581310641290">
+    <state width="1897" height="139" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436267" />
+    <state width="1897" height="139" key="GridCell.Tab.0.center" timestamp="1581345436267">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="299" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1581310641290" />
-    <state width="1897" height="299" key="GridCell.Tab.0.left" timestamp="1581310641290">
+    <state width="1897" height="139" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436267" />
+    <state width="1897" height="139" key="GridCell.Tab.0.left" timestamp="1581345436266">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="299" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1581310641290" />
-    <state width="1897" height="299" key="GridCell.Tab.0.right" timestamp="1581310641290">
+    <state width="1897" height="139" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436266" />
+    <state width="1897" height="139" key="GridCell.Tab.0.right" timestamp="1581345436267">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="299" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1581310641290" />
+    <state width="1897" height="139" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1581345436267" />
     <state x="861" y="312" key="MultipleFileMergeDialog" timestamp="1581305732907">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="861" y="312" key="MultipleFileMergeDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581305732907" />
-    <state x="541" y="341" key="Vcs.Push.Dialog.v2" timestamp="1581345023724">
+    <state x="541" y="341" key="Vcs.Push.Dialog.v2" timestamp="1581345434983">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="541" y="341" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581345023724" />
+    <state x="541" y="341" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581345434983" />
     <state x="1227" y="478" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1581281445362">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>

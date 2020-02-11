@@ -2,9 +2,10 @@ const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1');
 const {IamAuthenticator} = require('ibm-watson/auth');
 const fs = require('fs');
 
+const apiKey = require('./apiKeys');
 const speechToText = new SpeechToTextV1 ({
   authenticator: new IamAuthenticator({
-    apikey:'[INSERT API KEY]',
+    apikey:apiKey.IBMKey,
   }),
   url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
   headers: {

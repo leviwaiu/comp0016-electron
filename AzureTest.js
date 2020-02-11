@@ -6,8 +6,10 @@ function AzureTest(){
   var sdk = require("microsoft-cognitiveservices-speech-sdk");
   var fs = require("fs");
 
+  const apiKey = require('./apiKeys');
+
   var settings = {
-    subscriptionKey: "[SUBSCRIPTION KEY]",
+    subscriptionKey: apiKey.AzureKey,
     serviceRegion: "uksouth",
     language: "en-US",
 
