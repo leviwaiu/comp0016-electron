@@ -34,7 +34,7 @@ document.getElementById('credentials-button').addEventListener('click', () =>{
   });
   newWindow.loadFile(path.join('renderer', 'credentials.html'))
 })
-ipcRenderer.on('close-credentials', function(){
-  console.log("here");
+ipcRenderer.on('close-credentials', () =>{
+  //console.log("here");
   newWindow.close();
 })
