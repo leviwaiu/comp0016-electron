@@ -31,13 +31,11 @@ document.getElementById("return-button").addEventListener("click", async(evt) =>
 document.getElementById('save-button').addEventListener("click", async (evt) => {
   evt.preventDefault();
     ipcRenderer.send('save-file');
-  
 })
 
 document.getElementById('delete-button').addEventListener('click', () => {
   ipcRenderer.send('delete-temp-file');
 })
-
 
 ipcRenderer.on('successful-save', async function(event){
   const successful = await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {

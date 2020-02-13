@@ -5,31 +5,61 @@ const path = require('path');
 const {dialog, BrowserWindow} = require('electron').remote;
 let file;
 let newWindow;
-var file_promise = [];
+let filePromise = [];
+let saveDirPromise;
+
+const fileShowField = document.getElementById('filename');
 
 document.getElementById('file-select').addEventListener('click', async (evt) => {
   evt.preventDefault();
-  file_promise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(), { properties: ['openFile', 'multiSelections']});
-  file = file_promise.filePaths[0];
-  if(file_promise.filePaths.length > 1){
-    document.getElementById('filename').innerText = "Multiple files selected.";
+  filePromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
+    { title:"Choose File or Directory",
+      properties: ['openFile', 'multiSelections']});
+  console.log(filePromise);
+  if(filePromise === undefined){
+    fileShowField.innerText = "No file or directory specified.";
   }
-  else{
-    document.getElementById('filename').innerText = file;
-  }
-
+  file = filePromise.filePaths[0];
+    if (filePromise.filePaths.length > 1) {
+      fileShowField.innerText = "Multiple files selected.";
+    } else {
+      fileShowField.innerText = file;
+    }
 })
+
+document.getElementById('directory-select').addEventListener("click", async(evt)=>{
+  evt.preventDefault();
+  filePromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
+    {title:"Choose Directory",
+    properties:['openDirectory']});
+  if(filePromise === undefined){
+     fileShowField.innerText = "No file or directory specified."
+  } else {
+    document.getElementById('filename').innerText = filePromise.filePaths[0];
+  }
+});
+
+document.getElementById('destination-button').addEventListener("click", async (evt) => {
+  evt.preventDefault();
+  saveDirPromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
+    { title:"Choose Directory",
+              properties:['openDirectory']}
+              );
+  document.getElementById('destination-show').innerText = saveDirPromise.filePaths[0];
+})
+
 document.getElementById('analyse-button').addEventListener('click', (evt) => {
   evt.preventDefault();
-  const service = document.getElementById('service-select').value
-  console.log(file_promise.filePaths);
-  ipcRenderer.send('analyse-form-submission', service, file_promise.filePaths);
+  const service = document.getElementById('service-select').value;
+  console.log(filePromise.filePaths);
+  ipcRenderer.send('analyse-form-submission', service, filePromise.filePaths, saveDirPromise.filePaths[0]);
 })
 document.getElementById("logout-button").addEventListener('click', (evt) => {
   evt.preventDefault();
   ipcRenderer.send('logout');
 })
-document.getElementById('credentials-button').addEventListener('click', () =>{
+document.getElementById('credentials-button').addEventListener('click', (evt) =>{
+  evt.preventDefault();
   newWindow = new BrowserWindow( {
     height:300,
     width:500,

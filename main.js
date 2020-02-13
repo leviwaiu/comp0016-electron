@@ -9,9 +9,8 @@ const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
 let temp_displayed;
 //Frontend Development Use Only
-//require('electron-reload')(__dirname)
+require('electron-reload')(__dirname)
 
-let file_list = null;
 
 const error_options = {
     type:"error",
@@ -36,11 +35,21 @@ function createWindow(){
         }
     });
 
-    ipcMain.on('analyse-form-submission', (event, service, files) =>{
+    ipcMain.on('analyse-form-submission', (event, service, files, destPath) =>{
         console.log("Analyse button pressed");
         console.log(files);
         if(files === null){
             dialog.showMessageBox(null, error_options);
+            return;
+        }
+        if(destPath === null){
+            dialog.showMessageBox(null, {
+                type:"error",
+                title:"Missing Destination",
+                message:"Missing Destination",
+                detail:"A destination path has not been specified",
+                buttons:['OK']
+            });
             return;
         }
         if(service !== "IBM"){
@@ -51,7 +60,7 @@ function createWindow(){
             buttons:['OK']})
             return;
         }
-        Processor.processFile(event, "1", files, mainWindow);
+        Processor.processFile(event, "1", files, destPath, mainWindow);
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
     })
@@ -112,7 +121,7 @@ function createWindow(){
     })
 
     ipcMain.on('deletion', (event, files) => {
-        for(var i =0; i<files.length;i++){
+        for(let i =0; i<files.length;i++){
             if(fs.existsSync(files[i])){
                 fs.unlink(files[i], (err) => {
                     if(err){

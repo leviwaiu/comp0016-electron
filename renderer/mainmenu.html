@@ -21,27 +21,32 @@
             <option value="Microsoft">Microsoft Azure</option>
         </select>
         <br>
-        <label>Select a file: <button class="btn btn-secondary" id="file-select">Choose File...</button></label>
+        <label class="w-100">Select a file:
+            <button class="btn btn-secondary float-right" id="file-select">Choose File</button>
+            <button class="btn btn-secondary float-right" id="directory-select">Choose Directory</button>
+        </label>
         <div class="card">
             <div class="card-body">
                 <p id="filename">No File Selected</p>
             </div>
         </div>
         <br>
-        <label for="destination-field">Select Where to Save the Files:</label>
-        <div class="input-group">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="destination-field">
-                <label class="custom-file-label" for="destination-field">Choose File</label>
+        <label class="w-100" for="destination-button">Select destination path:
+            <button class="btn btn-secondary float-right" id="destination-button">Choose Destination</button>
+        </label>
+        <div class="card">
+            <div class="card-body">
+                <p id="destination-show">No Path Specified</p>
             </div>
         </div>
         <br>
-        <button class="btn btn-primary" id="analyse-button">Start Analysis</button>
+        <div class="bottom-button w-100">
+            <button class="btn btn-outline-warning" id="logout-button">Log Out</button>
+            <button class="btn btn-outline-secondary" id="credentials-button">Edit Credentials</button>
+            <button class="btn btn-primary float-right" id="analyse-button">Start Analysis</button>
+        </div>
     </form>
-    <div class="bottom-button">
-    <button class="btn btn-outline-secondary" id="credentials-button">Edit Credentials</button>
-    <button class="btn btn-outline-warning" id="logout-button">Log Out</button>
-    </div>
+
 </div>
 <!-- You can also require other files to run in this process -->
 <script src="../renderer.js"></script>

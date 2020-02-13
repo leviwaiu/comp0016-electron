@@ -38,7 +38,7 @@ function setApiKey (api_input) {
   chosenApiKey = api_input
 }
 
-async function callWatsonAPI (usesApi, process_files, mainWindow) {
+async function callWatsonAPI (usesApi, process_files, destPath, mainWindow) {
 
   if (!usesApi) {
     speechToText = new SpeechToTextV1({
@@ -75,7 +75,7 @@ async function callWatsonAPI (usesApi, process_files, mainWindow) {
 
     recogniseStream.on('data', function (event) {
       onEvent('Data:', event)
-      processResult(event, process_files[i])
+      processResult(event, process_files[i], destPath)
     })
     recogniseStream.on('error', function (event) {
       onEvent('Error:', event);
@@ -90,11 +90,14 @@ async function callWatsonAPI (usesApi, process_files, mainWindow) {
 
 
 
-function processResult (event, documentPath) {
+function processResult (event, documentPath, destPath) {
   const speakerLabels = event['speaker_labels'];
   const documentPathBase = path.basename(documentPath, "." + fileExtension[0]);
+  console.log(documentPathBase);
+  console.log(destPath);
 
-  let stream = fs.createWriteStream(documentPathBase + '.csv')
+
+  let stream = fs.createWriteStream(destPath + path.sep + documentPathBase + '.csv')
   let timeBetween = 0.00
   let previousSpeaker = 0
   let previousEnd = 0.00

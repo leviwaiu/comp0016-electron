@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bf45931f-e1e8-438b-824d-6446d7578b08" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AzureTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/AzureTest.js" afterDir="false" />
+    <list default="true" id="bf45931f-e1e8-438b-824d-6446d7578b08" name="Default Changelist" comment="Mostly Aesthetic Changes to User Interfaace">
+      <change beforePath="$PROJECT_DIR$/Processor.js" beforeDir="false" afterPath="$PROJECT_DIR$/Processor.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Watson.js" beforeDir="false" afterPath="$PROJECT_DIR$/Watson.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Window.js" beforeDir="false" afterPath="$PROJECT_DIR$/Window.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/apiKeys.js" beforeDir="false" afterPath="$PROJECT_DIR$/apiKeys.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render_css/analysing.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/analysing.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/render_css/default.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/default.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/render_css/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/index.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/render_css/mainmenu.css" beforeDir="false" afterPath="$PROJECT_DIR$/render_css/mainmenu.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renderer/analysing.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/analysing.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renderer/analysing.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/analysing.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renderer/log.html" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/renderer/mainmenu.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/mainmenu.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renderer/results.html" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/results.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/mainmenu.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/mainmenu.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/renderer/results.js" beforeDir="false" afterPath="$PROJECT_DIR$/renderer/results.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,7 +130,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581399655379</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Mostly Aesthetic Changes to User Interfaace">
+      <created>1581401490832</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1581401490832</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView">
@@ -170,37 +171,42 @@
     <MESSAGE value="Testing Microsoft Azure Service" />
     <MESSAGE value="Configured to decrease chance of leak" />
     <MESSAGE value="Removed Unnecessary Items from Intermediate.html" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed Unnecessary Items from Intermediate.html" />
+    <MESSAGE value="Mostly Aesthetic Changes to User Interfaace" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mostly Aesthetic Changes to User Interfaace" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="648" y="287" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1581590297818">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="648" y="287" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581590297818" />
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1579794580631">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="698" y="308" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1579794580631" />
-    <state x="862" y="198" key="CommitChangelistDialog2" timestamp="1581401407655">
+    <state x="862" y="198" key="CommitChangelistDialog2" timestamp="1581590202686">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="862" y="198" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407655" />
+    <state x="862" y="198" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1581590202686" />
     <state x="100" y="136" width="1720" height="846" key="DiffContextDialog" timestamp="1581389074917">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="100" y="136" width="1720" height="846" key="DiffContextDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581389074917" />
-    <state width="1897" height="158" key="GridCell.Tab.0.bottom" timestamp="1581401407740">
+    <state width="1897" height="146" key="GridCell.Tab.0.bottom" timestamp="1581590204530">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="158" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407740" />
-    <state width="1897" height="158" key="GridCell.Tab.0.center" timestamp="1581401407739">
+    <state width="1897" height="146" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1581590204530" />
+    <state width="1897" height="146" key="GridCell.Tab.0.center" timestamp="1581590204529">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="158" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407739" />
-    <state width="1897" height="158" key="GridCell.Tab.0.left" timestamp="1581401407739">
+    <state width="1897" height="146" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1581590204529" />
+    <state width="1897" height="146" key="GridCell.Tab.0.left" timestamp="1581590204529">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="158" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407739" />
-    <state width="1897" height="158" key="GridCell.Tab.0.right" timestamp="1581401407739">
+    <state width="1897" height="146" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1581590204529" />
+    <state width="1897" height="146" key="GridCell.Tab.0.right" timestamp="1581590204530">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state width="1897" height="158" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1581401407739" />
+    <state width="1897" height="146" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1581590204530" />
     <state x="268" y="119" key="MergeDialog" timestamp="1581389057134">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
@@ -209,10 +215,10 @@
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="861" y="312" key="MultipleFileMergeDialog/0.36.1920.1044@0.36.1920.1044" timestamp="1581389057152" />
-    <state x="541" y="341" key="Vcs.Push.Dialog.v2" timestamp="1581388375581">
+    <state x="541" y="341" key="Vcs.Push.Dialog.v2" timestamp="1581401497702">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
-    <state x="541" y="341" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581388375581" />
+    <state x="541" y="341" key="Vcs.Push.Dialog.v2/0.36.1920.1044@0.36.1920.1044" timestamp="1581401497702" />
     <state x="100" y="136" width="1720" height="846" key="com.intellij.dvcs.ui.CompareBranchesDialog" timestamp="1581389074917">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>

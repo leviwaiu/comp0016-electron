@@ -4,7 +4,7 @@ const Watson = require('./Watson');
 let ser_username = "";
 let ser_password = "";
 
-function processFile(event, service, filePaths, mainWindow){
+function processFile(event, service, filePaths, destPath, mainWindow){
 
   console.log("At ProcessFile" + filePaths);
 
@@ -32,7 +32,7 @@ function processFile(event, service, filePaths, mainWindow){
   **/
  
   for(var i = 0; i<filePaths.length;i++){
-    Watson.callWatsonApi(true, [filePaths[i]], mainWindow, event);
+    Watson.callWatsonApi(true, [filePaths[i]], destPath, mainWindow, event);
   }
 
 }

@@ -7,5 +7,5 @@ body{
     min-width:500px;
     display:grid;
     grid-template-rows: 10% 1fr 1fr;
-    grid-template-columns: 10% 1fr 10%;
+    grid-template-columns: 5% 1fr 5%;
 }
