@@ -21,25 +21,21 @@ document.getElementById("return-button").addEventListener("click", async(evt) =>
       buttons: ["Yes", "No"]
     });
     if(fileConfirm.response === 0){
-      ipcRenderer.send('return-to-login');
+      ipcRenderer.send('return-to-intermediate');
     }
   } else {
-    ipcRenderer.send('return-to-login');
+    ipcRenderer.send('return-to-intermediate');
   }
 });
 
 document.getElementById('save-button').addEventListener("click", async (evt) => {
   evt.preventDefault();
-  const saveLocation = await dialog.showSaveDialog(BrowserWindow.getFocusedWindow());
-  if(!saveLocation.canceled) {
-    ipcRenderer.send('save-file', saveLocation);
-  }
+    ipcRenderer.send('save-file');
 })
 
 document.getElementById('delete-button').addEventListener('click', () => {
   ipcRenderer.send('delete-temp-file');
 })
-
 
 ipcRenderer.on('successful-save', async function(event){
   const successful = await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
