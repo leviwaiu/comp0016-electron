@@ -7,5 +7,6 @@ document.getElementById('return-button').addEventListener('click', function(){
   const username = service_username.value;
   const password = service_password.value;
   service_password.value = "What";
+  console.log("tero")
   ipcRenderer.send('credentials-change', username, password);
 })

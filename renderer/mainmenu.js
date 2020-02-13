@@ -5,6 +5,9 @@ const path = require('path');
 const {dialog, BrowserWindow} = require('electron').remote;
 let file;
 let newWindow;
+let types = [
+  {name: 'Audio', extensions: ['m4a', 'flac', 'mp4', 'mp3', 'wav']},];
+
 let filePromise = [];
 let saveDirPromise;
 
@@ -14,6 +17,7 @@ document.getElementById('file-select').addEventListener('click', async (evt) => 
   evt.preventDefault();
   filePromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
     { title:"Choose File or Directory",
+      filters:types,
       properties: ['openFile', 'multiSelections']});
   console.log(filePromise);
   if(filePromise === undefined){

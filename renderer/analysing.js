@@ -25,9 +25,10 @@ ipcRenderer.on('log-data', (event, data) => {
   document.getElementById('log-output').innerText += data;
 });
 
+
+
 ipcRenderer.on('analyse-finish', () => {
-  console.log("recieved");
-  progress_bar.style.width = "100%";
+  console.log("recieved")
   continue_button.classList.remove("invisible");
 })
 
