@@ -7,20 +7,16 @@ const fs = require('fs');
 const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
+const apiKeys = require('./apiKeys');
 let temp_displayed;
 //Frontend Development Use Only
 require('electron-reload')(__dirname)
 
-// Firebase App (the core Firebase SDK) is always required and
-// must be listed before other Firebase SDKs
-var firebase = require("firebase/app");
-
-// Add the Firebase products that you want to use
+let firebase = require("firebase/app");
 require("firebase/auth");
 
-// Your web app's Firebase configuration
-var firebaseConfig = {
-    apiKey: "AIzaSyDVYD73yW6tSEx5fTot0jPmqAGPa8BupK8",
+let firebaseConfig = {
+    apiKey: apiKeys.FirebaseKey,
     authDomain: "electron-26478.firebaseapp.com",
     databaseURL: "https://electron-26478.firebaseio.com",
     projectId: "electron-26478",
@@ -52,9 +48,7 @@ function createWindow(){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
         }).catch(function(error){
             if(error != null){
-                mainWindow.webContents.send('login-error');
-                console.log(error.message);
-                return;
+                mainWindow.webContents.send('login-error', error.message, error.code);
             }
         })
     })
@@ -64,7 +58,7 @@ function createWindow(){
             if(error != null){
                 console.log(error.code);
                 console.log(error.message);
-                return;
+                mainWindow.webContents.send('login-error', error.message, error.code);
             }
     })
 

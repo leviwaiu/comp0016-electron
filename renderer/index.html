@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js"></script>
-        <!-- TODO: Add SDKs for Firebase products that you want to use
-             https://firebase.google.com/docs/web/setup#available-libraries -->
-             <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-analytics.js"></script>
-        
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
@@ -19,19 +13,17 @@
   </head>
   <body>
     <div class='container'>
+      <h1 id="title" class="text-center">Welcome</h1>
     <div id='login-form' class='form-group'>
-        <h1 id="title" class="text-center">Welcome</h1>
-        <input type="text" id="username" class="form-control" placeholder="Username">
-        <input type="password" id="password" class="form-control" placeholder="Password">
-        <button class="btn btn-primary" id="login">Login</button><br>
+      <label for="username">Username:<input type="text" id="username" class="form-control" placeholder="Username"></label>
+      <label for="password">Password:<input type="password" id="password" class="form-control" placeholder="Password"></label>
+        <button class="btn btn-primary" id="login">Login</button>
         <button class="btn btn-secondary" id="signup">Signup</button>
-      </div>
     </div>
-    <div class="container">
     <div class="card text-white bg-danger mb-3 invisible" id="login-fail">
       <div class="card-body">
-        <h5 class="card-title">Bad Login</h5>
-        <p class="card-text">The username/password combination is invalid.</p>
+        <h5 class="card-title" id="login-fail-title">Bad Login</h5>
+        <p class="card-text" id="login-fail-details">The username/password combination is invalid.</p>
       </div>
     </div>
     <div class="version">

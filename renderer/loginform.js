@@ -1,24 +1,23 @@
 'use strict'
 const {ipcRenderer} = require('electron');
-const {BrowserWindow} = require('electron').remote;
-const path = require('path');
-let newWindow;
 
+let usernameField = document.getElementById('username');
+let passwordField = document.getElementById('password');
 
 document.getElementById('login').addEventListener('click', function(){
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
+    let username = usernameField.value;
+    let password = passwordField.value;
     ipcRenderer.send('login-form-submission', username, password);
 });
 
 document.getElementById('signup').addEventListener('click', function(){
-    var username = document.getElementById('username').value;
-    var password = document.getElementById('password').value;
+    let username = usernameField.value
+    let password = passwordField.value;
     ipcRenderer.send('signup-submission', username, password);
 })
 
-ipcRenderer.on('login-error', function(){
+ipcRenderer.on('login-error', function(event, details, title){
+    document.getElementById('login-fail-title').innerText = title;
+    document.getElementById('login-fail-details').innerText = details;
     document.getElementById('login-fail').classList.remove('invisible');
-    document.getElementById('username').value = "";
-    document.getElementById('password').value = "";
 })

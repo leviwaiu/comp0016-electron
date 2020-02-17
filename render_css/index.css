@@ -13,6 +13,7 @@
     grid-column:2;
     grid-row:2;
 }
+
 #login-fail{
     grid-row:3;
     grid-column:2;
@@ -27,6 +28,10 @@
     transition: .5s ease;
     top: 252px;
     left: 340px;
+}
+
+.btn{
+    margin-bottom: 5px;
 }
 
 .version{
