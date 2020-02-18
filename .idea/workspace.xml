@@ -72,6 +72,9 @@
     <property name="standardjs.codestyle.accepted" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/render_css" />
       <recent name="$PROJECT_DIR$/renderer" />
@@ -150,6 +153,15 @@
     <option name="localTasksCounter" value="6" />
     <servers />
   </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
@@ -174,6 +186,7 @@
     <MESSAGE value="Save and Delete Function Updates" />
     <MESSAGE value="Merging from multiple-files" />
     <option name="LAST_COMMIT_MESSAGE" value="Merging from multiple-files" />
+    <option name="LAST_COMMIT_MESSAGE" value="Save and Delete Function Updates" />
   </component>
   <component name="WindowStateProjectService">
     <state x="705" y="364" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1579826759035">
@@ -188,6 +201,10 @@
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state x="708" y="159" width="874" height="805" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1581593049492" />
+    <state x="708" y="159" width="874" height="805" key="CommitChangelistDialog2" timestamp="1580816460962">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state x="708" y="159" width="874" height="805" key="CommitChangelistDialog2/0.36.1920.1044@0.36.1920.1044" timestamp="1580816460962" />
     <state x="377" y="129" key="DiffContextDialog" timestamp="1580816425168">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
@@ -212,6 +229,22 @@
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
     <state width="1897" height="146" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1581592834146" />
+    <state width="937" height="97" key="GridCell.Tab.0.bottom" timestamp="1580752757136">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="937" height="97" key="GridCell.Tab.0.bottom/0.36.1920.1044@0.36.1920.1044" timestamp="1580752757136" />
+    <state width="937" height="97" key="GridCell.Tab.0.center" timestamp="1580752757134">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="937" height="97" key="GridCell.Tab.0.center/0.36.1920.1044@0.36.1920.1044" timestamp="1580752757134" />
+    <state width="937" height="97" key="GridCell.Tab.0.left" timestamp="1580752757133">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="937" height="97" key="GridCell.Tab.0.left/0.36.1920.1044@0.36.1920.1044" timestamp="1580752757133" />
+    <state width="937" height="97" key="GridCell.Tab.0.right" timestamp="1580752757135">
+      <screen x="0" y="36" width="1920" height="1044" />
+    </state>
+    <state width="937" height="97" key="GridCell.Tab.0.right/0.36.1920.1044@0.36.1920.1044" timestamp="1580752757135" />
     <state width="1897" height="339" key="GridCell.Tab.1.bottom" timestamp="1580134116227">
       <screen x="0" y="36" width="1920" height="1044" />
     </state>
