@@ -137,7 +137,11 @@ function createWindow(){
 
     ipcMain.on('credentials-change', (event, username, password) => {
         Processor.changeCredentials(username, password);
-        console.log("there");
+        // console.log("there");
+        mainWindow.webContents.send('close-credentials');
+    })
+
+    ipcMain.on('credential-dontchange', () =>{
         mainWindow.webContents.send('close-credentials');
     })
 

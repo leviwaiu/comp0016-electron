@@ -77,7 +77,7 @@ document.getElementById('credentials-button').addEventListener('click', (evt) =>
     newWindow.show();
   })
 })
-ipcRenderer.on('close-credentials', function(){
-  console.log("here");
+ipcRenderer.on('close-credentials', () =>{
+  //console.log("here");
   newWindow.close();
 })
