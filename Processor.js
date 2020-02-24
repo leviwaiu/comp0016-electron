@@ -1,40 +1,40 @@
 const fs = require('fs');
 const Watson = require('./Watson');
 
-let ser_username = "";
-let ser_password = "";
+let service = null;
+let mainWindow = null;
+let totalFiles = 0;
 
-function processFile(event, service, filePaths, destPath, mainWindow){
+function setParameters(event, serviceInput, mainWindowInput){
+  service = serviceInput;
+  mainWindow = mainWindowInput;
+}
 
-  console.log("At ProcessFile" + filePaths);
-
-  //TODO: Implement handling of multiple files at this level
-
-
-  /**const ls = spawn("java",spawnString);
-
-  ls.stdout.on('data', (data) => {
-    mainWindow.webContents.send('log-data', data)
-  });
-
-  ls.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-    mainWindow.webContents.send('log-data', data)
-    if(data.includes("HTTP FAILED")){
-      ls.kill();
-    }
-  });
-
-  ls.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-    event.reply('analyse-finish');
-  });
-  **/
-
-  for(var i = 0; i<filePaths.length;i++){
-    Watson.callWatsonApi(true, [filePaths[i]], destPath, mainWindow, event);
+function processFile(event, filePaths, destPath){
+  if(service === null || mainWindow === null){
+    console.log("Unexpected Error");
+    return;
   }
+  console.log("At ProcessFile" + filePaths);
+  for(let i = 0; i < filePaths.length; i++) {
+    dealDirectory(event, filePaths[i], destPath);
+  }
+}
 
+function dealDirectory(event, filePath, destPath){
+  let fileStats = fs.statSync(filePath);
+
+  if(fileStats.isDirectory()){
+    let directoryContents = fs.readdirSync(filePath);
+    for(let i = 0; i < directoryContents.length; i++){
+      dealDirectory(event, directoryContents[i], destPath);
+    }
+  }
+  else if(fileStats.isFile()){
+    totalFiles++;
+    let lol = Watson.callWatsonApi([filePath], destPath, mainWindow, event);
+    console.log(lol);
+  }
 }
 
 function displayFile(filePath, mainWindow){
@@ -62,11 +62,6 @@ function displayFile(filePath, mainWindow){
   })
 }
 
-function changeCredentials(username, password){
-  ser_username = username;
-  ser_password = password;
-}
-
 module.exports.processFile = processFile
 module.exports.displayFile = displayFile
-module.exports.changeCredentials = changeCredentials
+module.exports.setParameters = setParameters

@@ -9,6 +9,7 @@ const apiKey = require('./apiKeys');
 let chosenUsername = ''
 let chosenPassword = ''
 let chosenApiKey = '';
+let useApi = true;
 //DEBUG ONLY
 chosenApiKey = apiKey.IBMKey;
 
@@ -24,23 +25,27 @@ let params = {
   wordConfidence: true,
 }
 
+function toggleUsePassword(){
+  useApi = !useApi;
+}
+
 function setParams (contentType, model) {
   params['contentType'] = contentType
   params['model'] = model
 }
 
 function setUserPass (username_input, password_input) {
-  chosenUsername = username_input
-  chosenPassword = password_input
+  chosenUsername = username_input;
+  chosenPassword = password_input;
 }
 
 function setApiKey (api_input) {
   chosenApiKey = api_input
 }
 
-async function callWatsonAPI (usesApi, process_files, destPath, mainWindow) {
+async function callWatsonAPI (process_files, destPath, mainWindow) {
 
-  if (!usesApi) {
+  if (!useApi) {
     speechToText = new SpeechToTextV1({
       authenticator: new IamAuthenticator({
         username: chosenUsername,
@@ -111,7 +116,6 @@ function processResult (event, documentPath, destPath) {
       timeBetween = (item['from'] - previousEnd).toFixed(2)
       previousSpeaker = item['speaker']
     }
-
     let writeString = item['from'] + ',' + item['to'] + ',' + item['speaker'] + ',' + timeBetween + ',' + item['confidence'] + '\n'
     previousEnd = item['to']
     stream.write(writeString)

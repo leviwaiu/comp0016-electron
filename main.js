@@ -44,13 +44,21 @@ function createWindow(){
 
     ipcMain.on('login-form-submission', (event, username, password) => {
 
-        firebase.auth().signInWithEmailAndPassword(username,password).then(function(){
+        //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
+        // if(username === "admin" && password === "1234") {
+        //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        // } else {
+        //     mainWindow.webContents.send('login-error');
+        // }
+
+        //firebase.auth().signInWithEmailAndPassword(username,password).then(function(){
+
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        }).catch(function(error){
-            if(error != null){
-                mainWindow.webContents.send('login-error', error.message, error.code);
-            }
-        })
+        //}).catch(function(error){
+        //    if(error != null){
+        //        mainWindow.webContents.send('login-error', error.message, error.code);
+        //    }
+        //})
     })
 
     ipcMain.on('signup-submission', (event, username, password) => {
@@ -61,13 +69,6 @@ function createWindow(){
                 mainWindow.webContents.send('login-error', error.message, error.code);
             }
     })
-
-        //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
-        // if(username === "admin" && password === "1234") {
-        //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        // } else {
-        //     mainWindow.webContents.send('login-error');
-        // }
     });
 
     ipcMain.on('analyse-form-submission', (event, service, files, destPath) =>{
@@ -95,7 +96,8 @@ function createWindow(){
             buttons:['OK']})
             return;
         }
-        Processor.processFile(event, "1", files, destPath, mainWindow);
+        Processor.setParameters(event, "1", mainWindow);
+        Processor.processFile(event, files, destPath);
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
     })

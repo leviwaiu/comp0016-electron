@@ -21,3 +21,7 @@ ipcRenderer.on('login-error', function(event, details, title){
     document.getElementById('login-fail-details').innerText = details;
     document.getElementById('login-fail').classList.remove('invisible');
 })
+
+document.getElementById('test-button').addEventListener('click', function(){
+    ipcRenderer.send('debug-test-watson-npm');
+})

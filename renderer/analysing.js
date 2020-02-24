@@ -4,7 +4,8 @@ const continue_button = document.getElementById('continue-button');
 const log_field = document.getElementById('log-card');
 const progress_bar = document.getElementById("progress-bar");
 const log_button = document.getElementById('log-button');
-progress_bar.style.width = "10%";
+let progress = 0;
+progress_bar.style.width = progress.toString() + "%";
 
 let log_opened = false;
 
@@ -25,10 +26,12 @@ ipcRenderer.on('log-data', (event, data) => {
   document.getElementById('log-output').innerText += data;
 });
 
-
+ipcRenderer.on('update-bar', (event, increment) => {
+  progress += increment;
+  progress_bar.style.width = progress.toString() + "%";
+})
 
 ipcRenderer.on('analyse-finish', () => {
-  console.log("recieved")
   continue_button.classList.remove("invisible");
 })
 
