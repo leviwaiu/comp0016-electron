@@ -1,10 +1,8 @@
 'use strict'
 
 const {ipcRenderer} = require('electron');
-const path = require('path');
 const {dialog, BrowserWindow} = require('electron').remote;
-const fs = require('fs')
-var files = [];
+let files = [];
 
 
 

@@ -1,7 +1,6 @@
 'use strict'
 
 const {ipcRenderer} = require('electron');
-const path = require('path');
 const {dialog, BrowserWindow} = require('electron').remote;
 let file;
 let newWindow;
@@ -64,18 +63,7 @@ document.getElementById("logout-button").addEventListener('click', (evt) => {
 })
 document.getElementById('credentials-button').addEventListener('click', (evt) =>{
   evt.preventDefault();
-  newWindow = new BrowserWindow( {
-    height:300,
-    width:500,
-    show:false,
-    webPreferences: {
-      nodeIntegration: true
-    }
-  });
-  newWindow.loadFile(path.join('renderer', 'credentials.html'))
-  newWindow.once('ready-to-show', ()=> {
-    newWindow.show();
-  })
+  ipcRenderer.send('open-credentials');
 })
 ipcRenderer.on('close-credentials', () =>{
   //console.log("here");

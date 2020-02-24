@@ -2,8 +2,6 @@
 
 const {ipcRenderer} = require('electron');
 const {dialog, BrowserWindow} = require('electron').remote;
-const fileUrl = require('file-url');
-const path = require('path');
 
 let fileSaved = false;
 

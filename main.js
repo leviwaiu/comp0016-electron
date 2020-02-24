@@ -135,6 +135,14 @@ function createWindow(){
         }
     })
 
+    ipcMain.on('open-credentials', () => {
+        let newWindow = new Window( {
+            file: path.join('renderer', 'credentials.html'),
+            height:400,
+            width:500,
+        });
+    })
+
     ipcMain.on('credentials-change', (event, username, password) => {
         Processor.changeCredentials(username, password);
         // console.log("there");
