@@ -1,7 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+         <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-analytics.js"></script>
+    
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
@@ -28,9 +34,7 @@
             <tbody id="table-content"></tbody>
         </table>
     </div>
-    <button id="save-button" class="btn btn-secondary">Save File...</button>
-    <button id="delete-button" class="btn btn-secondary">Delete File...</button>
-    <button id="return-button" class="btn btn-primary">Return to Menu </button>
+    <button id="return-button" class="btn btn-primary">Back </button>
 </div>
 <!-- You can also require other files to run in this process -->
 <script src="../renderer.js"></script>

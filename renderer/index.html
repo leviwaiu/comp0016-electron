@@ -12,20 +12,22 @@
     <link rel="stylesheet" type="text/css" href="../render_css/index.css">
   </head>
   <body>
-    <div class="container">
-    <h1 id="title" class="text-center">Welcome</h1>
-    <form id="login-form" class="form-group">
-      <label for="username">Username: <input type="text" id="username" class="form-control" placeholder="Username"></label>
-      <label for="password">Password: <input type="password" id="password" class="form-control" placeholder="Password"></label>
-      <button class="btn btn-primary">Login</button>
-    </form>
+    <div class='container'>
+      <h1 id="title" class="text-center">Welcome</h1>
+    <div id='login-form' class='form-group'>
+      <label for="username">Username:<input type="text" id="username" class="form-control" placeholder="Username"></label>
+      <label for="password">Password:<input type="password" id="password" class="form-control" placeholder="Password"></label>
+        <button class="btn btn-primary" id="login">Login</button>
+        <button class="btn btn-secondary" id="signup">Signup</button>
+    </div>
     <div class="card text-white bg-danger mb-3 invisible" id="login-fail">
       <div class="card-body">
-        <h5 class="card-title">Bad Login</h5>
-        <p class="card-text">The username/password combination is invalid.</p>
+        <h5 class="card-title" id="login-fail-title">Bad Login</h5>
+        <p class="card-text" id="login-fail-details">The username/password combination is invalid.</p>
       </div>
     </div>
-      <button class="btn btn-warning invisible" id="test-button">Test</button>
+    <!-- Debug only -->
+    <!--button class="btn btn-warning" id="test-button">Test Only</button -->
     <div class="version">
     We are using Node.js <span id="node-version"></span>,
     Chromium <span id="chrome-version"></span>,
