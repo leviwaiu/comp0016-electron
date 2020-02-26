@@ -5,9 +5,6 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
     <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
     <title>Transcription Service</title>
@@ -19,16 +16,7 @@
 
 <div class="container">
 	<div class="row">
-    <h2>Choose an option</h2><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Bootsnipp -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7749520983305929"
-     data-ad-slot="1217000491"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+    <h2>Choose an option</h2>
         <div class="well text-center">
             <br><br><button type="button" class="btn btn-sunny text-uppercase" id="selection-delete"><a href="http://www.positiwitty.com/">Choose file(s) to delete</a></button>
             <button type="button" class="btn btn-hot text-uppercase" id="delete-files"><a href="http://www.positiwitty.com/">Delete file(s)</a></button>
@@ -42,6 +30,30 @@
 
         </div>
 	</div>
+</div>
+<div class="container1">
+  <div class="row">
+    <div class="col-12">
+      <table id="myTable" class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">File name</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr>
+            <td>
+              <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+              <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+            </td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>
     <!-- You can also require other files to run in this process -->
     <script src="../renderer.js"></script>

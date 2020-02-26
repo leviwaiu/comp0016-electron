@@ -21,6 +21,7 @@ const error_options = {
 }
 
 
+
 function createWindow(){
     let mainWindow = new Window({
         file: path.join('renderer', 'index.html')
@@ -126,6 +127,31 @@ function createWindow(){
         mainWindow.webContents.send('files-delete-successful');
     })
 
+    ipcMain.on('deletecsv', (event, file, nb) => {
+        console.log(file);
+        if(fs.existsSync(file)){
+            fs.unlink(file,(err)=>{
+                if(err){
+                    mainWindow.webContents.send('file-delete-error');
+                    alert("An error occurred updating the file: " + err.message);
+                    console.log(err);
+                }
+            })
+        }
+        mainWindow.webContents.send('deleterow', nb);
+    })
+
+    ipcMain.on('viewcsv', (event,file) => {
+        mainWindow.loadFile(path.join('renderer', 'results.html'));
+        temp_displayed = file;
+        Processor.displayFile(file, mainWindow);
+    })
+
+    ipcMain.on('savecsv', (event, file) =>{
+        fs.createReadStream(file).pipe(fs.createWriteStream(file));
+        mainWindow.webContents.send('successful-save');
+    })
+
     //DEBUG ONLY
     ipcMain.on('debug-test-watson-npm', () => {
         Watson_Test.watson_Test();
@@ -135,3 +161,4 @@ function createWindow(){
 app.on('ready', function(){
     createWindow();
 });
+
