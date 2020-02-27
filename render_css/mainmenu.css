@@ -12,6 +12,9 @@
     grid-row:3;
 }
 
+.no-margin{
+    margin:0;
+}
 button{
     margin:5px;
 }

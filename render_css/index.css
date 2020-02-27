@@ -1,13 +1,13 @@
 
 .container{
-    grid-template-rows: 10% 1fr 1fr 10% !important;
+    grid-template-rows: 10% 1fr 10% !important;
 }
 
 #title{
     grid-column:2;
 }
 
-#login-form{
+#enter-form{
     display:flex;
     flex-direction:column;
     grid-column:2;

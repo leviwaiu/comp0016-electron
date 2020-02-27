@@ -57,6 +57,14 @@ document.getElementById('analyse-button').addEventListener('click', (evt) => {
   console.log(filePromise.filePaths);
   ipcRenderer.send('analyse-form-submission', service, filePromise.filePaths, saveDirPromise.filePaths[0]);
 })
+document.getElementById('show-api-key').addEventListener('click', ()=>{
+  let currentState = document.getElementById('api-key');
+  if(currentState.type === 'text'){
+    currentState.type = 'password';
+  } else {
+    currentState.type = 'text';
+  }
+})
 document.getElementById("logout-button").addEventListener('click', (evt) => {
   evt.preventDefault();
   ipcRenderer.send('logout');

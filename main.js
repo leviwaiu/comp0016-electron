@@ -42,23 +42,8 @@ function createWindow(){
         file: path.join('renderer', 'index.html')
     })
 
-    ipcMain.on('login-form-submission', (event, username, password) => {
-
-        //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
-        // if(username === "admin" && password === "1234") {
-        //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        // } else {
-        //     mainWindow.webContents.send('login-error');
-        // }
-
-        //firebase.auth().signInWithEmailAndPassword(username,password).then(function(){
-
+    ipcMain.on('enter-form-submission', (event) => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        //}).catch(function(error){
-        //    if(error != null){
-        //        mainWindow.webContents.send('login-error', error.message, error.code);
-        //    }
-        //})
     })
 
     ipcMain.on('signup-submission', (event, username, password) => {

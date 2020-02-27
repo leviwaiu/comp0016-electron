@@ -25,10 +25,6 @@ let params = {
   wordConfidence: true,
 }
 
-function toggleUsePassword(){
-  useApi = !useApi;
-}
-
 function setParams (contentType, model) {
   params['contentType'] = contentType
   params['model'] = model
