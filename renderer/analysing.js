@@ -28,6 +28,8 @@ ipcRenderer.on('log-data', (event, data) => {
 
 ipcRenderer.on('update-bar', (event, increment) => {
   progress += increment;
+  console.log("Gotten the update-bar");
+  console.log(progress.toString + "%");
   progress_bar.style.width = progress.toString() + "%";
 })
 

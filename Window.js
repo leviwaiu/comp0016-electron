@@ -13,7 +13,6 @@ const defaultProps = {
     },
     minWidth:550,
     minHeight:625
-
 };
 
 class Window extends BrowserWindow {

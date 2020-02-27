@@ -5,9 +5,24 @@ let service = null;
 let mainWindow = null;
 let totalFiles = 0;
 
-function setParameters(event, serviceInput, mainWindowInput){
+let login_options = null;
+
+function setParameters(serviceInput, mainWindowInput){
   service = serviceInput;
   mainWindow = mainWindowInput;
+}
+
+function changeCredentials(username, password){
+  login_options = {
+    username: username,
+    password: password,
+  }
+}
+
+function changeCredentialsApi(apiKey){
+  login_options = {
+    apiKey: apiKey,
+  }
 }
 
 function processFile(event, filePaths, destPath){
@@ -32,8 +47,7 @@ function dealDirectory(event, filePath, destPath){
   }
   else if(fileStats.isFile()){
     totalFiles++;
-    let lol = Watson.callWatsonApi([filePath], destPath, mainWindow, event);
-    console.log(lol);
+    Watson.callWatsonApi([filePath], destPath, mainWindow, event);
   }
 }
 
@@ -62,6 +76,8 @@ function displayFile(filePath, mainWindow){
   })
 }
 
-module.exports.processFile = processFile
-module.exports.displayFile = displayFile
-module.exports.setParameters = setParameters
+module.exports.processFile = processFile;
+module.exports.displayFile = displayFile;
+module.exports.setParameters = setParameters;
+module.exports.changeCredentials = changeCredentials;
+module.exports.changeCredentialsApi = changeCredentialsApi;

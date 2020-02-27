@@ -56,6 +56,8 @@ async function callWatsonAPI (process_files, destPath, mainWindow) {
         'X-Watson-Learning-Opt-Out': 'true',
       },
     })
+
+    mainWindow.webContents.send('log-data', "Initialising IBM Watson using Username and Password");
   } else {
     speechToText = new SpeechToTextV1({
       authenticator: new IamAuthenticator({
@@ -66,6 +68,8 @@ async function callWatsonAPI (process_files, destPath, mainWindow) {
         'X-Watson-Learning-Opt-Out': 'true',
       },
     })
+
+    mainWindow.webContents.send('log-data', "Initialising IBM Watson using API Keys");
   }
 
   let recogniseStream = speechToText.recognizeUsingWebSocket(params)
@@ -79,7 +83,6 @@ async function callWatsonAPI (process_files, destPath, mainWindow) {
     fs.createReadStream(process_files[i]).pipe(recogniseStream)
 
     recogniseStream.on('data', function (event) {
-      onEvent('Data:', event)
       processResult(event, process_files[i], destPath)
     })
     recogniseStream.on('error', function (event) {
@@ -89,6 +92,7 @@ async function callWatsonAPI (process_files, destPath, mainWindow) {
     recogniseStream.on('close', function (event) {
       onEvent('Close:', event);
       mainWindow.webContents.send('analyse-finish');
+      mainWindow.webContents.send('update-bar', Math.round(100));
     })
   }
 }
@@ -98,9 +102,6 @@ async function callWatsonAPI (process_files, destPath, mainWindow) {
 function processResult (event, documentPath, destPath) {
   const speakerLabels = event['speaker_labels'];
   const documentPathBase = path.basename(documentPath, "." + fileExtension[0]);
-  console.log(documentPathBase);
-  console.log(destPath);
-
 
   let stream = fs.createWriteStream(destPath + path.sep + documentPathBase + '.csv')
   let timeBetween = 0.00
@@ -111,7 +112,6 @@ function processResult (event, documentPath, destPath) {
 
   for (let i = 0; i < speakerLabels.length; i++) {
     const item = speakerLabels[i]
-    console.log(JSON.stringify(item))
     if (item['speaker'] !== previousSpeaker) {
       timeBetween = (item['from'] - previousEnd).toFixed(2)
       previousSpeaker = item['speaker']

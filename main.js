@@ -10,7 +10,7 @@ const Watson_Test = require('./WatsonTest');
 const apiKeys = require('./apiKeys');
 let temp_displayed;
 //Frontend Development Use Only
-require('electron-reload')(__dirname)
+//require('electron-reload')(__dirname)
 
 let firebase = require("firebase/app");
 require("firebase/auth");
@@ -96,10 +96,9 @@ function createWindow(){
             buttons:['OK']})
             return;
         }
-        Processor.setParameters(event, "1", mainWindow);
-        Processor.processFile(event, files, destPath);
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
-
+        Processor.setParameters("1", mainWindow);
+        Processor.processFile(event, files, destPath);
     })
 
     ipcMain.on('logout', () => {
@@ -111,7 +110,7 @@ function createWindow(){
         temp_displayed = file[0];
         Processor.displayFile(file[0], mainWindow);
     })
-    ipcMain.on('analyse-continue', async () => {
+    ipcMain.on('analyse-continue', () => {
         mainWindow.loadFile(path.join('renderer', 'intermediate.html'));
     })
 
@@ -145,8 +144,11 @@ function createWindow(){
 
     ipcMain.on('credentials-change', (event, username, password) => {
         Processor.changeCredentials(username, password);
-        // console.log("there");
-        mainWindow.webContents.send('close-credentials');
+    })
+
+    ipcMain.on('credentials-change-apikey', (event, apiKey) => {
+        Processor.changeCredentialsApi(apiKey);
+        event.sender.send('window-close');
     })
 
     ipcMain.on('credential-dontchange', () =>{
@@ -195,9 +197,6 @@ function createWindow(){
         Watson_Test.watson_Test();
     })
 
-    ipcMain.on('debug-test-azure-npm', () => {
-        AzureTest();
-    })
 }
 
 app.on('ready', function(){
