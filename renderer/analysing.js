@@ -25,7 +25,9 @@ ipcRenderer.on('log-data', (event, data) => {
   document.getElementById('log-output').innerText += data;
 });
 
-
+document.getElementById("Cancel").addEventListener('click', function () {
+  ipcRenderer.send("analyse-cancel")
+})
 
 ipcRenderer.on('analyse-finish', () => {
   console.log("recieved")
