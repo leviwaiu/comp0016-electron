@@ -46,17 +46,7 @@ function createWindow(){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
 
-    ipcMain.on('signup-submission', (event, username, password) => {
-        firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(error){
-            if(error != null){
-                console.log(error.code);
-                console.log(error.message);
-                mainWindow.webContents.send('login-error', error.message, error.code);
-            }
-    })
-    });
-
-    ipcMain.on('analyse-form-submission', (event, service, files, destPath) =>{
+    ipcMain.on('analyse-form-submission', (event, service, files, destPath, apiKey) =>{
         console.log("Analyse button pressed");
         console.log(files);
         if(files === null){
@@ -82,6 +72,7 @@ function createWindow(){
             return;
         }
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
+        Processor.changeCredentialsApi(apiKey);
         Processor.setParameters("1", mainWindow);
         Processor.processFile(event, files, destPath);
     })

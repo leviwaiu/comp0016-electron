@@ -21,7 +21,7 @@ function changeCredentials(username, password){
 
 function changeCredentialsApi(apiKey){
   login_options = {
-    apiKey: apiKey,
+    apikey: apiKey,
   }
 }
 
@@ -47,7 +47,7 @@ function dealDirectory(event, filePath, destPath){
   }
   else if(fileStats.isFile()){
     totalFiles++;
-    Watson.callWatsonApi([filePath], destPath, mainWindow, event);
+    Watson.callWatsonApi([filePath], destPath, mainWindow, login_options);
   }
 }
 

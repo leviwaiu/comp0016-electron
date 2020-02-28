@@ -39,7 +39,7 @@ function setApiKey (api_input) {
   chosenApiKey = api_input
 }
 
-async function callWatsonAPI (process_files, destPath, mainWindow) {
+async function callWatsonAPI (process_files, destPath, mainWindow, login_options) {
 
   if (!useApi) {
     speechToText = new SpeechToTextV1({
@@ -67,6 +67,15 @@ async function callWatsonAPI (process_files, destPath, mainWindow) {
 
     mainWindow.webContents.send('log-data', "Initialising IBM Watson using API Keys");
   }
+
+
+  speechToText = new SpeechToTextV1({
+    authenticator: new IamAuthenticator({...login_options}),
+    url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
+    headers: {
+    'X-Watson-Learning-Opt-Out': 'true',
+  },
+  })
 
   let recogniseStream = speechToText.recognizeUsingWebSocket(params)
 
