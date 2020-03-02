@@ -1,11 +1,13 @@
 const fs = require('fs');
 const Watson = require('./Watson');
+const FileHandler = require('./FileHandler');
 
 let service = null;
 let mainWindow = null;
 let totalFiles = 0;
 
 let login_options = null;
+let destPath_store = null;
 
 function setParameters(serviceInput, mainWindowInput){
   service = serviceInput;
@@ -26,23 +28,24 @@ function changeCredentialsApi(apiKey){
 }
 
 function processFile(event, filePaths, destPath){
+  destPath_store = destPath;
   if(service === null || mainWindow === null){
     console.log("Unexpected Error");
     return;
   }
   console.log("At ProcessFile" + filePaths);
   for(let i = 0; i < filePaths.length; i++) {
-    dealDirectory(event, filePaths[i], destPath);
+    handleDirectory(event, filePaths[i], destPath);
   }
 }
 
-function dealDirectory(event, filePath, destPath){
+function handleDirectory(event, filePath, destPath){
   let fileStats = fs.statSync(filePath);
 
   if(fileStats.isDirectory()){
     let directoryContents = fs.readdirSync(filePath);
     for(let i = 0; i < directoryContents.length; i++){
-      dealDirectory(event, directoryContents[i], destPath);
+      handleDirectory(event, directoryContents[i], destPath);
     }
   }
   else if(fileStats.isFile()){
@@ -51,7 +54,15 @@ function dealDirectory(event, filePath, destPath){
   }
 }
 
+function displayDirectory(){
+  let fileTree = FileHandler.readDir(destPath_store);
+  console.log(FileHandler.readDir(destPath_store));
+
+  mainWindow.webContents.send('init-dir', fileTree, destPath_store);
+}
+
 function displayFile(filePath, mainWindow){
+
   fs.readFile(filePath, {encoding:'utf-8'}, function(err, data){
     let data_list;
     let final_html = "";
@@ -77,6 +88,7 @@ function displayFile(filePath, mainWindow){
 }
 
 module.exports.processFile = processFile;
+module.exports.displayDirectory = displayDirectory;
 module.exports.displayFile = displayFile;
 module.exports.setParameters = setParameters;
 module.exports.changeCredentials = changeCredentials;

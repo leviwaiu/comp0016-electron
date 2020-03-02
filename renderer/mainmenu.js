@@ -63,8 +63,10 @@ document.getElementById('show-api-key').addEventListener('click', ()=>{
   let currentState = document.getElementById('api-key');
   if(currentState.type === 'text'){
     currentState.type = 'password';
+    currentState.innerText = 'Show';
   } else {
     currentState.type = 'text';
+    currentState.innerText = 'Hide';
   }
 })
 

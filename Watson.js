@@ -6,10 +6,7 @@ const path = require('path')
 const FileType = require('file-type');
 const apiKey = require('./apiKeys');
 
-let chosenUsername = ''
-let chosenPassword = ''
 let chosenApiKey = '';
-let useApi = true;
 //DEBUG ONLY
 chosenApiKey = apiKey.IBMKey;
 
@@ -25,49 +22,8 @@ let params = {
   wordConfidence: true,
 }
 
-function setParams (contentType, model) {
-  params['contentType'] = contentType
-  params['model'] = model
-}
-
-function setUserPass (username_input, password_input) {
-  chosenUsername = username_input;
-  chosenPassword = password_input;
-}
-
-function setApiKey (api_input) {
-  chosenApiKey = api_input
-}
 
 async function callWatsonAPI (process_files, destPath, mainWindow, login_options) {
-
-  if (!useApi) {
-    speechToText = new SpeechToTextV1({
-      authenticator: new IamAuthenticator({
-        username: chosenUsername,
-        password: chosenPassword
-      }),
-      url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
-      headers: {
-        'X-Watson-Learning-Opt-Out': 'true',
-      },
-    })
-
-    mainWindow.webContents.send('log-data', "Initialising IBM Watson using Username and Password");
-  } else {
-    speechToText = new SpeechToTextV1({
-      authenticator: new IamAuthenticator({
-        apikey: chosenApiKey,
-      }),
-      url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
-      headers: {
-        'X-Watson-Learning-Opt-Out': 'true',
-      },
-    })
-
-    mainWindow.webContents.send('log-data', "Initialising IBM Watson using API Keys");
-  }
-
 
   speechToText = new SpeechToTextV1({
     authenticator: new IamAuthenticator({...login_options}),
@@ -77,6 +33,7 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
   },
   })
 
+  mainWindow.webContents.send('log-data', "Initialising IBM Watson");
   let recogniseStream = speechToText.recognizeUsingWebSocket(params)
 
   for (let i = 0; i < process_files.length; i++) {

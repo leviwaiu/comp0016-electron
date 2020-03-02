@@ -8,6 +8,7 @@ const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
 const apiKeys = require('./apiKeys');
+
 let temp_displayed;
 //Frontend Development Use Only
 //require('electron-reload')(__dirname)
@@ -73,9 +74,13 @@ function createWindow(){
             return;
         }
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
-        Processor.changeCredentialsApi(apiKey);
-        Processor.setParameters("1", mainWindow);
-        Processor.processFile(event, files, destPath);
+
+        mainWindow.webContents.on('did-finish-load', ()=>{
+            Processor.changeCredentialsApi(apiKey);
+            Processor.setParameters("1", mainWindow);
+            Processor.processFile(event, files, destPath);
+            mainWindow.show();
+        })
     })
 
     ipcMain.on('logout', () => {
@@ -88,14 +93,17 @@ function createWindow(){
         Processor.displayFile(file[0], mainWindow);
     })
     ipcMain.on('analyse-continue', () => {
-        mainWindow.loadFile(path.join('renderer', 'intermediate.html'));
+        mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+        mainWindow.webContents.on('did-finish-load', () =>{
+            Processor.displayDirectory();
+        });
     })
 
     ipcMain.on('return-to-login', () => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
     ipcMain.on('return-to-intermediate', ()=>{
-        mainWindow.loadFile(path.join('renderer', 'intermediate.html'));
+        mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
     })
 
     ipcMain.on('save-file', () => {

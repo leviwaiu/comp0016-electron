@@ -1,0 +1,14 @@
+#file-tree{
+    min-height:100%;
+}
+
+#button-group{
+    grid-row:3;
+}
+.dir-display{
+    padding-inline-start:40px;
+}
+
+ul {
+    list-style-type:none;
+}
