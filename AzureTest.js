@@ -9,7 +9,7 @@ function AzureTest(){
   const apiKey = require('./apiKeys');
 
   var settings = {
-    subscriptionKey: apiKey.AzureKey,
+    subscriptionKey: "",
     serviceRegion: "uksouth",
     language: "en-US",
 

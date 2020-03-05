@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <title>Transcription Service</title>
+    <!-- <link rel="stylesheet" type="text/css" href="../render_css/default.css"> -->
+    <link rel="stylesheet" type="text/css" href="../render_css/default.css">
+    <link rel="stylesheet" type="text/css" href="../render_css/fileExplorer.css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table id="fileTable" class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">File name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- <tr>
+                  <td>
+                    <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                    <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                  </td>
+                </tr> -->
+                </tbody>
+            </table>
+        </div>
+        <div id="button-group">
+            <button id="return-button" class="btn btn-primary">Return to Menu</button>
+        </div>
+    </div>
+</div>
+<!-- You can also require other files to run in this process -->
+<script src="../renderer.js"></script>
+<script src="multiple-file-table.js"></script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

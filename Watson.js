@@ -4,14 +4,11 @@ const { IamAuthenticator } = require('ibm-watson/auth')
 const fs = require('fs')
 const path = require('path')
 const FileType = require('file-type');
-const apiKey = require('./apiKeys');
 
 let chosenApiKey = '';
-//DEBUG ONLY
-chosenApiKey = apiKey.IBMKey;
 
 let speechToText = null;
-let fileExtension = [];
+let fileExtension = null;
 
 let params = {
   objectMode: true,
@@ -36,16 +33,14 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
   mainWindow.webContents.send('log-data', "Initialising IBM Watson");
   let recogniseStream = speechToText.recognizeUsingWebSocket(params)
 
-  for (let i = 0; i < process_files.length; i++) {
+    fileExtension = (await FileType.fromFile(process_files))["ext"];
 
-    fileExtension[i] = (await FileType.fromFile(process_files[i]))["ext"];
+    params["contentType"] = "audio/" + fileExtension;
 
-    params["contentType"] = "audio/" + fileExtension[i];
-
-    fs.createReadStream(process_files[i]).pipe(recogniseStream)
+    fs.createReadStream(process_files).pipe(recogniseStream)
 
     recogniseStream.on('data', function (event) {
-      processResult(event, process_files[i], destPath)
+      processResult(event, process_files, destPath)
     })
     recogniseStream.on('error', function (event) {
       onEvent('Error:', event);
@@ -56,14 +51,12 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
       mainWindow.webContents.send('analyse-finish');
       mainWindow.webContents.send('update-bar', Math.round(100));
     })
-  }
 }
-
 
 
 function processResult (event, documentPath, destPath) {
   const speakerLabels = event['speaker_labels'];
-  const documentPathBase = path.basename(documentPath, "." + fileExtension[0]);
+  const documentPathBase = path.basename(documentPath, "." + fileExtension);
 
   let stream = fs.createWriteStream(destPath + path.sep + documentPathBase + '.csv')
   let timeBetween = 0.00

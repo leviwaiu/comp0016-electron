@@ -7,28 +7,13 @@ const fs = require('fs');
 const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
-const apiKeys = require('./apiKeys');
 
 let temp_displayed;
+
 //Frontend Development Use Only
 //require('electron-reload')(__dirname)
 
-let firebase = require("firebase/app");
 require("firebase/auth");
-
-let firebaseConfig = {
-    apiKey: apiKeys.FirebaseKey,
-    authDomain: "electron-26478.firebaseapp.com",
-    databaseURL: "https://electron-26478.firebaseio.com",
-    projectId: "electron-26478",
-    storageBucket: "electron-26478.appspot.com",
-    messagingSenderId: "745584394714",
-    appId: "1:745584394714:web:d8ad3134ebc3cfd919c0e3",
-    measurementId: "G-Z81RE8P952"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
 
 const error_options = {
     type:"error",
@@ -37,7 +22,6 @@ const error_options = {
     detail:"A file has not been selected for analysis",
     buttons:['OK']
 }
-
 
 function createWindow(){
     let mainWindow = new Window({
@@ -73,6 +57,14 @@ function createWindow(){
             buttons:['OK']})
             return;
         }
+        if(apiKey === ""){
+            dialog.showMessageBox(null, {type:"warning",
+            title:"No API Key entered",
+            message:"API Key not given",
+            detail:"We would require an API Key in order to continue",
+            buttons:['OK']})
+            return;
+        }
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
         mainWindow.webContents.on('did-finish-load', ()=>{
@@ -90,20 +82,45 @@ function createWindow(){
     ipcMain.on('displays-file', (event, file)=>{
         mainWindow.loadFile(path.join('renderer', 'results.html'));
         temp_displayed = file[0];
-        Processor.displayFile(file[0], mainWindow);
+        Processor.displayFile(file[0]);
     })
     ipcMain.on('analyse-continue', () => {
-        mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
-        mainWindow.webContents.on('did-finish-load', () =>{
-            Processor.displayDirectory();
-        });
+        let fileType = Processor.returnInputType();
+        if(fileType === 3) {
+            mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+            mainWindow.webContents.on('did-finish-load', () =>{
+                Processor.displayDirectory();
+            });
+        }
+        else if(fileType === 2){
+            mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
+            mainWindow.webContents.on('did-finish-load', ()=>{
+                Processor.displayFileList();
+            })
+        }
+        else if(fileType === 1){
+            mainWindow.loadFile(path.join('renderer', 'results.html'));
+            mainWindow.webContents.on('did-finish-load', () => {
+                Processor.displayFileSingle();
+            })
+        }
+
     })
 
     ipcMain.on('return-to-login', () => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
-    ipcMain.on('return-to-intermediate', ()=>{
-        mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+    ipcMain.on('return-button-result', ()=>{
+        let fileType = Processor.returnInputType();
+        if(fileType === 3) {
+            mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+        }
+        else if(fileType === 2){
+            mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
+        }
+        else if(fileType === 3){
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        }
     })
 
     ipcMain.on('save-file', () => {
@@ -194,7 +211,7 @@ function createWindow(){
     ipcMain.on('viewcsv', (event,file) => {
         mainWindow.loadFile(path.join('renderer', 'results.html'));
         temp_displayed = file;
-        Processor.displayFile(file, mainWindow);
+        Processor.displayFile(file);
     })
 
     ipcMain.on('savecsv', (event, file) =>{
