@@ -19,6 +19,14 @@ let params = {
   wordConfidence: true,
 }
 
+function setOptions(newParams){
+  Object.keys(newParams).forEach(function(key){
+    if(params.containsKey(key)){
+      params[key] = newParams[key];
+    }
+  })
+}
+
 
 async function callWatsonAPI (process_files, destPath, mainWindow, login_options) {
 

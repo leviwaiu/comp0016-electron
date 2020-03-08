@@ -12,7 +12,7 @@ document.getElementById("return-button").addEventListener("click", async(evt) =>
 });
 
 document.getElementById('delete-button').addEventListener('click', () => {
-  ipcRenderer.send('delete-temp-file');
+  ipcRenderer.send('delete-file');
 })
 
 

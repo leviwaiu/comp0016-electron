@@ -104,7 +104,6 @@ function createWindow(){
                 Processor.displayFileSingle();
             })
         }
-
     })
 
     ipcMain.on('return-to-login', () => {
@@ -144,23 +143,13 @@ function createWindow(){
         });
     })
 
-    ipcMain.on('credentials-change', (event, username, password) => {
+    ipcMain.on('options-change', (event, username, password) => {
         Processor.changeCredentials(username, password);
     })
 
-    ipcMain.on('credentials-change-apikey', (event, apiKey) => {
-        Processor.changeCredentialsApi(apiKey);
-        event.sender.send('window-close');
-    })
-
-    ipcMain.on('credential-dontchange', () =>{
+    ipcMain.on('options-dontchange', () =>{
         mainWindow.webContents.send('close-credentials');
     })
-
-    ipcMain.on('close-signup',(event, username, password) =>{
-        mainWindow.webContents.send('close-signup-window');
-    })
-
 
     ipcMain.on('delete-temp-file', () => {
         const tempFile = temp_displayed;
@@ -229,4 +218,3 @@ function createWindow(){
 app.on('ready', function(){
     createWindow();
 });
-
