@@ -3,6 +3,8 @@
 const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs');
+const EventEmitter = require('events').EventEmitter;
+const ev = new EventEmitter();
 
 const Window = require('./Window');
 const Processor = require('./Processor');
@@ -107,6 +109,11 @@ function createWindow(){
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
     })
+
+  ipcMain.on('analyse-cancel', () => {
+    mainWindow.loadFile(path.join('renderer', 'mainMenu.html'))
+    ev.emit('stop')
+  })
 
     ipcMain.on('logout', () => {
         mainWindow.loadFile(path.join('renderer', 'index.html'));

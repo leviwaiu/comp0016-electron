@@ -1,19 +1,22 @@
 const SpeechToTextV1 = require('ibm-watson/speech-to-text/v1')
 const { IamAuthenticator } = require('ibm-watson/auth')
+const EventEmitter = require('events').EventEmitter
 
 const fs = require('fs')
 const path = require('path')
 const FileType = require('file-type');
-const apiKey = require('./apiKeys');
+//const apiKey = require('./apiKeys');
 
 let chosenUsername = ''
 let chosenPassword = ''
-let chosenApiKey = '';
+let chosenApiKey = 'pz6sflnk2XzlNhBhSATXgw5COcXLumkQ5g5pt5rmSjGY';
 //DEBUG ONLY
-chosenApiKey = apiKey.IBMKey;
+//chosenApiKey = apiKey.IBMKey;
 
 let speechToText = null;
 let fileExtension = [];
+
+var event = new EventEmitter();
 
 let params = {
   objectMode: true,
@@ -84,6 +87,10 @@ async function callWatsonAPI (usesApi, process_files, destPath, mainWindow) {
     recogniseStream.on('close', function (event) {
       onEvent('Close:', event);
       mainWindow.webContents.send('analyse-finish');
+    })
+    event.on('stop', () =>{
+      concole.log('stop')
+      recogniseStream.stop()
     })
   }
 }
