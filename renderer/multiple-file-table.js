@@ -57,7 +57,6 @@ function configTable(filteredArray) {
       evt.preventDefault();
       ipcRenderer.send('savecsv', filteredArray[b - 1]);
     })
-
     var deleteid = 'deleteid' + b;
     document.getElementById(deleteid).addEventListener('click', async (evt) => {
       evt.preventDefault();
@@ -71,4 +70,3 @@ function configTable(filteredArray) {
 ipcRenderer.on('deleterow', function (event, nb) {
   document.getElementById('myTable').deleteRow(nb - 1);
 })
-

@@ -57,7 +57,6 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
     recogniseStream.on('close', function (event) {
       onEvent('Close:', event);
       mainWindow.webContents.send('analyse-finish');
-      mainWindow.webContents.send('update-bar', Math.round(100));
     })
 }
 

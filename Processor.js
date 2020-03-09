@@ -65,7 +65,8 @@ function handleDirectory(event, filePath, destPath){
     (async () => {
       let fileType = (await FileType.fromFile(filePath))["ext"];
       if(fileType === "wav" || fileType === "ogg" || fileType === "mp3" || fileType === "flac") {
-        processedLocation.push(path.join(destPath, path.basename(filePath, "." + inputType) + ".csv"));
+        processedLocation.push(path.join(destPath, path.basename(filePath, "." + fileType) + ".csv"));
+        console.log(processedLocation);
         await Watson.callWatsonApi(filePath, destPath, mainWindow, login_options);
       }
     })();

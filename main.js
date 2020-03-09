@@ -67,10 +67,17 @@ function createWindow(){
         }
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
+
+        //Hacky way to ensure this runs only once
+        let runned = false;
+
         mainWindow.webContents.on('did-finish-load', ()=>{
             Processor.changeCredentialsApi(apiKey);
             Processor.setParameters("1", mainWindow);
-            Processor.processFile(event, files, destPath);
+            if(!runned) {
+                Processor.processFile(event, files, destPath);
+                runned = true;
+            }
             mainWindow.show();
         })
     })
