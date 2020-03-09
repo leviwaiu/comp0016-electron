@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase-app.js"></script>
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-grid.min.css">
@@ -41,6 +40,14 @@
             </div>
         </div>
         <br>
+        <label class="w-100" for="api-key">Input API Key:
+            <div class="input-group">
+                <input type="password" id="api-key" class="form-control">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary no-margin" type="button" id="show-api-key">Show</button>
+                </div>
+            </div>
+        </label>
         <div class="bottom-button w-100">
             <button class="btn btn-outline-warning" id="logout-button">Log Out</button>
             <button class="btn btn-outline-secondary" id="credentials-button">Edit Credentials</button>

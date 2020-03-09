@@ -1,43 +1,97 @@
 const fs = require('fs');
 const Watson = require('./Watson');
+const FileHandler = require('./FileHandler');
+const FileType = require('file-type');
+const path = require('path');
 
-let ser_username = "";
-let ser_password = "";
+let service = null;
+let mainWindow = null;
+let processedLocation = [];
 
-function processFile(event, service, filePaths, destPath, mainWindow){
+let login_options = null;
+let destPath_store = null;
+let inputType = 1; //1 = Single File, 2 = Multiple Files, 3 = Directory
 
+function setParameters(serviceInput, mainWindowInput){
+  service = serviceInput;
+  mainWindow = mainWindowInput;
+}
+
+function changeCredentials(username, password){
+  login_options = {
+    username: username,
+    password: password,
+  }
+}
+
+function changeCredentialsApi(apiKey){
+  login_options = {
+    apikey: apiKey,
+  }
+}
+
+function returnInputType(){
+  return inputType;
+}
+
+function processFile(event, filePaths, destPath){
+  destPath_store = destPath;
+  if(service === null || mainWindow === null){
+    console.log("Unexpected Error");
+    return;
+  }
   console.log("At ProcessFile" + filePaths);
 
-  //TODO: Implement handling of multiple files at this level
-
-
-  /**const ls = spawn("java",spawnString);
-
-  ls.stdout.on('data', (data) => {
-    mainWindow.webContents.send('log-data', data)
-  });
-
-  ls.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-    mainWindow.webContents.send('log-data', data)
-    if(data.includes("HTTP FAILED")){
-      ls.kill();
-    }
-  });
-
-  ls.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-    event.reply('analyse-finish');
-  });
-  **/
-
-  for(var i = 0; i<filePaths.length;i++){
-    Watson.callWatsonApi(true, [filePaths[i]], destPath, mainWindow, event);
+  if(filePaths.length > 1 ){
+    inputType = 2;
   }
+
+  for(let i = 0; i < filePaths.length; i++) {
+    handleDirectory(event, filePaths[i], destPath);
+  }
+}
+
+function handleDirectory(event, filePath, destPath){
+  let fileStats = fs.statSync(filePath);
+
+  if(fileStats.isDirectory()){
+    inputType = 3;
+    let directoryContents = fs.readdirSync(filePath);
+    for(let i = 0; i < directoryContents.length; i++){
+      handleDirectory(event, path.join(filePath, directoryContents[i]), destPath);
+    }
+  }
+  else if(fileStats.isFile()){
+    (async () => {
+      let fileType = (await FileType.fromFile(filePath))["ext"];
+      if(fileType === "wav" || fileType === "ogg" || fileType === "mp3" || fileType === "flac") {
+        processedLocation.push(path.join(destPath, path.basename(filePath, "." + inputType) + ".csv"));
+        await Watson.callWatsonApi(filePath, destPath, mainWindow, login_options);
+      }
+    })();
+  }
+}
+
+
+function displayDirectory(){
+  let fileTree = FileHandler.readDir(destPath_store);
+  console.log(FileHandler.readDir(destPath_store));
+
+  let currentLevel = [];
+  renderTreeFile(currentLevel, fileTree)
+
+  mainWindow.webContents.send('init-dir', fileTree, destPath_store);
+}
+
+function renderTreeFile(currentLevel, fileTree){
 
 }
 
-function displayFile(filePath, mainWindow){
+function displayFileSingle(){
+  displayFile(processedLocation[0]);
+}
+
+function displayFile(filePath){
   fs.readFile(filePath, {encoding:'utf-8'}, function(err, data){
     let data_list;
     let final_html = "";
@@ -52,21 +106,41 @@ function displayFile(filePath, mainWindow){
         }
         final_html += "</tr>\n";
       }
-      mainWindow.webContents.on('did-finish-load', ()=> {
-        mainWindow.webContents.send('display-data', final_html);
-        console.log("sent");
-      });
+      mainWindow.webContents.send('display-data', final_html);
+      console.log("sent");
     } else {
       console.log(err)
     }
   })
 }
 
-function changeCredentials(username, password){
-  ser_username = username;
-  ser_password = password;
+function displayFileList(){
+
+  let files1 = null;
+  let filteredArray = [];
+
+  try {
+    files1 = fs.readdirSync(destPath_store);
+    let textToSearch = '.csv';
+    filteredArray = files1.filter((str) => {
+      return str.toLowerCase().indexOf(textToSearch.toLowerCase()) >= 0;
+    });
+    console.log(filteredArray);
+    console.log(filteredArray[0]);
+  } catch (err) {
+    // An error occurred
+    console.error(err);
+  }
+
+  mainWindow.webContents.send('get-all-csv', filteredArray);
 }
 
-module.exports.processFile = processFile
-module.exports.displayFile = displayFile
-module.exports.changeCredentials = changeCredentials
+module.exports.processFile = processFile;
+module.exports.displayDirectory = displayDirectory;
+module.exports.displayFile = displayFile;
+module.exports.setParameters = setParameters;
+module.exports.changeCredentials = changeCredentials;
+module.exports.changeCredentialsApi = changeCredentialsApi;
+module.exports.displayFileSingle = displayFileSingle;
+module.exports.returnInputType = returnInputType;
+module.exports.displayFileList = displayFileList;
