@@ -54,13 +54,27 @@ document.getElementById('destination-button').addEventListener("click", async (e
 document.getElementById('analyse-button').addEventListener('click', (evt) => {
   evt.preventDefault();
   const service = document.getElementById('service-select').value;
+  const apiKey = document.getElementById('api-key').value;
   console.log(filePromise.filePaths);
-  ipcRenderer.send('analyse-form-submission', service, filePromise.filePaths, saveDirPromise.filePaths[0]);
+  ipcRenderer.send('analyse-form-submission', service, filePromise.filePaths, saveDirPromise.filePaths[0], apiKey);
 })
+
+document.getElementById('show-api-key').addEventListener('click', ()=>{
+  let currentState = document.getElementById('api-key');
+  if(currentState.type === 'text'){
+    currentState.type = 'password';
+    currentState.innerText = 'Show';
+  } else {
+    currentState.type = 'text';
+    currentState.innerText = 'Hide';
+  }
+})
+
 document.getElementById("logout-button").addEventListener('click', (evt) => {
   evt.preventDefault();
   ipcRenderer.send('logout');
 })
+
 document.getElementById('credentials-button').addEventListener('click', (evt) =>{
   evt.preventDefault();
   ipcRenderer.send('open-credentials');

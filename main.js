@@ -7,27 +7,13 @@ const fs = require('fs');
 const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
-const apiKeys = require('./apiKeys');
+
 let temp_displayed;
+
 //Frontend Development Use Only
-require('electron-reload')(__dirname)
+//require('electron-reload')(__dirname)
 
-let firebase = require("firebase/app");
 require("firebase/auth");
-
-let firebaseConfig = {
-    apiKey: apiKeys.FirebaseKey,
-    authDomain: "electron-26478.firebaseapp.com",
-    databaseURL: "https://electron-26478.firebaseio.com",
-    projectId: "electron-26478",
-    storageBucket: "electron-26478.appspot.com",
-    messagingSenderId: "745584394714",
-    appId: "1:745584394714:web:d8ad3134ebc3cfd919c0e3",
-    measurementId: "G-Z81RE8P952"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-
 
 const error_options = {
     type:"error",
@@ -42,36 +28,11 @@ function createWindow(){
         file: path.join('renderer', 'index.html')
     })
 
-    ipcMain.on('login-form-submission', (event, username, password) => {
-
-        //     //TEMPORARY LOGIN CONTROL FOR PROOF OF CONCEPT
-        // if(username === "admin" && password === "1234") {
-        //     mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        // } else {
-        //     mainWindow.webContents.send('login-error');
-        // }
-
-        //firebase.auth().signInWithEmailAndPassword(username,password).then(function(){
-
+    ipcMain.on('enter-form-submission', (event) => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        //}).catch(function(error){
-        //    if(error != null){
-        //        mainWindow.webContents.send('login-error', error.message, error.code);
-        //    }
-        //})
     })
 
-    ipcMain.on('signup-submission', (event, username, password) => {
-        firebase.auth().createUserWithEmailAndPassword(username, password).catch(function(error){
-            if(error != null){
-                console.log(error.code);
-                console.log(error.message);
-                mainWindow.webContents.send('login-error', error.message, error.code);
-            }
-    })
-    });
-
-    ipcMain.on('analyse-form-submission', (event, service, files, destPath) =>{
+    ipcMain.on('analyse-form-submission', (event, service, files, destPath, apiKey) =>{
         console.log("Analyse button pressed");
         console.log(files);
         if(files === null){
@@ -96,10 +57,22 @@ function createWindow(){
             buttons:['OK']})
             return;
         }
-        Processor.setParameters(event, "1", mainWindow);
-        Processor.processFile(event, files, destPath);
+        if(apiKey === ""){
+            dialog.showMessageBox(null, {type:"warning",
+            title:"No API Key entered",
+            message:"API Key not given",
+            detail:"We would require an API Key in order to continue",
+            buttons:['OK']})
+            return;
+        }
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
+        mainWindow.webContents.on('did-finish-load', ()=>{
+            Processor.changeCredentialsApi(apiKey);
+            Processor.setParameters("1", mainWindow);
+            Processor.processFile(event, files, destPath);
+            mainWindow.show();
+        })
     })
 
     ipcMain.on('logout', () => {
@@ -109,17 +82,44 @@ function createWindow(){
     ipcMain.on('displays-file', (event, file)=>{
         mainWindow.loadFile(path.join('renderer', 'results.html'));
         temp_displayed = file[0];
-        Processor.displayFile(file[0], mainWindow);
+        Processor.displayFile(file[0]);
     })
-    ipcMain.on('analyse-continue', async () => {
-        mainWindow.loadFile(path.join('renderer', 'intermediate.html'));
+    ipcMain.on('analyse-continue', () => {
+        let fileType = Processor.returnInputType();
+        if(fileType === 3) {
+            mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+            mainWindow.webContents.on('did-finish-load', () =>{
+                Processor.displayDirectory();
+            });
+        }
+        else if(fileType === 2){
+            mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
+            mainWindow.webContents.on('did-finish-load', ()=>{
+                Processor.displayFileList();
+            })
+        }
+        else if(fileType === 1){
+            mainWindow.loadFile(path.join('renderer', 'results.html'));
+            mainWindow.webContents.on('did-finish-load', () => {
+                Processor.displayFileSingle();
+            })
+        }
     })
 
     ipcMain.on('return-to-login', () => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
-    ipcMain.on('return-to-intermediate', ()=>{
-        mainWindow.loadFile(path.join('renderer', 'intermediate.html'));
+    ipcMain.on('return-button-result', ()=>{
+        let fileType = Processor.returnInputType();
+        if(fileType === 3) {
+            mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+        }
+        else if(fileType === 2){
+            mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
+        }
+        else if(fileType === 3){
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        }
     })
 
     ipcMain.on('save-file', () => {
@@ -143,20 +143,13 @@ function createWindow(){
         });
     })
 
-    ipcMain.on('credentials-change', (event, username, password) => {
+    ipcMain.on('options-change', (event, username, password) => {
         Processor.changeCredentials(username, password);
-        // console.log("there");
+    })
+
+    ipcMain.on('options-dontchange', () =>{
         mainWindow.webContents.send('close-credentials');
     })
-
-    ipcMain.on('credential-dontchange', () =>{
-        mainWindow.webContents.send('close-credentials');
-    })
-
-    ipcMain.on('close-signup',(event, username, password) =>{
-        mainWindow.webContents.send('close-signup-window');
-    })
-
 
     ipcMain.on('delete-temp-file', () => {
         const tempFile = temp_displayed;
@@ -190,14 +183,36 @@ function createWindow(){
         mainWindow.webContents.send('files-delete-successful');
     })
 
+    ipcMain.on('deletecsv', (event, file, nb) => {
+        console.log(file);
+        if(fs.existsSync(file)){
+            fs.unlink(file,(err)=>{
+                if(err){
+                    mainWindow.webContents.send('file-delete-error');
+                    alert("An error occurred updating the file: " + err.message);
+                    console.log(err);
+                }
+            })
+        }
+        mainWindow.webContents.send('deleterow', nb);
+    })
+
+    ipcMain.on('viewcsv', (event,file) => {
+        mainWindow.loadFile(path.join('renderer', 'results.html'));
+        temp_displayed = file;
+        Processor.displayFile(file);
+    })
+
+    ipcMain.on('savecsv', (event, file) =>{
+        fs.createReadStream(file).pipe(fs.createWriteStream(file));
+        mainWindow.webContents.send('successful-save');
+    })
+
     //DEBUG ONLY
     ipcMain.on('debug-test-watson-npm', () => {
         Watson_Test.watson_Test();
     })
 
-    ipcMain.on('debug-test-azure-npm', () => {
-        AzureTest();
-    })
 }
 
 app.on('ready', function(){

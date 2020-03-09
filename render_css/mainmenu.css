@@ -11,17 +11,17 @@
     grid-column:2;
     grid-row:3;
 }
-
+.no-margin{
+    margin:0;
+}
 button{
     margin:5px;
 }
-
 #analyse-form {
     margin: 10px 10px 10px 10px;
     grid-column:2;
     grid-row:2;
 }
-
 .bottom-button{
     height:50px;
 }

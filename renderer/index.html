@@ -14,17 +14,8 @@
   <body>
     <div class='container'>
       <h1 id="title" class="text-center">Welcome</h1>
-    <div id='login-form' class='form-group'>
-      <label for="username">Username:<input type="text" id="username" class="form-control" placeholder="Username"></label>
-      <label for="password">Password:<input type="password" id="password" class="form-control" placeholder="Password"></label>
-        <button class="btn btn-primary" id="login">Login</button>
-        <button class="btn btn-secondary" id="signup">Signup</button>
-    </div>
-    <div class="card text-white bg-danger mb-3 invisible" id="login-fail">
-      <div class="card-body">
-        <h5 class="card-title" id="login-fail-title">Bad Login</h5>
-        <p class="card-text" id="login-fail-details">The username/password combination is invalid.</p>
-      </div>
+    <div id='enter-form'>
+        <button class="btn btn-primary" id="enter">Login</button>
     </div>
     <!-- Debug only -->
     <!--button class="btn btn-warning" id="test-button">Test Only</button -->
@@ -36,6 +27,6 @@
     </div>
     <!-- You can also require other files to run in this process -->
     <script src="../renderer.js"></script>
-    <script src="loginform.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>
