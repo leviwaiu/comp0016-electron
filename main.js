@@ -7,6 +7,8 @@ const fs = require('fs');
 const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
+var common = require('./Emitter')
+var commonEmitter = common.commonEmitter
 
 let temp_displayed;
 
@@ -112,6 +114,11 @@ function createWindow(){
                 Processor.displayFileSingle();
             })
         }
+    })
+
+    ipcMain.on('analyse-cancel', () => {
+        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'))
+        commonEmitter.emit('stop')
     })
 
     ipcMain.on('return-to-login', () => {

@@ -40,3 +40,7 @@ ipcRenderer.on('analyse-finish', () => {
 continue_button.addEventListener('click', () => {
   ipcRenderer.send('analyse-continue')
 })
+
+document.getElementById("Cancel").addEventListener('click', function () {
+  ipcRenderer.send("analyse-cancel")
+})
