@@ -72,11 +72,19 @@ function handleDirectory(event, filePath, destPath){
   }
 }
 
+
 function displayDirectory(){
   let fileTree = FileHandler.readDir(destPath_store);
   console.log(FileHandler.readDir(destPath_store));
 
+  let currentLevel = [];
+  renderTreeFile(currentLevel, fileTree)
+
   mainWindow.webContents.send('init-dir', fileTree, destPath_store);
+}
+
+function renderTreeFile(currentLevel, fileTree){
+
 }
 
 function displayFileSingle(){
@@ -84,7 +92,6 @@ function displayFileSingle(){
 }
 
 function displayFile(filePath){
-
   fs.readFile(filePath, {encoding:'utf-8'}, function(err, data){
     let data_list;
     let final_html = "";

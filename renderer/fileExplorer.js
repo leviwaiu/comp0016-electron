@@ -12,15 +12,16 @@ let fileTree_html = document.getElementById('file-tree');
 ipcRenderer.on('init-dir', function(event, fileTree, destPath){
   fileTreeLocal = fileTree;
   fileTree_html.innerHTML =
-    "&#x25BA;<a data-toggle='collapse' href='#file-first-div' data-parent='#file-tree' aria-expanded='true'>"+ destPath +
-    "</a><div id='file-first-div' class='collapse show dir-display' data-parent='#file-tree'></div>"
+    "&#x25BA;" +
+    "<a data-toggle='collapse' href='#file-first-div' data-parent='#file-tree' aria-expanded='true'>"+
+    destPath +
+    "</a><div id='file-first-div' class='collapse show dir-display' data-parent='#file-tree'>" +
+    "</div>"
+
   let first_level = document.getElementById('file-first-div');
   let currentLevel = [];
   renderFileTree(currentLevel, first_level, fileTreeLocal);
-  let numbersOfDirs = document.getElementsByClassName('file-title');
-  for(let i = 0; i < numbersOfDirs.length; i++){
-    numbersOfDirs[i].addEventListener('click', (event)=>{renderMoreLevels(event)});
-  }
+  refresh_divs();
 })
 
 function renderFileTree(currentLevels, currentDiv ,fileTree){
@@ -40,14 +41,18 @@ function renderFileTree(currentLevels, currentDiv ,fileTree){
         currentDirectory += "-" + nextLevels[j];
       }
 
-      insertText += "<li>&#x25BA;<a data-toggle='collapse' class='collapsed file-title' href='#files"+ currentDirectory +"'>"+ path.basename(currentFile.path) +
-      "</a></li>";
-      insertText += "<div id='files"+ currentDirectory + "' class='collapse dir-display'></div>"
+      insertText +=
+        "<li>" +
+        "<a data-toggle='collapse' class='collapsed file-title' href='#files"+ currentDirectory +"'>"+
+        "&#x25BA;" + path.basename(currentFile.path) +
+        "</a>" +
+        "</li>";
+
+      insertText +=
+        "<div id='files"+ currentDirectory + "' class='collapse dir-display'>" +
+        "</div>"
+
       currentUl.innerHTML += insertText;
-      let nextLevelUl = document.getElementById("files" + currentDirectory);
-      if(currentLevels.length < 3) {
-        renderFileTree(nextLevels, nextLevelUl, currentFile.items);
-      }
     }
     else {
       insertText += "<li>" + path.basename(currentFile.path) + "</li>"
@@ -57,8 +62,39 @@ function renderFileTree(currentLevels, currentDiv ,fileTree){
 }
 
 function renderMoreLevels(event){
-  let id = event.target.href.split("#")[1];
-  let targetDiv = document.getElementById(id);
+    console.log(event.target.innerHTML);
+
+    let id = event.target.href.split("#")[1];
+    console.log(id);
+    let id_array = id.split("-");
+    let currentFileTreeLevel = fileTreeLocal;
+    id_array.shift()
+    for (let i = 0; i < id_array.length; i++) {
+      let index = id_array[i];
+      currentFileTreeLevel = currentFileTreeLevel[index].items
+      console.log(currentFileTreeLevel);
+    }
+
+    let targetDiv = document.getElementById(id);
+
+    if(targetDiv.innerHTML === ""){
+      renderFileTree(id_array, targetDiv, currentFileTreeLevel);
+      refresh_divs();
+    }
+
+  if(targetDiv.classList.contains("show")){
+    event.target.innerHTML = event.target.innerHTML.replace("▼", "►");
+  }
+  else{
+    event.target.innerHTML = event.target.innerHTML.replace("►", "▼");
+  }
+}
+
+function refresh_divs(){
+  let numbersOfDirs = document.getElementsByClassName('file-title');
+  for(let i = 0; i < numbersOfDirs.length; i++){
+    numbersOfDirs[i].addEventListener('click', (event)=>{renderMoreLevels(event)});
+  }
 }
 
 document.getElementById('return-button').addEventListener('click', (evt)=>{
