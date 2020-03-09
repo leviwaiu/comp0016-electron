@@ -115,7 +115,24 @@ function displayFile(filePath){
 }
 
 function displayFileList(){
-  mainWindow.webContents.send('get-all-csv', destPath_store);
+
+  let files1 = null;
+  let filteredArray = [];
+
+  try {
+    files1 = fs.readdirSync(destPath_store);
+    let textToSearch = '.csv';
+    filteredArray = files1.filter((str) => {
+      return str.toLowerCase().indexOf(textToSearch.toLowerCase()) >= 0;
+    });
+    console.log(filteredArray);
+    console.log(filteredArray[0]);
+  } catch (err) {
+    // An error occurred
+    console.error(err);
+  }
+
+  mainWindow.webContents.send('get-all-csv', filteredArray);
 }
 
 module.exports.processFile = processFile;
