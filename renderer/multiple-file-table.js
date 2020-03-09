@@ -28,12 +28,6 @@ function configTable(filteredArray) {
       btn0.setAttribute("id", viewIdVar);
       btn0.appendChild(document.createTextNode("View"));
 
-      let btn1 = document.createElement("BUTTON");
-      let saveIdVar = "saveid" + i;
-      btn1.setAttribute("class", "btn btn-success");
-      btn1.setAttribute("id", saveIdVar);
-      btn1.appendChild(document.createTextNode("Save"));
-
       let btn2 = document.createElement("BUTTON");
       let deleteIdVar = "deleteid" + i;
       btn2.setAttribute("class", "btn btn-danger");
@@ -47,17 +41,12 @@ function configTable(filteredArray) {
   }
 
   for (b = 0; b < filteredArray.length; b++) {
-    var viewid = 'viewid' + b;
+    let viewid = 'viewid' + b;
     document.getElementById(viewid).addEventListener('click', async (evt) => {
       evt.preventDefault();
       ipcRenderer.send('viewcsv', filteredArray[b - 1]);
     })
-    var saveid = 'saveid' + b;
-    document.getElementById(saveid).addEventListener('click', async (evt) => {
-      evt.preventDefault();
-      ipcRenderer.send('savecsv', filteredArray[b - 1]);
-    })
-    var deleteid = 'deleteid' + b;
+    let deleteid = 'deleteid' + b;
     document.getElementById(deleteid).addEventListener('click', async (evt) => {
       evt.preventDefault();
       console.log(b);

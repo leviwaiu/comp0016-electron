@@ -79,13 +79,8 @@ function displayDirectory(){
   console.log(FileHandler.readDir(destPath_store));
 
   let currentLevel = [];
-  renderTreeFile(currentLevel, fileTree)
 
-  mainWindow.webContents.send('init-dir', fileTree, destPath_store);
-}
-
-function renderTreeFile(currentLevel, fileTree){
-
+  mainWindow.webContents.send('init-dir', fileTree, destPath_store, processedLocation);
 }
 
 function displayFileSingle(){

@@ -8,7 +8,7 @@ ipcRenderer.on('display-data', function(event,store){
 })
 
 document.getElementById("return-button").addEventListener("click", async(evt) => {
-    ipcRenderer.send('return-button-results');
+    ipcRenderer.send('return-button-result');
 });
 
 document.getElementById('delete-button').addEventListener('click', () => {

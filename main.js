@@ -91,6 +91,7 @@ function createWindow(){
         temp_displayed = file[0];
         Processor.displayFile(file[0]);
     })
+
     ipcMain.on('analyse-continue', () => {
         let fileType = Processor.returnInputType();
         if(fileType === 3) {
@@ -207,19 +208,17 @@ function createWindow(){
     ipcMain.on('viewcsv', (event,file) => {
         mainWindow.loadFile(path.join('renderer', 'results.html'));
         temp_displayed = file;
-        Processor.displayFile(file);
+        mainWindow.webContents.on('did-finish-load', () => {
+            Processor.displayFile(file);
+        });
     })
 
-    ipcMain.on('savecsv', (event, file) =>{
-        fs.createReadStream(file).pipe(fs.createWriteStream(file));
-        mainWindow.webContents.send('successful-save');
-    })
+
 
     //DEBUG ONLY
     ipcMain.on('debug-test-watson-npm', () => {
         Watson_Test.watson_Test();
     })
-
 }
 
 app.on('ready', function(){
