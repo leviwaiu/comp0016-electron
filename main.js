@@ -1,5 +1,4 @@
 'use strict'
-
 const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -109,15 +108,16 @@ function createWindow(){
     ipcMain.on('return-to-login', () => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
-    ipcMain.on('return-button-result', ()=>{
+    ipcMain.on('return-button-results', (event)=>{
         let fileType = Processor.returnInputType();
+        console.log(fileType);
         if(fileType === 3) {
             mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
         }
         else if(fileType === 2){
             mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
         }
-        else if(fileType === 3){
+        else if(fileType === 1){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
         }
     })
@@ -151,10 +151,10 @@ function createWindow(){
         mainWindow.webContents.send('close-credentials');
     })
 
-    ipcMain.on('delete-temp-file', () => {
-        const tempFile = temp_displayed;
+    ipcMain.on('delete-temp-file', (event, file) => {
+        const tempFile = file;
         if(fs.existsSync(tempFile)){
-            fs.unlink(tempFile, (err) => {
+            fs.unlinkSync(tempFile, (err) => {
                 if(err){
                     mainWindow.webContents.send('file-delete-error');
                     alert("An error occurred updating the file: " + err.message);
@@ -163,7 +163,7 @@ function createWindow(){
             })
             mainWindow.webContents.send('file-delete-successful');
 
-            console.log('tempFile does not exist');
+            // console.log('tempFile does not exist');
         }
     })
 
