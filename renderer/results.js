@@ -2,17 +2,22 @@
 
 const {ipcRenderer} = require('electron');
 const {dialog, BrowserWindow} = require('electron').remote;
+let filepaths = []
 
-ipcRenderer.on('display-data', function(event,store){
+ipcRenderer.on('display-data', function(event, store, path){
   document.getElementById('table-content').innerHTML = store;
+  filepaths = path;
+  console.log(filepaths);
 })
 
 document.getElementById("return-button").addEventListener("click", async(evt) => {
+    evt.preventDefault();
     ipcRenderer.send('return-button-result');
 });
 
-document.getElementById('delete-button').addEventListener('click', () => {
-  ipcRenderer.send('delete-file');
+document.getElementById('delete-button').addEventListener('click', async(evt) => {
+  evt.preventDefault();
+  ipcRenderer.send('delete-temp-file', filepaths);
 })
 
 

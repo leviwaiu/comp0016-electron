@@ -112,7 +112,7 @@ function displayFile(filePath){
         }
         final_html += "</tr>\n";
       }
-      mainWindow.webContents.send('display-data', final_html);
+      mainWindow.webContents.send('display-data', final_html, filePath);
       console.log("sent");
     } else {
       console.log(err)
