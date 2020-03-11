@@ -67,6 +67,7 @@ function createWindow(){
             buttons:['OK']})
             return;
         }
+
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
 
@@ -124,6 +125,7 @@ function createWindow(){
     ipcMain.on('return-to-login', () => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
+
     ipcMain.on('return-button-result', ()=>{
         let fileType = Processor.returnInputType();
         if(fileType === 3) {
@@ -156,10 +158,16 @@ function createWindow(){
             height:400,
             width:500,
         });
+
+        newWindow.webContents.on('did-finish-load', () => {
+            let options = Processor.getOptions();
+            console.log(options);
+            newWindow.webContents.send('update-current-options', options);
+        })
     })
 
-    ipcMain.on('options-change', (event, username, password) => {
-        Processor.changeCredentials(username, password);
+    ipcMain.on('options-change', (event, results) => {
+        Processor.changeOptions(results);
     })
 
     ipcMain.on('options-dontchange', () =>{
@@ -219,7 +227,6 @@ function createWindow(){
             Processor.displayFile(file);
         });
     })
-
 
 
     //DEBUG ONLY

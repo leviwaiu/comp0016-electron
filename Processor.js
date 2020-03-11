@@ -3,6 +3,7 @@ const Watson = require('./Watson');
 const FileHandler = require('./FileHandler');
 const FileType = require('file-type');
 const path = require('path');
+const commonEmitter = require('./Emitter');
 
 let service = null;
 let mainWindow = null;
@@ -17,11 +18,12 @@ function setParameters(serviceInput, mainWindowInput){
   mainWindow = mainWindowInput;
 }
 
-function changeCredentials(username, password){
-  login_options = {
-    username: username,
-    password: password,
-  }
+function changeOptions(results){
+  Watson.setOptions(results);
+}
+
+function getOptions(){
+  return Watson.getOptions();
 }
 
 function changeCredentialsApi(apiKey){
@@ -35,6 +37,7 @@ function returnInputType(){
 }
 
 function processFile(event, filePaths, destPath){
+  processedLocation = [];
   destPath_store = destPath;
   if(service === null || mainWindow === null){
     console.log("Unexpected Error");
@@ -53,6 +56,14 @@ function processFile(event, filePaths, destPath){
 
 function handleDirectory(event, filePath, destPath){
   let fileStats = fs.statSync(filePath);
+  let completedFiles = 0;
+
+  commonEmitter.commonEmitter.on('oneFileDone',()=>{
+    completedFiles++;
+    let percentage = (completedFiles / processedLocation.length) * 100;
+    console.log(percentage);
+    mainWindow.webContents.send('update-bar', percentage);
+  });
 
   if(fileStats.isDirectory()){
     inputType = 3;
@@ -61,10 +72,11 @@ function handleDirectory(event, filePath, destPath){
       handleDirectory(event, path.join(filePath, directoryContents[i]), destPath);
     }
   }
-  else if(fileStats.isFile()){
+  else if(fileStats.isFile()) {
     (async () => {
       let fileType = (await FileType.fromFile(filePath))["ext"];
-      if(fileType === "wav" || fileType === "ogg" || fileType === "mp3" || fileType === "flac") {
+      console.log(fileType);
+      if (fileType === "wav" || fileType === "ogg" || fileType === "mp3" || fileType === "flac") {
         processedLocation.push(path.join(destPath, path.basename(filePath, "." + fileType) + ".csv"));
         console.log(processedLocation);
         await Watson.callWatsonApi(filePath, destPath, mainWindow, login_options);
@@ -77,8 +89,6 @@ function handleDirectory(event, filePath, destPath){
 function displayDirectory(){
   let fileTree = FileHandler.readDir(destPath_store);
   console.log(FileHandler.readDir(destPath_store));
-
-  let currentLevel = [];
 
   mainWindow.webContents.send('init-dir', fileTree, destPath_store, processedLocation);
 }
@@ -135,7 +145,8 @@ module.exports.processFile = processFile;
 module.exports.displayDirectory = displayDirectory;
 module.exports.displayFile = displayFile;
 module.exports.setParameters = setParameters;
-module.exports.changeCredentials = changeCredentials;
+module.exports.changeOptions = changeOptions;
+module.exports.getOptions = getOptions;
 module.exports.changeCredentialsApi = changeCredentialsApi;
 module.exports.displayFileSingle = displayFileSingle;
 module.exports.returnInputType = returnInputType;

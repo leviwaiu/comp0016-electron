@@ -12,7 +12,7 @@ const speechToText = new SpeechToTextV1 ({
   }
 });
 
-var params = {
+const params = {
   objectMode: true,
   contentType: 'audio/wav',
   model: 'en-GB_NarrowbandModel',
