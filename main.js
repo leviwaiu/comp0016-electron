@@ -15,8 +15,6 @@ let temp_displayed;
 //Frontend Development Use Only
 //require('electron-reload')(__dirname)
 
-require("firebase/auth");
-
 const error_options = {
     type:"error",
     title:"Missing file",
