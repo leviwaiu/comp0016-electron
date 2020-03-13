@@ -4,6 +4,7 @@ const FileHandler = require('./FileHandler');
 const FileType = require('file-type');
 const path = require('path');
 const commonEmitter = require('./Emitter');
+const Utilities = require('./Utilities');
 
 let service = null;
 let mainWindow = null;
@@ -11,7 +12,16 @@ let processedLocation = [];
 
 let login_options = null;
 let destPath_store = null;
+let filePaths_store = null;
 let inputType = 1; //1 = Single File, 2 = Multiple Files, 3 = Directory
+
+function removeFile(file){
+  processedLocation = Utilities.removeArray(processedLocation,file);
+}
+
+function getFileNumber(){
+  return processedLocation.length;
+}
 
 function setParameters(serviceInput, mainWindowInput){
   service = serviceInput;
@@ -32,13 +42,34 @@ function changeCredentialsApi(apiKey){
   }
 }
 
+function getSavedInput(){
+  return {
+    apiKey: login_options.apikey,
+    destPath: destPath_store,
+    filePath: filePaths_store,
+  }
+}
+
 function returnInputType(){
   return inputType;
 }
 
 function processFile(event, filePaths, destPath){
   processedLocation = [];
-  destPath_store = destPath;
+
+  if(destPath !== null) {
+    destPath_store = destPath;
+  }
+  else{
+    destPath = destPath_store;
+  }
+  if(filePaths !== null) {
+    filePaths_store = filePaths;
+  } else {
+    filePaths = filePaths_store;
+  }
+
+
   if(service === null || mainWindow === null){
     console.log("Unexpected Error");
     return;
@@ -50,13 +81,15 @@ function processFile(event, filePaths, destPath){
   }
 
   for(let i = 0; i < filePaths.length; i++) {
-    handleDirectory(event, filePaths[i], destPath);
+    let currentSubDir = [];
+    handleDirectory(event, filePaths[i], destPath, currentSubDir);
   }
 }
 
-function handleDirectory(event, filePath, destPath){
+function handleDirectory(event, filePath, destPath, currentSubDir){
   let fileStats = fs.statSync(filePath);
   let completedFiles = 0;
+
 
   commonEmitter.commonEmitter.on('oneFileDone',()=>{
     completedFiles++;
@@ -68,8 +101,10 @@ function handleDirectory(event, filePath, destPath){
   if(fileStats.isDirectory()){
     inputType = 3;
     let directoryContents = fs.readdirSync(filePath);
+    let newSubDir = currentSubDir;
+    newSubDir.push(path.basename(filePath));
     for(let i = 0; i < directoryContents.length; i++){
-      handleDirectory(event, path.join(filePath, directoryContents[i]), destPath);
+      handleDirectory(event, path.join(filePath, directoryContents[i]), destPath, newSubDir);
     }
   }
   else if(fileStats.isFile()) {
@@ -77,9 +112,13 @@ function handleDirectory(event, filePath, destPath){
       let fileType = (await FileType.fromFile(filePath))["ext"];
       console.log(fileType);
       if (fileType === "wav" || fileType === "ogg" || fileType === "mp3" || fileType === "flac") {
-        processedLocation.push(path.join(destPath, path.basename(filePath, "." + fileType) + ".csv"));
+        let currentBase = destPath;
+        for(let i = 1 ; i < currentSubDir.length; i++){
+          currentBase = currentBase.concat(path.sep, currentSubDir[i]);
+        }
+        processedLocation.push(path.join(currentBase, path.basename(filePath, "." + fileType) + ".csv"));
         console.log(processedLocation);
-        await Watson.callWatsonApi(filePath, destPath, mainWindow, login_options);
+        await Watson.callWatsonApi(filePath, destPath, mainWindow, login_options, currentSubDir);
       }
     })();
   }
@@ -138,7 +177,21 @@ function displayFileList(){
     console.error(err);
   }
 
-  mainWindow.webContents.send('get-all-csv', filteredArray);
+  mainWindow.webContents.send('get-all-csv',destPath_store, filteredArray);
+}
+
+
+
+function deleteAll(){
+  for(let i = 0; i < processedLocation.length; i++){
+    if(fs.existsSync(processedLocation[i])){
+      fs.unlinkSync(processedLocation[i]);
+    }
+    else {
+      mainWindow.webContents.send('file-delete-error', processedLocation[i]);
+    }
+  }
+
 }
 
 module.exports.processFile = processFile;
@@ -151,3 +204,7 @@ module.exports.changeCredentialsApi = changeCredentialsApi;
 module.exports.displayFileSingle = displayFileSingle;
 module.exports.returnInputType = returnInputType;
 module.exports.displayFileList = displayFileList;
+module.exports.removeFile = removeFile;
+module.exports.getFileNumber = getFileNumber;
+module.exports.getSavedInput = getSavedInput;
+module.exports.deleteAll = deleteAll;

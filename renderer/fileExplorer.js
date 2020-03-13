@@ -14,7 +14,7 @@ ipcRenderer.on('init-dir', function(event, fileTree, destPath, processedLocation
   fileTreeLocal = fileTree;
   fileTree_html.innerHTML =
     "<a data-toggle='collapse' href='#file-first-div' data-parent='#file-tree' aria-expanded='true'>"+
-    + "&#x25BA;" +  destPath +
+    "&#x25BA;" +  destPath +
     "</a><div id='file-first-div' class='collapse show dir-display' data-parent='#file-tree'>" +
     "</div>"
 
@@ -59,7 +59,9 @@ function renderFileTree(currentLevels, currentDiv ,fileTree, processedLocation){
         if (processedLocation[j] === currentFile.path) {
           insertText += "<li class='selectable-file'>" + path.basename(currentFile.path) +
             "<div class='d-none flex-row-reverse file-buttons'>" +
-            "<button class='btn btn-warning'>Delete</button>" +
+            "<button class='btn btn-warning delete-buttons' data-path='" +
+            currentFile.path
+            + "'>Delete</button>" +
             "<button class='btn btn-primary view-buttons' data-path='" +
             currentFile.path
             +"'>View</button></div>" +
@@ -122,6 +124,11 @@ function refresh_divs(){
   for(let i = 0; i < viewButtons.length; i++){
     viewButtons[i].addEventListener('click', (event) => {openFiles(event)});
   }
+
+  let deleteButtons = document.getElementsByClassName('delete-buttons');
+  for(let i = 0; i < deleteButtons.length; i++){
+    deleteButtons[i].addEventListener('click', (event) =>{deleteFiles(event)});
+  }
 }
 
 function toggleFileButtons(event){
@@ -146,27 +153,19 @@ function openFiles(event){
   ipcRenderer.send('viewcsv', idea.toString());
 }
 
+function deleteFiles(event){
+  event.stopPropagation();
+  let file = event.target.dataset.path;
+  ipcRenderer.send('delete-file', file.toString());
+}
+
 document.getElementById('return-button').addEventListener('click', (evt)=>{
     evt.preventDefault();
     ipcRenderer.send('return-to-login');
 })
 
-ipcRenderer.on('files-delete-successful', async function(){
-    await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-      type: "info",
-      title: "Delete Successful",
-      message: "The temporary file(s) has been deleted",
-      buttons:["OK"]
-    })
-  })
 
-ipcRenderer.on('file-delete-error', async function(){
-  await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-    type: "info",
-    title: "Delete Failed",
-    message: "Delete Failed",
-    detail: "Something went wrong when deleting the temporary form",
-    buttons:["OK"]
-  })
+
+document.getElementById('delete-all-button').addEventListener('click', () => {
+  ipcRenderer.send('delete-all');
 })
-

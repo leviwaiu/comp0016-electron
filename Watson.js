@@ -34,7 +34,7 @@ function getOptions(){
   return params;
 }
 
-async function callWatsonAPI (process_files, destPath, mainWindow, login_options) {
+async function callWatsonAPI (process_files, destPath, mainWindow, login_options, subDir) {
 
   speechToText = new SpeechToTextV1({
     authenticator: new IamAuthenticator({...login_options}),
@@ -55,13 +55,13 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
     fs.createReadStream(process_files).pipe(recogniseStream)
 
     recogniseStream.on('data', function (event) {
-      processResult(event, process_files, destPath);
+      processResult(event, process_files, destPath, subDir);
       mainWindow.webContents.send('log-data', "Transcription for file "+ process_files +" complete");
       commonEmitter.emit('oneFileDone');
     })
     recogniseStream.on('error', function (event) {
       onEvent('Error:', event);
-      mainWindow.webContents.send('log-data', JSON.stringify(event));
+      mainWindow.webContents.send('log-data', JSON.stringify(event.raw.data));
     })
     recogniseStream.on('close', function (event) {
       onEvent('Close:', event);
@@ -77,9 +77,18 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
 }
 
 
-function processResult (event, documentPath, destPath) {
+function processResult (event, documentPath, destPath, subDir) {
   const speakerLabels = event['speaker_labels'];
   const documentPathBase = path.basename(documentPath, "." + fileExtension);
+
+  if(!fs.existsSync(path.dirname(destPath))){
+    fs.mkdirSync(path.dirname(destPath))
+  }
+  let testDestPath = destPath;
+  for(let i = 1; i < subDir.length; i++){
+    testDestPath.concat(path.sep, subDir[i]);
+  }
+  console.log(testDestPath);
 
   let stream = fs.createWriteStream(destPath + path.sep + documentPathBase + '.csv')
   let timeBetween = 0.00
