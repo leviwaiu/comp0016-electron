@@ -1,32 +1,13 @@
 'use strict'
 
 const {ipcRenderer} = require('electron');
-const path = require('path');
-const {dialog, BrowserWindow} = require('electron').remote;
-const fs = require('fs')
 let i = 0;
-let a;
 let b;
-let files1;
-let filteredArray =[];
 
 ipcRenderer.on('get-all-csv', (event, filePath) => {
 configTable(filePath)});
 
-function configTable(filePath) {
-
-  try {
-    files1 = fs.readdirSync(filePath);
-    let textToSearch = '.csv';
-    filteredArray = files1.filter((str) => {
-      return str.toLowerCase().indexOf(textToSearch.toLowerCase()) >= 0;
-    });
-    console.log(filteredArray);
-    console.log(filteredArray[0]);
-  } catch (err) {
-    // An error occurred
-    console.error(err);
-  }
+function configTable(filteredArray) {
 
   while (i < filteredArray.length) {
     let tableRef = document.getElementById('fileTable').getElementsByTagName('tbody')[0];
@@ -35,14 +16,14 @@ function configTable(filePath) {
       let firstCell = newRow.insertCell(0);
       let firstText = document.createTextNode(i);
       firstCell.appendChild(firstText);
-
       let secondCell = newRow.insertCell(1);
       let secondText = document.createTextNode(filteredArray[i]);
       secondCell.appendChild(secondText);
-
       let thirdcell = newRow.insertCell(2);
+
       let btn0 = document.createElement("BUTTON");
       let viewIdVar = "viewid" + i;
+
       btn0.setAttribute("class", "btn btn-primary");
       btn0.setAttribute("id", viewIdVar);
       btn0.appendChild(document.createTextNode("View"));
@@ -76,7 +57,6 @@ function configTable(filePath) {
       evt.preventDefault();
       ipcRenderer.send('savecsv', filteredArray[b - 1]);
     })
-
     var deleteid = 'deleteid' + b;
     document.getElementById(deleteid).addEventListener('click', async (evt) => {
       evt.preventDefault();
@@ -90,4 +70,3 @@ function configTable(filePath) {
 ipcRenderer.on('deleterow', function (event, nb) {
   document.getElementById('myTable').deleteRow(nb - 1);
 })
-

@@ -2,3 +2,4 @@
 node_modules
 /.idea/workspace.xml
 /apiKeys.js
+testFolder/sample.csv

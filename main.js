@@ -6,6 +6,8 @@ const fs = require('fs');
 const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
+var common = require('./Emitter')
+var commonEmitter = common.commonEmitter
 
 let temp_displayed;
 
@@ -66,10 +68,17 @@ function createWindow(){
         }
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
+
+        //Hacky way to ensure this runs only once
+        let runned = false;
+
         mainWindow.webContents.on('did-finish-load', ()=>{
             Processor.changeCredentialsApi(apiKey);
             Processor.setParameters("1", mainWindow);
-            Processor.processFile(event, files, destPath);
+            if(!runned) {
+                Processor.processFile(event, files, destPath);
+                runned = true;
+            }
             mainWindow.show();
         })
     })
@@ -103,6 +112,11 @@ function createWindow(){
                 Processor.displayFileSingle();
             })
         }
+    })
+
+    ipcMain.on('analyse-cancel', () => {
+        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'))
+        commonEmitter.emit('stop')
     })
 
     ipcMain.on('return-to-login', () => {

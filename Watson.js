@@ -4,6 +4,8 @@ const { IamAuthenticator } = require('ibm-watson/auth')
 const fs = require('fs')
 const path = require('path')
 const FileType = require('file-type');
+var common = require('./Emitter')
+var commonEmitter = common.commonEmitter
 
 let chosenApiKey = '';
 
@@ -57,8 +59,14 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
     recogniseStream.on('close', function (event) {
       onEvent('Close:', event);
       mainWindow.webContents.send('analyse-finish');
-      mainWindow.webContents.send('update-bar', Math.round(100));
     })
+  commonEmitter.on('stop', () => {
+    console.log('stop')
+    recogniseStream.stop();
+    recogniseStream.end()
+    recogniseStream.removeAllListeners();
+    recogniseStream.destroy();
+  })
 }
 
 
