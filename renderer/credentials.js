@@ -2,43 +2,38 @@
 
 const {ipcRenderer} = require('electron');
 
-let isPasswordMode = false;
 
-const service_username = document.getElementById('service-username')
-const service_password = document.getElementById('service-password')
-
-document.getElementById('usernameButton').addEventListener('click',function(){
-  isPasswordMode = true;
-  document.getElementById('API').hidden = true
-  document.getElementById('apiKeyButton').disabled = false
-  document.getElementById('username').hidden = false
-  document.getElementById('usernameButton').disabled = true
-})
-
-document.getElementById('apiKeyButton').addEventListener('click',function(){
-  isPasswordMode = false;
-  document.getElementById('API').hidden = false
-  document.getElementById('apiKeyButton').disabled = true
-  document.getElementById('username').hidden = true
-  document.getElementById('usernameButton').disabled = false
-})
+//Setting Values are included below
+const model = document.getElementById('stt-model');
+const speakerLabels = document.getElementById('labelCheck');
+const timeStamps = document.getElementById('timeCheck');
+const confidence = document.getElementById('confidenceCheck');
 
 document.getElementById('cancel-button').addEventListener('click', function () {
   window.close()
 })
 
 document.getElementById('return-button').addEventListener('click', function () {
-  if(isPasswordMode) {
-    let username = service_username.value
-    let password = service_password.value
-    if (username === '') username = 'alighariani99@gmail.com'
-    if (password === '') password = 'abcdeabcde'
-    ipcRenderer.send('credentials-change', username, password)
-  } else {
-    let api = document.getElementById('apiKey').value;
-    ipcRenderer.send('credentials-change-apiKey', api);
+  let modelIndex = model.selectedIndex;
+  const results = {
+    model: model[modelIndex].value,
+    speakerLabels: speakerLabels.checked,
+    timestamps: timeStamps.checked,
+    wordConfidence: confidence.checked,
   }
+  ipcRenderer.send('options-change', results);
   window.close()
+})
+
+ipcRenderer.on('update-current-options', (event, options) => {
+  console.log(options.model);
+
+  model.value = options.model;
+
+  speakerLabels.checked = options.speakerLabels;
+  timeStamps.checked = options.timestamps;
+  confidence.checked = options.wordConfidence;
+
 })
 
 ipcRenderer.on('window-close', function() {

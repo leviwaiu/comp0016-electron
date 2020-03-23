@@ -23,7 +23,7 @@ log_button.addEventListener('click', ()=>{
 })
 
 ipcRenderer.on('log-data', (event, data) => {
-  document.getElementById('log-output').innerText += data;
+  document.getElementById('log-output').innerText += data + "\n";
 });
 
 ipcRenderer.on('update-bar', (event, increment) => {

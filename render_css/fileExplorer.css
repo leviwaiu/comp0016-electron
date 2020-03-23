@@ -17,3 +17,19 @@ a {
     color:black;
     text-decoration:none;
 }
+
+li {
+    color:gray;
+}
+.selectable-file{
+    color:darkblue;
+}
+
+.selectable-file:hover {
+    background-color:darkgray;
+    color:white;
+}
+
+.file-buttons {
+    padding: 10px;
+}

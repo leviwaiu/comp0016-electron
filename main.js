@@ -1,4 +1,5 @@
 'use strict'
+
 const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -6,15 +7,12 @@ const fs = require('fs');
 const Window = require('./Window');
 const Processor = require('./Processor');
 const Watson_Test = require('./WatsonTest');
-var common = require('./Emitter')
-var commonEmitter = common.commonEmitter
+const commonEmitter = require('./Emitter')
 
 let temp_displayed;
 
 //Frontend Development Use Only
 //require('electron-reload')(__dirname)
-
-require("firebase/auth");
 
 const error_options = {
     type:"error",
@@ -66,6 +64,7 @@ function createWindow(){
             buttons:['OK']})
             return;
         }
+
         mainWindow.loadFile(path.join('renderer', 'analysing.html'));
 
 
@@ -92,6 +91,7 @@ function createWindow(){
         temp_displayed = file[0];
         Processor.displayFile(file[0]);
     })
+
     ipcMain.on('analyse-continue', () => {
         let fileType = Processor.returnInputType();
         if(fileType === 3) {
@@ -115,39 +115,46 @@ function createWindow(){
     })
 
     ipcMain.on('analyse-cancel', () => {
-        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'))
-        commonEmitter.emit('stop')
+        commonEmitter.commonEmitter.emit('stop');
+        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        mainWindow.webContents.on('did-finish-load', () => {
+            let savedInput = Processor.getSavedInput();
+            mainWindow.webContents.send('restore-input', savedInput);
+        })
     })
 
     ipcMain.on('return-to-login', () => {
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+            mainWindow.webContents.on('did-finish-load', () => {
+                let savedInput = Processor.getSavedInput();
+                mainWindow.webContents.send('restore-input', savedInput);
+            });
     })
-    ipcMain.on('return-button-results', (event)=>{
+
+    ipcMain.on('return-button-result', ()=>{
         let fileType = Processor.returnInputType();
         console.log(fileType);
         if(fileType === 3) {
             mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+            mainWindow.webContents.on('did-finish-load', () =>{
+                Processor.displayDirectory();
+            });
         }
         else if(fileType === 2){
             mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
+            mainWindow.webContents.on('did-finish-load', ()=>{
+                Processor.displayFileList();
+            });
         }
         else if(fileType === 1){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+            mainWindow.webContents.on('did-finish-load', () => {
+                let savedInput = Processor.getSavedInput();
+                mainWindow.webContents.send('restore-input', savedInput);
+            });
         }
     })
 
-    ipcMain.on('save-file', () => {
-        fs.createReadStream(temp_displayed).pipe(fs.createWriteStream(temp_displayed));
-        mainWindow.webContents.send('successful-save');
-
-    })
-
-    ipcMain.on('save-files', (event, filename) => {
-        for(var i =0; i<filename.length;i++){
-        fs.createReadStream(filename[i]).pipe(fs.createWriteStream(filename[i]));
-        mainWindow.webContents.send('successful-save');
-        }
-    })
 
     ipcMain.on('open-credentials', () => {
         let newWindow = new Window( {
@@ -155,78 +162,113 @@ function createWindow(){
             height:400,
             width:500,
         });
+
+        newWindow.webContents.on('did-finish-load', () => {
+            let options = Processor.getOptions();
+            console.log(options);
+            newWindow.webContents.send('update-current-options', options);
+        })
     })
 
-    ipcMain.on('options-change', (event, username, password) => {
-        Processor.changeCredentials(username, password);
+    ipcMain.on('options-change', (event, results) => {
+        Processor.changeOptions(results);
     })
 
     ipcMain.on('options-dontchange', () =>{
         mainWindow.webContents.send('close-credentials');
     })
 
-    ipcMain.on('delete-temp-file', (event, file) => {
-        const tempFile = file;
-        if(fs.existsSync(tempFile)){
-            fs.unlinkSync(tempFile, (err) => {
-                if(err){
-                    mainWindow.webContents.send('file-delete-error');
-                    alert("An error occurred updating the file: " + err.message);
-                    console.log(err);
-                }
+    ipcMain.on('delete-file', (event, file, number) => {
+        console.log("Deleted File");
+        let confirmBox = dialog.showMessageBoxSync(null, {
+            type:"warning",
+            title:"Confirmation",
+            message:"Are you sure you want to delete this file?",
+            buttons:["No","Yes"]
+        })
+        if(confirmBox === 1) {
+            const tempFile = file;
+            if (fs.existsSync(tempFile)) {
+                fs.unlinkSync(tempFile);
+            }
+            dialog.showMessageBoxSync(null, {
+                type: "info",
+                title: "Delete Successful",
+                message: "The file has been deleted",
+                buttons:["OK"]
             })
-            mainWindow.webContents.send('file-delete-successful');
-
-            // console.log('tempFile does not exist');
+            let fileType = Processor.returnInputType();
+            if(fileType === 1) {
+                mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+                mainWindow.webContents.on('did-finish-load', () => {
+                    let savedInput = Processor.getSavedInput();
+                    mainWindow.webContents.send('restore-input', savedInput);
+                });
+            }
+            else if(fileType === 2){
+                let fileCount = Processor.getFileNumber();
+                if(fileCount > 1){
+                    mainWindow.webContents.send('delete-row', number)
+                } else {
+                    mainWindow.loadFile(path.join('renderer','mainmenu.html'));
+                    mainWindow.webContents.on('did-finish-load', () => {
+                        let savedInput = Processor.getSavedInput();
+                        mainWindow.webContents.send('restore-input', savedInput);
+                    });
+                }
+                Processor.removeFile(file);
+            }
+            else if(fileType === 3){
+                Processor.removeFile(file);
+                let fileCount = Processor.getFileNumber();
+                if(fileCount >= 1) {
+                    mainWindow.webContents.reload();
+                } else {
+                    mainWindow.loadFile(path.join('renderer','mainmenu.html'));
+                    mainWindow.webContents.on('did-finish-load', () => {
+                        let savedInput = Processor.getSavedInput();
+                        mainWindow.webContents.send('restore-input', savedInput);
+                    });
+                }
+            }
         }
     })
 
     ipcMain.on('deletion', (event, files) => {
         for(let i =0; i<files.length;i++){
             if(fs.existsSync(files[i])){
-                fs.unlink(files[i], (err) => {
-                    if(err){
-                        mainWindow.webContents.send('file-delete-error');
-                        alert("An error occurred updating the file: " + err.message);
-                        console.log(err);
-                    }
-                })
+                fs.unlinkSync(files[i]);
         }
             console.log('tempFile does not exist');
         }
         mainWindow.webContents.send('files-delete-successful');
     })
 
-    ipcMain.on('deletecsv', (event, file, nb) => {
-        console.log(file);
-        if(fs.existsSync(file)){
-            fs.unlink(file,(err)=>{
-                if(err){
-                    mainWindow.webContents.send('file-delete-error');
-                    alert("An error occurred updating the file: " + err.message);
-                    console.log(err);
-                }
-            })
-        }
-        mainWindow.webContents.send('deleterow', nb);
-    })
-
     ipcMain.on('viewcsv', (event,file) => {
         mainWindow.loadFile(path.join('renderer', 'results.html'));
         temp_displayed = file;
-        Processor.displayFile(file);
+        mainWindow.webContents.on('did-finish-load', () => {
+            Processor.displayFile(file);
+        });
     })
 
-    ipcMain.on('savecsv', (event, file) =>{
-        fs.createReadStream(file).pipe(fs.createWriteStream(file));
-        mainWindow.webContents.send('successful-save');
+    ipcMain.on('delete-all', () => {
+        let confirmBox = dialog.showMessageBoxSync(null, {
+            type:"warning",
+            title:"Confirmation (All Files)",
+            message:"Are you sure you want to delete all files?",
+            buttons:["No","Yes"]
+        })
+        if(confirmBox === 1) {
+            Processor.deleteAll();
+            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+        }
     })
 
     //DEBUG ONLY
     ipcMain.on('debug-test-watson-npm', () => {
         Watson_Test.watson_Test();
     })
-
 }
 
 app.on('ready', function(){

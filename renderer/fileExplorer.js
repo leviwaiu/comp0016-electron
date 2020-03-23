@@ -3,28 +3,28 @@ window.$ = window.jQuery = require('jquery');
 const {ipcRenderer} = require('electron');
 const {dialog, BrowserWindow} = require('electron').remote;
 
-const fs = require('fs');
 const path = require('path');
 
 let fileTreeLocal = null;
 let fileTree_html = document.getElementById('file-tree');
+let processedLocation
 
-ipcRenderer.on('init-dir', function(event, fileTree, destPath){
+ipcRenderer.on('init-dir', function(event, fileTree, destPath, processedLocationParam){
+  processedLocation = processedLocationParam;
   fileTreeLocal = fileTree;
   fileTree_html.innerHTML =
-    "&#x25BA;" +
     "<a data-toggle='collapse' href='#file-first-div' data-parent='#file-tree' aria-expanded='true'>"+
-    destPath +
+    "&#x25BA;" +  destPath +
     "</a><div id='file-first-div' class='collapse show dir-display' data-parent='#file-tree'>" +
     "</div>"
 
   let first_level = document.getElementById('file-first-div');
   let currentLevel = [];
-  renderFileTree(currentLevel, first_level, fileTreeLocal);
+  renderFileTree(currentLevel, first_level, fileTreeLocal, processedLocation);
   refresh_divs();
 })
 
-function renderFileTree(currentLevels, currentDiv ,fileTree){
+function renderFileTree(currentLevels, currentDiv ,fileTree, processedLocation){
 
   currentDiv.innerHTML += "<ul class='list-unstyled' id='ul-"+currentDiv.id+"'></ul>"
 
@@ -55,13 +55,30 @@ function renderFileTree(currentLevels, currentDiv ,fileTree){
       currentUl.innerHTML += insertText;
     }
     else {
-      insertText += "<li>" + path.basename(currentFile.path) + "</li>"
+      for(let j = 0; j < processedLocation.length; j++) {
+        if (processedLocation[j] === currentFile.path) {
+          insertText += "<li class='selectable-file'>" + path.basename(currentFile.path) +
+            "<div class='d-none flex-row-reverse file-buttons'>" +
+            "<button class='btn btn-warning delete-buttons' data-path='" +
+            currentFile.path
+            + "'>Delete</button>" +
+            "<button class='btn btn-primary view-buttons' data-path='" +
+            currentFile.path
+            +"'>View</button></div>" +
+            "</li>"
+          break;
+        }
+        else if(j === processedLocation.length - 1){
+          insertText += "<li>" + path.basename(currentFile.path) + "</li>"
+        }
+      }
       currentUl.innerHTML += insertText;
     }
   }
 }
 
 function renderMoreLevels(event){
+
     console.log(event.target.innerHTML);
 
     let id = event.target.href.split("#")[1];
@@ -78,7 +95,7 @@ function renderMoreLevels(event){
     let targetDiv = document.getElementById(id);
 
     if(targetDiv.innerHTML === ""){
-      renderFileTree(id_array, targetDiv, currentFileTreeLevel);
+      renderFileTree(id_array, targetDiv, currentFileTreeLevel, processedLocation);
       refresh_divs();
     }
 
@@ -88,13 +105,58 @@ function renderMoreLevels(event){
   else{
     event.target.innerHTML = event.target.innerHTML.replace("►", "▼");
   }
+
 }
 
 function refresh_divs(){
+
   let numbersOfDirs = document.getElementsByClassName('file-title');
   for(let i = 0; i < numbersOfDirs.length; i++){
     numbersOfDirs[i].addEventListener('click', (event)=>{renderMoreLevels(event)});
   }
+
+  let targetFiles = document.getElementsByClassName('selectable-file');
+  for(let i = 0; i < targetFiles.length; i++){
+    targetFiles[i].addEventListener('click', (event) =>{toggleFileButtons(event)});
+  }
+
+  let viewButtons = document.getElementsByClassName('view-buttons');
+  for(let i = 0; i < viewButtons.length; i++){
+    viewButtons[i].addEventListener('click', (event) => {openFiles(event)});
+  }
+
+  let deleteButtons = document.getElementsByClassName('delete-buttons');
+  for(let i = 0; i < deleteButtons.length; i++){
+    deleteButtons[i].addEventListener('click', (event) =>{deleteFiles(event)});
+  }
+}
+
+function toggleFileButtons(event){
+  let originalShow = document.getElementsByClassName('file-selected');
+  if(originalShow.length > 0) {
+    originalShow[0].getElementsByTagName('div')[0].classList.add('d-none');
+    originalShow[0].getElementsByTagName('div')[0].classList.remove('d-flex');
+    originalShow[0].classList.remove('file-selected');
+  }
+
+  let buttons = event.target.getElementsByTagName('div');
+  buttons[0].classList.remove('d-none');
+  buttons[0].classList.add('d-flex');
+  event.target.classList.add('file-selected');
+
+}
+
+function openFiles(event){
+  event.stopPropagation();
+  let idea = event.target.dataset.path;
+  console.log(idea);
+  ipcRenderer.send('viewcsv', idea.toString());
+}
+
+function deleteFiles(event){
+  event.stopPropagation();
+  let file = event.target.dataset.path;
+  ipcRenderer.send('delete-file', file.toString());
 }
 
 document.getElementById('return-button').addEventListener('click', (evt)=>{
@@ -102,26 +164,8 @@ document.getElementById('return-button').addEventListener('click', (evt)=>{
     ipcRenderer.send('return-to-login');
 })
 
-ipcRenderer.on('files-delete-successful', async function(){
-    await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-      type: "info",
-      title: "Delete Successful",
-      message: "The temporary file(s) has been deleted",
-      buttons:["OK"]
-    })
-  })
 
-ipcRenderer.on('deleterow', function(event, nb){
-  document.getElementById('myTable').deleteRow(nb-1);
-});
 
-ipcRenderer.on('file-delete-error', async function(){
-  await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-    type: "info",
-    title: "Delete Failed",
-    message: "Delete Failed",
-    detail: "Something went wrong when deleting the temporary form",
-    buttons:["OK"]
-  })
+document.getElementById('delete-all-button').addEventListener('click', () => {
+  ipcRenderer.send('delete-all');
 })
-

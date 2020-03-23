@@ -2,33 +2,24 @@
 
 const {ipcRenderer} = require('electron');
 const {dialog, BrowserWindow} = require('electron').remote;
-let filepaths = []
+let filepath = null;
 
 ipcRenderer.on('display-data', function(event, store, path){
   document.getElementById('table-content').innerHTML = store;
-  filepaths = path;
-  console.log(filepaths);
+  filepath = path;
+  console.log(filepath);
 })
 
 document.getElementById("return-button").addEventListener("click", async(evt) => {
     evt.preventDefault();
-    ipcRenderer.send('return-button-results');
+    ipcRenderer.send('return-button-result');
 });
 
 document.getElementById('delete-button').addEventListener('click', async(evt) => {
   evt.preventDefault();
-  ipcRenderer.send('delete-temp-file', filepaths);
+  ipcRenderer.send('delete-file', filepath);
 })
 
-
-ipcRenderer.on('file-delete-successful', async function(){
-  await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {
-    type: "info",
-    title: "Delete Successful",
-    message: "The temporary file has been deleted",
-    buttons:["OK"]
-  })
-})
 
 ipcRenderer.on('file-delete-error', async function(){
   await dialog.showMessageBox(BrowserWindow.getFocusedWindow(), {

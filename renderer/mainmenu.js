@@ -2,19 +2,20 @@
 
 const {ipcRenderer} = require('electron');
 const {dialog, BrowserWindow} = require('electron').remote;
-let file;
+let file = [];
+let saveDir;
 let newWindow;
 let types = [
   {name: 'Audio', extensions: ['m4a', 'flac', 'mp4', 'mp3', 'wav']},];
 
-let filePromise = [];
-let saveDirPromise;
 
 const fileShowField = document.getElementById('filename');
+const destShowField = document.getElementById('destination-show');
+const apiKeyField = document.getElementById('api-key');
 
 document.getElementById('file-select').addEventListener('click', async (evt) => {
   evt.preventDefault();
-  filePromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
+  let filePromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
     { title:"Choose File or Directory",
       filters:types,
       properties: ['openFile', 'multiSelections']});
@@ -22,41 +23,42 @@ document.getElementById('file-select').addEventListener('click', async (evt) => 
   if(filePromise === undefined){
     fileShowField.innerText = "No file or directory specified.";
   }
-  file = filePromise.filePaths[0];
+  file = filePromise.filePaths;
     if (filePromise.filePaths.length > 1) {
       fileShowField.innerText = "Multiple files selected.";
     } else {
-      fileShowField.innerText = file;
+      fileShowField.innerText = filePromise.filePaths[0];
     }
 })
 
 document.getElementById('directory-select').addEventListener("click", async(evt)=>{
   evt.preventDefault();
-  filePromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
+  let filePromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
     {title:"Choose Directory",
     properties:['openDirectory']});
+  file = filePromise.filePaths;
   if(filePromise === undefined){
      fileShowField.innerText = "No file or directory specified."
   } else {
-    document.getElementById('filename').innerText = filePromise.filePaths[0];
+    fileShowField.innerText = filePromise.filePaths[0];
   }
 });
 
 document.getElementById('destination-button').addEventListener("click", async (evt) => {
   evt.preventDefault();
-  saveDirPromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
+  let saveDirPromise = await dialog.showOpenDialog(BrowserWindow.getFocusedWindow(),
     { title:"Choose Directory",
               properties:['openDirectory']}
               );
-  document.getElementById('destination-show').innerText = saveDirPromise.filePaths[0];
+  saveDir = saveDirPromise.filePaths[0];
+  destShowField.innerText = saveDir;
 })
 
 document.getElementById('analyse-button').addEventListener('click', (evt) => {
   evt.preventDefault();
   const service = document.getElementById('service-select').value;
   const apiKey = document.getElementById('api-key').value;
-  console.log(filePromise.filePaths);
-  ipcRenderer.send('analyse-form-submission', service, filePromise.filePaths, saveDirPromise.filePaths[0], apiKey);
+  ipcRenderer.send('analyse-form-submission', service, file, saveDir, apiKey);
 })
 
 document.getElementById('show-api-key').addEventListener('click', ()=>{
@@ -82,4 +84,17 @@ document.getElementById('credentials-button').addEventListener('click', (evt) =>
 ipcRenderer.on('close-credentials', () =>{
   //console.log("here");
   newWindow.close();
+})
+
+ipcRenderer.on('restore-input', (event, savedInput) =>{
+  file = savedInput.filePath;
+  if(file.length > 1){
+    fileShowField.innerText = "Multiple Files Selected";
+  }
+  else{
+    fileShowField.innerText = file[0];
+  }
+  saveDir = savedInput.destPath;
+  destShowField.innerText = saveDir;
+  apiKeyField.value = savedInput.apiKey;
 })
