@@ -5,14 +5,14 @@ const path = require('path')
 
 const defaultProps = {
     width:550,
-    height:625,
+    height:675,
     show:false,
     webPreferences: {
         preload: path.join(__dirname, 'preload.js'),
         nodeIntegration: true
     },
     minWidth:550,
-    minHeight:625
+    minHeight:675
 };
 
 class Window extends BrowserWindow {
