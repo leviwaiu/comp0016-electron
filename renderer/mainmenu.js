@@ -56,9 +56,8 @@ document.getElementById('destination-button').addEventListener("click", async (e
 
 document.getElementById('analyse-button').addEventListener('click', (evt) => {
   evt.preventDefault();
-  const service = document.getElementById('service-select').value;
   const apiKey = document.getElementById('api-key').value;
-  ipcRenderer.send('analyse-form-submission', service, file, saveDir, apiKey);
+  ipcRenderer.send('analyse-form-submission', file, saveDir, apiKey);
 })
 
 document.getElementById('show-api-key').addEventListener('click', ()=>{

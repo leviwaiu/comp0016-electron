@@ -31,7 +31,7 @@ function createWindow(){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
 
-    ipcMain.on('analyse-form-submission', (event, service, files, destPath, apiKey) =>{
+    ipcMain.on('analyse-form-submission', (event, files, destPath, apiKey) =>{
         console.log("Analyse button pressed");
         console.log(files);
         if(files === null){
@@ -46,14 +46,6 @@ function createWindow(){
                 detail:"A destination path has not been specified",
                 buttons:['OK']
             });
-            return;
-        }
-        if(service !== "IBM"){
-            dialog.showMessageBox(null,{type:"warning",
-            title:"Unsupported Feature",
-            message:"Feature not Implemented",
-            detail:"Unfortunately, we have yet to implement this Service. We apologise for the misunderstandings.",
-            buttons:['OK']})
             return;
         }
         if(apiKey === ""){
