@@ -116,19 +116,11 @@ function createWindow(){
 
     ipcMain.on('analyse-cancel', () => {
         commonEmitter.commonEmitter.emit('stop');
-        mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-        mainWindow.webContents.on('did-finish-load', () => {
-            let savedInput = Processor.getSavedInput();
-            mainWindow.webContents.send('restore-input', savedInput);
-        })
+        loadMainMenu(mainWindow);
     })
 
     ipcMain.on('return-to-login', () => {
-            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-            mainWindow.webContents.on('did-finish-load', () => {
-                let savedInput = Processor.getSavedInput();
-                mainWindow.webContents.send('restore-input', savedInput);
-            });
+            loadMainMenu(mainWindow);
     })
 
     ipcMain.on('return-button-result', ()=>{
@@ -147,11 +139,7 @@ function createWindow(){
             });
         }
         else if(fileType === 1){
-            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-            mainWindow.webContents.on('did-finish-load', () => {
-                let savedInput = Processor.getSavedInput();
-                mainWindow.webContents.send('restore-input', savedInput);
-            });
+            loadMainMenu(mainWindow);
         }
     })
 
@@ -165,13 +153,13 @@ function createWindow(){
 
         newWindow.webContents.on('did-finish-load', () => {
             let options = Processor.getOptions();
-            console.log(options);
-            newWindow.webContents.send('update-current-options', options);
+            let otherOptions = Processor.getOtherOptions();
+            newWindow.webContents.send('update-current-options', options, otherOptions);
         })
     })
 
-    ipcMain.on('options-change', (event, results) => {
-        Processor.changeOptions(results);
+    ipcMain.on('options-change', (event, results, moreResults) => {
+        Processor.changeOptions(results, moreResults);
     })
 
     ipcMain.on('options-dontchange', () =>{
@@ -199,22 +187,14 @@ function createWindow(){
             })
             let fileType = Processor.returnInputType();
             if(fileType === 1) {
-                mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-                mainWindow.webContents.on('did-finish-load', () => {
-                    let savedInput = Processor.getSavedInput();
-                    mainWindow.webContents.send('restore-input', savedInput);
-                });
+                loadMainMenu(mainWindow);
             }
             else if(fileType === 2){
                 let fileCount = Processor.getFileNumber();
                 if(fileCount > 1){
                     mainWindow.webContents.send('delete-row', number)
                 } else {
-                    mainWindow.loadFile(path.join('renderer','mainmenu.html'));
-                    mainWindow.webContents.on('did-finish-load', () => {
-                        let savedInput = Processor.getSavedInput();
-                        mainWindow.webContents.send('restore-input', savedInput);
-                    });
+                    loadMainMenu(mainWindow);
                 }
                 Processor.removeFile(file);
             }
@@ -224,11 +204,7 @@ function createWindow(){
                 if(fileCount >= 1) {
                     mainWindow.webContents.reload();
                 } else {
-                    mainWindow.loadFile(path.join('renderer','mainmenu.html'));
-                    mainWindow.webContents.on('did-finish-load', () => {
-                        let savedInput = Processor.getSavedInput();
-                        mainWindow.webContents.send('restore-input', savedInput);
-                    });
+                    loadMainMenu(mainWindow);
                 }
             }
         }
@@ -261,7 +237,7 @@ function createWindow(){
         })
         if(confirmBox === 1) {
             Processor.deleteAll();
-            mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+            loadMainMenu(mainWindow);
         }
     })
 
@@ -269,6 +245,29 @@ function createWindow(){
     ipcMain.on('debug-test-watson-npm', () => {
         Watson_Test.watson_Test();
     })
+
+    commonEmitter.commonEmitter.on('watson-error', (event) => {
+        let options = {
+            type:"error",
+            title:event.statusText,
+            message:event.message,
+            buttons:["Okay"],
+        }
+        if(event.statusText === "ENOTFOUND"){
+            options.message = event.body;
+        }
+
+        dialog.showMessageBoxSync(null, options)
+        loadMainMenu(mainWindow);
+    })
+}
+
+function loadMainMenu(mainWindow){
+    mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
+    mainWindow.webContents.on('did-finish-load', () => {
+        let savedInput = Processor.getSavedInput();
+        mainWindow.webContents.send('restore-input', savedInput);
+    });
 }
 
 app.on('ready', function(){

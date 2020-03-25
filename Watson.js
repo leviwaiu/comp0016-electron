@@ -7,10 +7,10 @@ const FileType = require('file-type');
 const common = require('./Emitter')
 const commonEmitter = common.commonEmitter
 
-let chosenApiKey = '';
-
 let speechToText = null;
 let fileExtension = null;
+let mainWindow = null;
+let speakerGap = true;
 
 let params = {
   objectMode: true,
@@ -18,41 +18,56 @@ let params = {
   model: 'en-GB_NarrowbandModel',
   speakerLabels: true,
   timestamps: true,
-  wordConfidence: true,
+  wordConfidence: false,
 }
 
-function setOptions(newParams){
+let extraOptions = {
+  gapSpeaker: true,
+  speakerConfidence: true,
+}
+
+function setOptions(newParams, moreResults){
   Object.keys(newParams).forEach(function(key){
     if(params.hasOwnProperty(key)){
       params[key] = newParams[key];
     }
   })
   console.log(params);
+  extraOptions = moreResults;
 }
 
 function getOptions(){
   return params;
 }
 
-async function callWatsonAPI (process_files, destPath, mainWindow, login_options, subDir) {
+function getOtherOptions(){
+  return extraOptions;
+}
 
+function setUpWatson(login_options, window){
+  mainWindow = window;
+  mainWindow.webContents.send('log-data', "Initialising IBM Watson");
   speechToText = new SpeechToTextV1({
     authenticator: new IamAuthenticator({...login_options}),
     url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
     headers: {
-    'X-Watson-Learning-Opt-Out': 'true',
-  },
+      'X-Watson-Learning-Opt-Out': 'true',
+    },
   })
+  mainWindow.webContents.send('log-data', "IBM Watson Options Initialised");
+}
 
-  mainWindow.webContents.send('log-data', "Initialising IBM Watson");
+async function callWatsonAPI (process_files, destPath, subDir) {
+
   let recogniseStream = speechToText.recognizeUsingWebSocket(params);
-  mainWindow.webContents.send('log-data', "IBM Watson Initialised");
-    fileExtension = (await FileType.fromFile(process_files))["ext"];
 
-    params["contentType"] = "audio/" + fileExtension;
 
-    mainWindow.webContents.send('log-data', "A " + fileExtension + " file has been recognised");
-    fs.createReadStream(process_files).pipe(recogniseStream)
+      fileExtension = (await FileType.fromFile(process_files))["ext"];
+
+      params["contentType"] = "audio/" + fileExtension;
+
+      mainWindow.webContents.send('log-data', "A " + fileExtension + " file has been recognised");
+      fs.createReadStream(process_files).pipe(recogniseStream)
 
     recogniseStream.on('data', function (event) {
       processResult(event, process_files, destPath, subDir);
@@ -61,7 +76,11 @@ async function callWatsonAPI (process_files, destPath, mainWindow, login_options
     })
     recogniseStream.on('error', function (event) {
       onEvent('Error:', event);
-      mainWindow.webContents.send('log-data', JSON.stringify(event.raw.data));
+      mainWindow.webContents.send('log-data', "ERROR:" + event.message);
+      //Specific Error Handling
+      if(event.code >= 400 || event.statusText === "ENOTFOUND"){
+        commonEmitter.emit('watson-error', event)
+      }
     })
     recogniseStream.on('close', function (event) {
       onEvent('Close:', event);
@@ -81,30 +100,47 @@ function processResult (event, documentPath, destPath, subDir) {
   const speakerLabels = event['speaker_labels'];
   const documentPathBase = path.basename(documentPath, "." + fileExtension);
 
-  if(!fs.existsSync(path.dirname(destPath))){
-    fs.mkdirSync(path.dirname(destPath))
-  }
-  let testDestPath = destPath;
+  let subDestPath = destPath;
   for(let i = 1; i < subDir.length; i++){
-    testDestPath.concat(path.sep, subDir[i]);
+    subDestPath = subDestPath.concat(path.sep, subDir[i]);
   }
-  console.log(testDestPath);
 
-  let stream = fs.createWriteStream(destPath + path.sep + documentPathBase + '.csv')
+  if(!fs.existsSync(subDestPath)){
+    fs.mkdirSync(subDestPath)
+  }
+
+  let stream = fs.createWriteStream(subDestPath + path.sep + documentPathBase + '.csv')
   let timeBetween = 0.00
   let previousSpeaker = 0
   let previousEnd = 0.00
-  let titleString = "TimeFrom,TimeTo,Speaker,Gap between speakers,Confidence\n";
+  let titleString = "TimeFrom,TimeTo,Speaker";
+  if(extraOptions.gapSpeaker){
+    titleString += ",Gap between speakers";
+  }
+  if(extraOptions.speakerConfidence){
+    titleString += ",Confidence";
+  }
+  titleString += "\n";
   stream.write(titleString);
 
   for (let i = 0; i < speakerLabels.length; i++) {
     const item = speakerLabels[i]
-    if (item['speaker'] !== previousSpeaker) {
-      timeBetween = (item['from'] - previousEnd).toFixed(2)
-      previousSpeaker = item['speaker']
+    let writeString = item['from'] + ',' + item['to'] + ',' + item['speaker'];
+
+    if(extraOptions.gapSpeaker) {
+      if (item['speaker'] !== previousSpeaker) {
+        timeBetween = (item['from'] - previousEnd).toFixed(2)
+        previousSpeaker = item['speaker']
+      }
+      writeString += ',' + timeBetween;
+      previousEnd = item['to']
     }
-    let writeString = item['from'] + ',' + item['to'] + ',' + item['speaker'] + ',' + timeBetween + ',' + item['confidence'] + '\n'
-    previousEnd = item['to']
+
+    if(extraOptions.speakerConfidence){
+      writeString += ',' + item['confidence'];
+    }
+
+    writeString += "\n";
     stream.write(writeString)
   }
   stream.end()
@@ -116,4 +152,6 @@ function onEvent (name, event) {
 
 module.exports.getOptions = getOptions;
 module.exports.setOptions = setOptions;
+module.exports.getOtherOptions = getOtherOptions;
+module.exports.setUpWatson = setUpWatson;
 module.exports.callWatsonApi = callWatsonAPI

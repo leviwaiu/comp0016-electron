@@ -8,6 +8,7 @@ let progress = 0;
 progress_bar.style.width = progress.toString() + "%";
 
 let log_opened = false;
+let log_data = [];
 
 log_button.addEventListener('click', ()=>{
   if(!log_opened){
@@ -23,14 +24,21 @@ log_button.addEventListener('click', ()=>{
 })
 
 ipcRenderer.on('log-data', (event, data) => {
-  document.getElementById('log-output').innerText += data + "\n";
+  log_data.push(data);
+  console.log(log_data);
+  document.getElementById('log-output').innerHTML = "";
+  for(let i = 0; i < log_data.length; i++) {
+    document.getElementById('log-output').innerHTML += log_data[i] + "<br \>";
+  }
 });
 
 ipcRenderer.on('update-bar', (event, increment) => {
-  progress += increment;
   console.log("Gotten the update-bar");
-  console.log(progress.toString + "%");
-  progress_bar.style.width = progress.toString() + "%";
+  progress_bar.style.width = increment.toString() + "%";
+})
+
+ipcRenderer.on('error-bar', (event) =>{
+  progress_bar.style.color = "red";
 })
 
 ipcRenderer.on('analyse-finish', () => {

@@ -5,7 +5,6 @@ const {ipcRenderer} = require('electron');
 
 //Setting Values are included below
 const model = document.getElementById('stt-model');
-const speakerLabels = document.getElementById('labelCheck');
 const timeStamps = document.getElementById('timeCheck');
 const confidence = document.getElementById('confidenceCheck');
 
@@ -17,22 +16,23 @@ document.getElementById('return-button').addEventListener('click', function () {
   let modelIndex = model.selectedIndex;
   const results = {
     model: model[modelIndex].value,
-    speakerLabels: speakerLabels.checked,
-    timestamps: timeStamps.checked,
-    wordConfidence: confidence.checked,
   }
-  ipcRenderer.send('options-change', results);
+  const moreResults = {
+    gapSpeaker: timeStamps.checked,
+    speakerConfidence: confidence.checked
+  }
+
+  ipcRenderer.send('options-change', results, moreResults);
   window.close()
 })
 
-ipcRenderer.on('update-current-options', (event, options) => {
+ipcRenderer.on('update-current-options', (event, options, moreOptions) => {
   console.log(options.model);
 
   model.value = options.model;
 
-  speakerLabels.checked = options.speakerLabels;
-  timeStamps.checked = options.timestamps;
-  confidence.checked = options.wordConfidence;
+  timeStamps.checked = moreOptions.gapSpeaker;
+  confidence.checked = moreOptions.speakerConfidence;
 
 })
 
