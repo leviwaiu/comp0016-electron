@@ -31,7 +31,7 @@ function createWindow(){
             mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
     })
 
-    ipcMain.on('analyse-form-submission', (event, files, destPath, apiKey) =>{
+    ipcMain.on('analyse-form-submission', (event, service, files, destPath, apiKey) =>{
         console.log("Analyse button pressed");
         console.log(files);
         if(files === null){
@@ -65,7 +65,7 @@ function createWindow(){
 
         mainWindow.webContents.on('did-finish-load', ()=>{
             Processor.changeCredentialsApi(apiKey);
-            Processor.setParameters("1", mainWindow);
+            Processor.setParameters(service, mainWindow);
             if(!runned) {
                 Processor.processFile(event, files, destPath);
                 runned = true;
