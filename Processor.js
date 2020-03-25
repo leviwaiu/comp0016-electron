@@ -28,12 +28,16 @@ function setParameters(serviceInput, mainWindowInput){
   mainWindow = mainWindowInput;
 }
 
-function changeOptions(results){
-  Watson.setOptions(results);
+function changeOptions(results, moreResults){
+  Watson.setOptions(results, moreResults);
 }
 
 function getOptions(){
   return Watson.getOptions();
+}
+
+function getOtherOptions(){
+  return Watson.getOtherOptions();
 }
 
 function changeCredentialsApi(apiKey){
@@ -80,6 +84,7 @@ function processFile(event, filePaths, destPath){
     inputType = 2;
   }
 
+  Watson.setUpWatson(login_options, mainWindow);
   for(let i = 0; i < filePaths.length; i++) {
     let currentSubDir = [];
     handleDirectory(event, filePaths[i], destPath, currentSubDir);
@@ -89,7 +94,6 @@ function processFile(event, filePaths, destPath){
 function handleDirectory(event, filePath, destPath, currentSubDir){
   let fileStats = fs.statSync(filePath);
   let completedFiles = 0;
-
 
   commonEmitter.commonEmitter.on('oneFileDone',()=>{
     completedFiles++;
@@ -101,7 +105,7 @@ function handleDirectory(event, filePath, destPath, currentSubDir){
   if(fileStats.isDirectory()){
     inputType = 3;
     let directoryContents = fs.readdirSync(filePath);
-    let newSubDir = currentSubDir;
+    let newSubDir = [...currentSubDir];
     newSubDir.push(path.basename(filePath));
     for(let i = 0; i < directoryContents.length; i++){
       handleDirectory(event, path.join(filePath, directoryContents[i]), destPath, newSubDir);
@@ -109,7 +113,11 @@ function handleDirectory(event, filePath, destPath, currentSubDir){
   }
   else if(fileStats.isFile()) {
     (async () => {
-      let fileType = (await FileType.fromFile(filePath))["ext"];
+      let fileTypeObject = (await FileType.fromFile(filePath))
+      let fileType = undefined;
+      if(fileTypeObject !== undefined){
+        fileType = fileTypeObject["ext"];
+      }
       console.log(fileType);
       if (fileType === "wav" || fileType === "ogg" || fileType === "mp3" || fileType === "flac") {
         let currentBase = destPath;
@@ -118,12 +126,11 @@ function handleDirectory(event, filePath, destPath, currentSubDir){
         }
         processedLocation.push(path.join(currentBase, path.basename(filePath, "." + fileType) + ".csv"));
         console.log(processedLocation);
-        await Watson.callWatsonApi(filePath, destPath, mainWindow, login_options, currentSubDir);
+        await Watson.callWatsonApi(filePath, destPath, currentSubDir);
       }
     })();
   }
 }
-
 
 function displayDirectory(){
   let fileTree = FileHandler.readDir(destPath_store);
@@ -194,6 +201,7 @@ function deleteAll(){
 
 }
 
+module.exports.getOtherOptions = getOtherOptions;
 module.exports.processFile = processFile;
 module.exports.displayDirectory = displayDirectory;
 module.exports.displayFile = displayFile;
