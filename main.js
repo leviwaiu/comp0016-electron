@@ -50,14 +50,6 @@ function createWindow(){
             });
             return;
         }
-        if(service !== "IBM"){
-            dialog.showMessageBox(null,{type:"warning",
-            title:"Unsupported Feature",
-            message:"Feature not Implemented",
-            detail:"Unfortunately, we have yet to implement this Service. We apologise for the misunderstandings.",
-            buttons:['OK']})
-            return;
-        }
         if(apiKey === ""){
             dialog.showMessageBox(null, {type:"warning",
             title:"No API Key entered",
@@ -75,8 +67,8 @@ function createWindow(){
 
         mainWindow.webContents.on('did-finish-load', ()=>{
             Processor.changeCredentialsApi(apiKey);
-            Processor.setParameters("IBM", mainWindow);
-            if(!ran) {
+            Processor.setParameters(service, mainWindow);
+            if(!runned) {
                 Processor.processFile(event, files, destPath);
                 ran = true;
             }

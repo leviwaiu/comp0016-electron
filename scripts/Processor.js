@@ -146,8 +146,14 @@ function handleDirectory(event, filePath, destPath, currentSubDir){
         }
         processedLocation.push(path.join(currentBase, path.basename(filePath, "." + fileType) + ".csv"));
         console.log(processedLocation);
+
+        //Reserved Ability to Add more STT Services
         if(service === "IBM") {
           await Watson.callWatsonApi(filePath, destPath, currentSubDir);
+        }
+        else {
+          console.log("Unexpected Error");
+          return;
         }
       }
     })();
