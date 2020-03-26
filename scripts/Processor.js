@@ -103,7 +103,7 @@ function processFile(event, filePaths, destPath){
   let completedFiles = 0;
   commonEmitter.commonEmitter.on('oneFileDone',()=>{
     completedFiles++;
-    let percentage = (completedFiles / processedLocation.length + 1) * 100;
+    let percentage = (completedFiles / (processedLocation.length + 1)) * 100;
     console.log(percentage);
     mainWindow.webContents.send('update-bar', percentage);
     if(completedFiles === processedLocation.length && Settings.getOtherOptions().deleteData){

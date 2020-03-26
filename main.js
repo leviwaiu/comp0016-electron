@@ -68,7 +68,7 @@ function createWindow(){
         mainWindow.webContents.on('did-finish-load', ()=>{
             Processor.changeCredentialsApi(apiKey);
             Processor.setParameters(service, mainWindow);
-            if(!runned) {
+            if(!ran) {
                 Processor.processFile(event, files, destPath);
                 ran = true;
             }
