@@ -5,6 +5,14 @@ const FileType = require('file-type');
 const path = require('path');
 const commonEmitter = require('./Emitter');
 const Utilities = require('./Utilities');
+const Settings = require('./Settings');
+
+/***
+ * The Processor file provides functions to handle the i/o files and the display of output
+ * @var service: String of the Service that would be used in he process
+ * @var mainWindow: MainWindow Object of the
+ * @var processd
+ */
 
 let service = null;
 let mainWindow = null;
@@ -15,6 +23,10 @@ let destPath_store = null;
 let filePaths_store = null;
 let inputType = 1; //1 = Single File, 2 = Multiple Files, 3 = Directory
 
+/***
+ *
+ * @param file
+ */
 function removeFile(file){
   processedLocation = Utilities.removeArray(processedLocation,file);
 }
@@ -26,18 +38,6 @@ function getFileNumber(){
 function setParameters(serviceInput, mainWindowInput){
   service = serviceInput;
   mainWindow = mainWindowInput;
-}
-
-function changeOptions(results, moreResults){
-  Watson.setOptions(results, moreResults);
-}
-
-function getOptions(){
-  return Watson.getOptions();
-}
-
-function getOtherOptions(){
-  return Watson.getOtherOptions();
 }
 
 function changeCredentialsApi(apiKey){
@@ -84,23 +84,34 @@ function processFile(event, filePaths, destPath){
     inputType = 2;
   }
 
+
   Watson.setUpWatson(login_options, mainWindow);
   for(let i = 0; i < filePaths.length; i++) {
     let currentSubDir = [];
     handleDirectory(event, filePaths[i], destPath, currentSubDir);
   }
+
+  let completedFiles = 0;
+  commonEmitter.commonEmitter.on('oneFileDone',()=>{
+    completedFiles++;
+    let percentage = (completedFiles / processedLocation.length + 1) * 100;
+    console.log(percentage);
+    mainWindow.webContents.send('update-bar', percentage);
+    if(completedFiles === processedLocation.length && Settings.getOtherOptions().deleteData){
+      Watson.deleteUserData();
+    } else {
+      commonEmitter.commonEmitter.emit('allFilesDone');
+    }
+  });
+  commonEmitter.commonEmitter.on('allFilesDone', ()=>{
+    mainWindow.webContents.send('update-bar', 100);
+    mainWindow.webContents.send('analyse-finish');
+  })
+
 }
 
 function handleDirectory(event, filePath, destPath, currentSubDir){
   let fileStats = fs.statSync(filePath);
-  let completedFiles = 0;
-
-  commonEmitter.commonEmitter.on('oneFileDone',()=>{
-    completedFiles++;
-    let percentage = (completedFiles / processedLocation.length) * 100;
-    console.log(percentage);
-    mainWindow.webContents.send('update-bar', percentage);
-  });
 
   if(fileStats.isDirectory()){
     inputType = 3;
@@ -126,7 +137,9 @@ function handleDirectory(event, filePath, destPath, currentSubDir){
         }
         processedLocation.push(path.join(currentBase, path.basename(filePath, "." + fileType) + ".csv"));
         console.log(processedLocation);
-        await Watson.callWatsonApi(filePath, destPath, currentSubDir);
+        if(service === "IBM") {
+          await Watson.callWatsonApi(filePath, destPath, currentSubDir);
+        }
       }
     })();
   }
@@ -201,13 +214,11 @@ function deleteAll(){
 
 }
 
-module.exports.getOtherOptions = getOtherOptions;
+
 module.exports.processFile = processFile;
 module.exports.displayDirectory = displayDirectory;
 module.exports.displayFile = displayFile;
 module.exports.setParameters = setParameters;
-module.exports.changeOptions = changeOptions;
-module.exports.getOptions = getOptions;
 module.exports.changeCredentialsApi = changeCredentialsApi;
 module.exports.displayFileSingle = displayFileSingle;
 module.exports.returnInputType = returnInputType;
