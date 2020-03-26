@@ -64,7 +64,11 @@ async function callWatsonAPI (process_files, destPath, subDir) {
       mainWindow.webContents.send('log-data', "ERROR:" + event.message);
       //Specific Error Handling
       if(event.code >= 400 || event.statusText === "ENOTFOUND"){
-        commonEmitter.emit('watson-error', event)
+        commonEmitter.emit('watson-error', event);
+      }
+      if(event.message === "Session timed out."){
+        event.statusText = "Timed Out";
+        commonEmitter.emit('watson-error', event);
       }
     })
     recogniseStream.on('close', function (event) {

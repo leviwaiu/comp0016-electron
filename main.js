@@ -96,23 +96,27 @@ function createWindow(){
 
     ipcMain.on('analyse-continue', () => {
         let fileType = Processor.returnInputType();
-        if(fileType === 3) {
-            mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
-            mainWindow.webContents.on('did-finish-load', () =>{
-                Processor.displayDirectory();
-            });
-        }
-        else if(fileType === 2){
-            mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
-            mainWindow.webContents.on('did-finish-load', ()=>{
-                Processor.displayFileList();
-            })
-        }
-        else if(fileType === 1){
-            mainWindow.loadFile(path.join('renderer', 'results.html'));
-            mainWindow.webContents.on('did-finish-load', () => {
-                Processor.displayFileSingle();
-            })
+        let finished = false;
+        if(!finished) {
+            if (fileType === 3) {
+                mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+                mainWindow.webContents.on('did-finish-load', () => {
+                    Processor.displayDirectory();
+                    finished = true;
+                });
+            } else if (fileType === 2) {
+                mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
+                mainWindow.webContents.on('did-finish-load', () => {
+                    Processor.displayFileList();
+                    finished = true;
+                })
+            } else if (fileType === 1) {
+                mainWindow.loadFile(path.join('renderer', 'results.html'));
+                mainWindow.webContents.on('did-finish-load', () => {
+                    Processor.displayFileSingle();
+                    finished = true;
+                })
+            }
         }
     })
 
@@ -261,6 +265,7 @@ function createWindow(){
         }
 
         dialog.showMessageBoxSync(null, options)
+        commonEmitter.commonEmitter.emit('stop');
         Utilities.loadMainMenu(mainWindow);
     })
 }

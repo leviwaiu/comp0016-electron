@@ -11,26 +11,35 @@ const Settings = require('./Settings');
  * The Processor file provides functions to handle the i/o files and the display of output
  * @var service: String of the Service that would be used in he process
  * @var mainWindow: MainWindow Object of the
- * @var processd
+ * @var processedLocation: The Path of all the audio files that have been tagged to process
  */
 
 let service = null;
 let mainWindow = null;
 let processedLocation = [];
 
+/***
+ * @var login_options: Options for login
+ * @type {null}
+ */
 let login_options = null;
 let destPath_store = null;
 let filePaths_store = null;
 let inputType = 1; //1 = Single File, 2 = Multiple Files, 3 = Directory
 
+
 /***
- *
- * @param file
+ *  This deletes a file from the array of files tagged.
+ * @param file: File to be Removed
  */
 function removeFile(file){
   processedLocation = Utilities.removeArray(processedLocation,file);
 }
 
+/***
+ * Gets the number of files that are being processed
+ * @returns {number}
+ */
 function getFileNumber(){
   return processedLocation.length;
 }
