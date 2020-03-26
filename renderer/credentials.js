@@ -7,6 +7,7 @@ const {ipcRenderer} = require('electron');
 const model = document.getElementById('stt-model');
 const timeStamps = document.getElementById('timeCheck');
 const confidence = document.getElementById('confidenceCheck');
+const deleteData = document.getElementById('deleteCheck');
 
 document.getElementById('cancel-button').addEventListener('click', function () {
   window.close()
@@ -19,7 +20,8 @@ document.getElementById('return-button').addEventListener('click', function () {
   }
   const moreResults = {
     gapSpeaker: timeStamps.checked,
-    speakerConfidence: confidence.checked
+    speakerConfidence: confidence.checked,
+    deleteData: deleteData.checked,
   }
 
   ipcRenderer.send('options-change', results, moreResults);

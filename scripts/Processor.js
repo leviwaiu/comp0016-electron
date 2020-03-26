@@ -5,20 +5,41 @@ const FileType = require('file-type');
 const path = require('path');
 const commonEmitter = require('./Emitter');
 const Utilities = require('./Utilities');
+const Settings = require('./Settings');
+
+/***
+ * The Processor file provides functions to handle the i/o files and the display of output
+ * @var service: String of the Service that would be used in he process
+ * @var mainWindow: MainWindow Object of the
+ * @var processedLocation: The Path of all the audio files that have been tagged to process
+ */
 
 let service = null;
 let mainWindow = null;
 let processedLocation = [];
 
+/***
+ * @var login_options: Options for login
+ * @type {null}
+ */
 let login_options = null;
 let destPath_store = null;
 let filePaths_store = null;
 let inputType = 1; //1 = Single File, 2 = Multiple Files, 3 = Directory
 
+
+/***
+ *  This deletes a file from the array of files tagged.
+ * @param file: File to be Removed
+ */
 function removeFile(file){
   processedLocation = Utilities.removeArray(processedLocation,file);
 }
 
+/***
+ * Gets the number of files that are being processed
+ * @returns {number}
+ */
 function getFileNumber(){
   return processedLocation.length;
 }
@@ -26,18 +47,6 @@ function getFileNumber(){
 function setParameters(serviceInput, mainWindowInput){
   service = serviceInput;
   mainWindow = mainWindowInput;
-}
-
-function changeOptions(results, moreResults){
-  Watson.setOptions(results, moreResults);
-}
-
-function getOptions(){
-  return Watson.getOptions();
-}
-
-function getOtherOptions(){
-  return Watson.getOtherOptions();
 }
 
 function changeCredentialsApi(apiKey){
@@ -84,23 +93,34 @@ function processFile(event, filePaths, destPath){
     inputType = 2;
   }
 
+
   Watson.setUpWatson(login_options, mainWindow);
   for(let i = 0; i < filePaths.length; i++) {
     let currentSubDir = [];
     handleDirectory(event, filePaths[i], destPath, currentSubDir);
   }
+
+  let completedFiles = 0;
+  commonEmitter.commonEmitter.on('oneFileDone',()=>{
+    completedFiles++;
+    let percentage = (completedFiles / processedLocation.length + 1) * 100;
+    console.log(percentage);
+    mainWindow.webContents.send('update-bar', percentage);
+    if(completedFiles === processedLocation.length && Settings.getOtherOptions().deleteData){
+      Watson.deleteUserData();
+    } else {
+      commonEmitter.commonEmitter.emit('allFilesDone');
+    }
+  });
+  commonEmitter.commonEmitter.on('allFilesDone', ()=>{
+    mainWindow.webContents.send('update-bar', 100);
+    mainWindow.webContents.send('analyse-finish');
+  })
+
 }
 
 function handleDirectory(event, filePath, destPath, currentSubDir){
   let fileStats = fs.statSync(filePath);
-  let completedFiles = 0;
-
-  commonEmitter.commonEmitter.on('oneFileDone',()=>{
-    completedFiles++;
-    let percentage = (completedFiles / processedLocation.length) * 100;
-    console.log(percentage);
-    mainWindow.webContents.send('update-bar', percentage);
-  });
 
   if(fileStats.isDirectory()){
     inputType = 3;
@@ -209,13 +229,11 @@ function deleteAll(){
 
 }
 
-module.exports.getOtherOptions = getOtherOptions;
+
 module.exports.processFile = processFile;
 module.exports.displayDirectory = displayDirectory;
 module.exports.displayFile = displayFile;
 module.exports.setParameters = setParameters;
-module.exports.changeOptions = changeOptions;
-module.exports.getOptions = getOptions;
 module.exports.changeCredentialsApi = changeCredentialsApi;
 module.exports.displayFileSingle = displayFileSingle;
 module.exports.returnInputType = returnInputType;

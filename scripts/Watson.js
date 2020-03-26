@@ -4,13 +4,13 @@ const { IamAuthenticator } = require('ibm-watson/auth')
 const fs = require('fs')
 const path = require('path')
 const FileType = require('file-type');
+const Settings = require('./Settings');
 const common = require('./Emitter')
 const commonEmitter = common.commonEmitter
 
 let speechToText = null;
 let fileExtension = null;
 let mainWindow = null;
-let speakerGap = true;
 
 let params = {
   objectMode: true,
@@ -18,30 +18,15 @@ let params = {
   model: 'en-GB_NarrowbandModel',
   speakerLabels: true,
   timestamps: true,
-  wordConfidence: false,
 }
 
-let extraOptions = {
-  gapSpeaker: true,
-  speakerConfidence: true,
-}
-
-function setOptions(newParams, moreResults){
+function setOptions(){
+  let newParams = Settings.getWatsonOptions();
   Object.keys(newParams).forEach(function(key){
     if(params.hasOwnProperty(key)){
       params[key] = newParams[key];
     }
   })
-  console.log(params);
-  extraOptions = moreResults;
-}
-
-function getOptions(){
-  return params;
-}
-
-function getOtherOptions(){
-  return extraOptions;
 }
 
 function setUpWatson(login_options, window){
@@ -52,6 +37,7 @@ function setUpWatson(login_options, window){
     url: 'https://api.eu-gb.speech-to-text.watson.cloud.ibm.com',
     headers: {
       'X-Watson-Learning-Opt-Out': 'true',
+      'X-Watson-Metadata': 'customer_id=customer',
     },
   })
   mainWindow.webContents.send('log-data', "IBM Watson Options Initialised");
@@ -60,7 +46,6 @@ function setUpWatson(login_options, window){
 async function callWatsonAPI (process_files, destPath, subDir) {
 
   let recogniseStream = speechToText.recognizeUsingWebSocket(params);
-
 
       fileExtension = (await FileType.fromFile(process_files))["ext"];
 
@@ -79,12 +64,15 @@ async function callWatsonAPI (process_files, destPath, subDir) {
       mainWindow.webContents.send('log-data', "ERROR:" + event.message);
       //Specific Error Handling
       if(event.code >= 400 || event.statusText === "ENOTFOUND"){
-        commonEmitter.emit('watson-error', event)
+        commonEmitter.emit('watson-error', event);
+      }
+      if(event.message === "Session timed out."){
+        event.statusText = "Timed Out";
+        commonEmitter.emit('watson-error', event);
       }
     })
     recogniseStream.on('close', function (event) {
       onEvent('Close:', event);
-      mainWindow.webContents.send('analyse-finish');
     })
   commonEmitter.on('stop', () => {
     console.log('stop')
@@ -95,10 +83,28 @@ async function callWatsonAPI (process_files, destPath, subDir) {
   })
 }
 
+function deleteUserData(){
+  const extraOptions = Settings.getOtherOptions();
+  if(extraOptions.deleteData){
+    const deleteUserDataParams = {
+      customerId: 'customer'
+    };
+    speechToText.deleteUserData(deleteUserDataParams).then(
+      result =>{
+        mainWindow.webContents.send('log-data', 'User data has been deleted');
+        commonEmitter.emit("allFilesDone");
+      }
+    ).catch(error => {
+      console.log('error:', error);
+    })
+  }
+}
+
 
 function processResult (event, documentPath, destPath, subDir) {
   const speakerLabels = event['speaker_labels'];
   const documentPathBase = path.basename(documentPath, "." + fileExtension);
+  const extraOptions = Settings.getOtherOptions();
 
   let subDestPath = destPath;
   for(let i = 1; i < subDir.length; i++){
@@ -150,8 +156,7 @@ function onEvent (name, event) {
   console.log(name, JSON.stringify(event, null, 2))
 }
 
-module.exports.getOptions = getOptions;
 module.exports.setOptions = setOptions;
-module.exports.getOtherOptions = getOtherOptions;
 module.exports.setUpWatson = setUpWatson;
+module.exports.deleteUserData = deleteUserData;
 module.exports.callWatsonApi = callWatsonAPI

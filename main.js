@@ -4,10 +4,12 @@ const {app, dialog, ipcMain} = require('electron');
 const path = require('path');
 const fs = require('fs');
 
-const Window = require('./Window');
-const Processor = require('./Processor');
-const Watson_Test = require('./WatsonTest');
-const commonEmitter = require('./Emitter')
+const Window = require('./scripts/Window');
+const Processor = require('./scripts/Processor');
+const Watson_Test = require('./testScript/WatsonTest');
+const commonEmitter = require('./scripts/Emitter');
+const Utilities = require('./scripts/Utilities');
+const Settings = require('./scripts/Settings');
 
 let temp_displayed;
 
@@ -61,14 +63,14 @@ function createWindow(){
 
 
         //Hacky way to ensure this runs only once
-        let runned = false;
+        let ran = false;
 
         mainWindow.webContents.on('did-finish-load', ()=>{
             Processor.changeCredentialsApi(apiKey);
             Processor.setParameters(service, mainWindow);
             if(!runned) {
                 Processor.processFile(event, files, destPath);
-                runned = true;
+                ran = true;
             }
             mainWindow.show();
         })
@@ -86,33 +88,37 @@ function createWindow(){
 
     ipcMain.on('analyse-continue', () => {
         let fileType = Processor.returnInputType();
-        if(fileType === 3) {
-            mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
-            mainWindow.webContents.on('did-finish-load', () =>{
-                Processor.displayDirectory();
-            });
-        }
-        else if(fileType === 2){
-            mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
-            mainWindow.webContents.on('did-finish-load', ()=>{
-                Processor.displayFileList();
-            })
-        }
-        else if(fileType === 1){
-            mainWindow.loadFile(path.join('renderer', 'results.html'));
-            mainWindow.webContents.on('did-finish-load', () => {
-                Processor.displayFileSingle();
-            })
+        let finished = false;
+        if(!finished) {
+            if (fileType === 3) {
+                mainWindow.loadFile(path.join('renderer', 'fileExplorer.html'));
+                mainWindow.webContents.on('did-finish-load', () => {
+                    Processor.displayDirectory();
+                    finished = true;
+                });
+            } else if (fileType === 2) {
+                mainWindow.loadFile(path.join('renderer', 'multipleFileTable.html'));
+                mainWindow.webContents.on('did-finish-load', () => {
+                    Processor.displayFileList();
+                    finished = true;
+                })
+            } else if (fileType === 1) {
+                mainWindow.loadFile(path.join('renderer', 'results.html'));
+                mainWindow.webContents.on('did-finish-load', () => {
+                    Processor.displayFileSingle();
+                    finished = true;
+                })
+            }
         }
     })
 
     ipcMain.on('analyse-cancel', () => {
         commonEmitter.commonEmitter.emit('stop');
-        loadMainMenu(mainWindow);
+        Utilities.loadMainMenu(mainWindow);
     })
 
     ipcMain.on('return-to-login', () => {
-            loadMainMenu(mainWindow);
+            Utilities.loadMainMenu(mainWindow);
     })
 
     ipcMain.on('return-button-result', ()=>{
@@ -131,7 +137,7 @@ function createWindow(){
             });
         }
         else if(fileType === 1){
-            loadMainMenu(mainWindow);
+            Utilities.loadMainMenu(mainWindow);
         }
     })
 
@@ -144,14 +150,15 @@ function createWindow(){
         });
 
         newWindow.webContents.on('did-finish-load', () => {
-            let options = Processor.getOptions();
-            let otherOptions = Processor.getOtherOptions();
+            let options = Settings.getWatsonOptions();
+            let otherOptions = Settings.getOtherOptions();
             newWindow.webContents.send('update-current-options', options, otherOptions);
         })
     })
 
     ipcMain.on('options-change', (event, results, moreResults) => {
-        Processor.changeOptions(results, moreResults);
+        Settings.setWatsonOptions(results);
+        Settings.setOtherOptions(moreResults);
     })
 
     ipcMain.on('options-dontchange', () =>{
@@ -179,14 +186,14 @@ function createWindow(){
             })
             let fileType = Processor.returnInputType();
             if(fileType === 1) {
-                loadMainMenu(mainWindow);
+                Utilities.loadMainMenu(mainWindow);
             }
             else if(fileType === 2){
                 let fileCount = Processor.getFileNumber();
                 if(fileCount > 1){
                     mainWindow.webContents.send('delete-row', number)
                 } else {
-                    loadMainMenu(mainWindow);
+                    Utilities.loadMainMenu(mainWindow);
                 }
                 Processor.removeFile(file);
             }
@@ -196,7 +203,7 @@ function createWindow(){
                 if(fileCount >= 1) {
                     mainWindow.webContents.reload();
                 } else {
-                    loadMainMenu(mainWindow);
+                    Utilities.loadMainMenu(mainWindow);
                 }
             }
         }
@@ -229,7 +236,7 @@ function createWindow(){
         })
         if(confirmBox === 1) {
             Processor.deleteAll();
-            loadMainMenu(mainWindow);
+            Utilities.loadMainMenu(mainWindow);
         }
     })
 
@@ -250,17 +257,11 @@ function createWindow(){
         }
 
         dialog.showMessageBoxSync(null, options)
-        loadMainMenu(mainWindow);
+        commonEmitter.commonEmitter.emit('stop');
+        Utilities.loadMainMenu(mainWindow);
     })
 }
 
-function loadMainMenu(mainWindow){
-    mainWindow.loadFile(path.join('renderer', 'mainmenu.html'));
-    mainWindow.webContents.on('did-finish-load', () => {
-        let savedInput = Processor.getSavedInput();
-        mainWindow.webContents.send('restore-input', savedInput);
-    });
-}
 
 app.on('ready', function(){
     createWindow();
