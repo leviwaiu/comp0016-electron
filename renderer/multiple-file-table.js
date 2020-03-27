@@ -34,7 +34,7 @@ function configTable(filteredArray) {
 
       let btn2 = document.createElement("BUTTON");
       let deleteIdVar = "deleteid-" + i;
-      btn2.setAttribute("class", "btn btn-danger");
+      btn2.setAttribute("class", "btn btn-warning");
       btn2.setAttribute("id", deleteIdVar);
       btn2.appendChild(document.createTextNode("Delete"));
       thirdcell.appendChild(btn0);
@@ -67,4 +67,9 @@ ipcRenderer.on('delete-row', function (event, nb) {
 
 document.getElementById('delete-all-button').addEventListener('click', () => {
   ipcRenderer.send('delete-all');
+})
+
+document.getElementById('return-button').addEventListener('click', (evt)=>{
+  evt.preventDefault();
+  ipcRenderer.send('return-to-login');
 })
