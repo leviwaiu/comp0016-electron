@@ -6,7 +6,7 @@ const fs = require('fs');
 
 const Window = require('./scripts/Window');
 const Processor = require('./scripts/Processor');
-const Watson_Test = require('./testScript/WatsonTest');
+const Watson_Test = require('./test/WatsonTest');
 const commonEmitter = require('./scripts/Emitter');
 const Utilities = require('./scripts/Utilities');
 const Settings = require('./scripts/Settings');
@@ -50,12 +50,13 @@ function createWindow(){
             });
             return;
         }
-        if(apiKey === ""){
+        if(apiKey === "" || apiKey === null){
             dialog.showMessageBox(null, {type:"warning",
             title:"No API Key entered",
             message:"API Key not given",
             detail:"We would require an API Key in order to continue",
-            buttons:['OK']})
+            buttons:['OK']
+            });
             return;
         }
 
@@ -266,3 +267,5 @@ function createWindow(){
 app.on('ready', function(){
     createWindow();
 });
+
+module.exports.createWindow = createWindow;
